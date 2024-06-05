@@ -89,4 +89,37 @@ class RoleController extends Controller
             return ['type'=>'error','message'=>'Echec de suppression'];
         }
     }
+
+
+    /**
+     * ATTRIBUTION DES ROLES AUX UTILISATEURS
+     */
+
+    public function addRoles(Request $request, User $id){  
+
+        try {
+
+            $user->roles()->attach($request->role);
+
+            return ['type'=>'success','message'=>'Enregistrement reussi'];            
+
+        } catch (\Throwable $th) {
+
+            return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
+        }
+        
+    }
+    public function removeRoles(Request $request, User $id){  
+
+        try {
+
+            $user->roles()->detach($request->role);
+
+            return ['type'=>'success','message'=>'Enregistrement reussi'];            
+
+        } catch (\Throwable $th) {
+
+            return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
+        }
+    }
 }
