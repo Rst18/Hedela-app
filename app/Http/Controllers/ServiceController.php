@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
-use App\Http\Requests\StoreRoleRequest;
-use App\Http\Requests\UpdateRoleRequest;
+use App\Models\Service;
+use App\Http\Requests\StoreServiceRequest;
+use App\Http\Requests\UpdateServiceRequest;
 
-class RoleController extends Controller
+class ServiceController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Role::all();
+        //
     }
 
     /**
@@ -27,16 +27,16 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRoleRequest $request)
+    public function store(StoreServiceRequest $request)
     {
         try {
 
-            $role = Role::create($request->validated());
-            return ['type'=>'success','message'=>'Enregistrement reussi','new'=>$role];
+            $service = Service::create($request->validated());
+
+            return ['type'=>'success','message'=>'Enregistrement reussi','new'=>$service];
 
         } catch (\Throwable $th) {
             //throw $th;
-            
             return ['type'=>'error','message'=>'Echec d\'Enregistrement','errorMessage'=>$th];
         }
     }
@@ -44,62 +44,62 @@ class RoleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Role $role)
+    public function show(Service $service)
     {
-        return $role;
+        return $service;
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Role $role)
+    public function edit(Service $service)
     {
-        return $role;
+        return $service;
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRoleRequest $request, Role $role)
+    public function update(UpdateServiceRequest $request, Service $service)
     {
         try {
 
-            $role->update($request->validated());
-            
+            $service->update($request->validated());
+
             return ['type'=>'success','message'=>'Modification reussie'];
+
         } catch (\Throwable $th) {
             //throw $th;
-            
-            return ['type'=>'error','message'=>'Echec de Modification','errorMessage'=>$th];
+            return ['type'=>'error','message'=>'Echec de modification','errorMessage'=>$th];
         }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Role $role)
+    public function destroy(Service $service)
     {
         try {
-            $role->delete();
-            
+
+            $service->delete();
+
             return ['type'=>'success','message'=>'Suppression reussie'];
+
         } catch (\Throwable $th) {
             //throw $th;
-            
-            return ['type'=>'error','message'=>'Echec de suppression'];
+            return ['type'=>'error','message'=>'Echec de suppression','errorMessage'=>$th];
         }
     }
 
-
     /**
-     * ATTRIBUTION DES ROLES AUX UTILISATEURS
+     * ATTACHER LES DOCUMENTS AUX SERVCICE
      */
 
-    public function addRoles(Request $request, User $user){  
+     public function addDocument(Request $request, Service $service){  
 
         try {
 
-            $user->roles()->attach($request->role);
+            $service->documents()->attach($request->document);
 
             return ['type'=>'success','message'=>'Enregistrement reussi'];            
 
@@ -109,11 +109,11 @@ class RoleController extends Controller
         }
         
     }
-    public function removeRoles(Request $request, User $user){  
+     public function removeDocument(Request $request, Service $service){  
 
         try {
 
-            $user->roles()->detach($request->role);
+            $service->documents()->detach($request->document);
 
             return ['type'=>'success','message'=>'Enregistrement reussi'];            
 
@@ -121,5 +121,6 @@ class RoleController extends Controller
 
             return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
         }
+        
     }
 }
