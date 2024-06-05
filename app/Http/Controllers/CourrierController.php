@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Courrier;
 use App\Http\Requests\StoreCourrierRequest;
 use App\Http\Requests\UpdateCourrierRequest;
+use Illuminate\Support\Facades\Storage;
 
 class CourrierController extends Controller
 {
@@ -29,7 +30,24 @@ class CourrierController extends Controller
      */
     public function store(StoreCourrierRequest $request)
     {
-        //
+        try {
+
+            $fileName = time() . '.' . $request->file->getClientOriginalExtension();
+            $request->file->storeAs('documents/'.$request->number, $fileName); // Store the file
+    
+
+           $courrier =  Courrier::create($request->validated());
+
+           
+           // LANCER UN EVENEMENT 
+
+
+           return ['type'=>'success','message'=>'Enregistrement reussie','new'=>$courrier];
+
+
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 
     /**
@@ -37,7 +55,7 @@ class CourrierController extends Controller
      */
     public function show(Courrier $courrier)
     {
-        //
+        return $courrier;
     }
 
     /**
@@ -45,7 +63,7 @@ class CourrierController extends Controller
      */
     public function edit(Courrier $courrier)
     {
-        //
+        return $courrier;
     }
 
     /**
@@ -53,7 +71,16 @@ class CourrierController extends Controller
      */
     public function update(UpdateCourrierRequest $request, Courrier $courrier)
     {
-        //
+        try {
+
+            $courrier->update($request->validated());
+
+            return ['type'=>'success','message'=>'Modification reussie'];
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            return ['type'=>'error','message'=>'Echec de modification','errorMessage'=>$th];
+        }
     }
 
     /**
@@ -61,6 +88,15 @@ class CourrierController extends Controller
      */
     public function destroy(Courrier $courrier)
     {
-        //
+        try {
+
+            $courrier->delete();
+
+            return ['type'=>'success','message'=>'Suppression reussie'];
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            return ['type'=>'error','message'=>'Suppression reussie','errorMessage'=>$th];
+        }
     }
 }
