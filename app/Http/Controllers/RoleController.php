@@ -95,7 +95,7 @@ class RoleController extends Controller
      * ATTRIBUTION DES ROLES AUX UTILISATEURS
      */
 
-    public function addRoles(Request $request, User $id){  
+    public function addRoles(Request $request, User $user){  
 
         try {
 
@@ -109,7 +109,7 @@ class RoleController extends Controller
         }
         
     }
-    public function removeRoles(Request $request, User $id){  
+    public function removeRoles(Request $request, User $user){  
 
         try {
 

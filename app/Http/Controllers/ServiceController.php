@@ -90,4 +90,37 @@ class ServiceController extends Controller
             return ['type'=>'error','message'=>'Echec de suppression','errorMessage'=>$th];
         }
     }
+
+    /**
+     * ATTACHER LES DOCUMENTS AUX SERVCICE
+     */
+
+     public function addDocument(Request $request, Service $service){  
+
+        try {
+
+            $service->documents()->attach($request->document);
+
+            return ['type'=>'success','message'=>'Enregistrement reussi'];            
+
+        } catch (\Throwable $th) {
+
+            return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
+        }
+        
+    }
+     public function removeDocument(Request $request, Service $service){  
+
+        try {
+
+            $service->documents()->detach($request->document);
+
+            return ['type'=>'success','message'=>'Enregistrement reussi'];            
+
+        } catch (\Throwable $th) {
+
+            return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
+        }
+        
+    }
 }
