@@ -56,11 +56,11 @@ import moment from 'moment';
  }
 
  const setdocumentToservice = (document, service) =>{
-    axios_post('document/set-document-service/'+service, {document,service}).then(()=>{
+    axios_post_simple('service/set-document-service/'+service, {document,service}).then(()=>{
     })
  }
  const removedocumentToservice = (document, service) =>{
-    axios_post('document/remove-document-service/'+service, {document,service}).then(()=>{
+    axios_post_simple('service/remove-document-service/'+service, {document,service}).then(()=>{
         
     })
  }

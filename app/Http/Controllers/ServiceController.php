@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\Service;
 use App\Models\Document;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreServiceRequest;
 use App\Http\Requests\UpdateServiceRequest;
 
@@ -116,7 +117,7 @@ class ServiceController extends Controller
         
     }
      public function removeDocument(Request $request, Service $service){  
-
+        
         try {
 
             $service->documents()->detach($request->document);

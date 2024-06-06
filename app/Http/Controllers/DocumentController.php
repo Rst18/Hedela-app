@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Models\Document;
 use App\Http\Requests\StoreDocumentRequest;
 use App\Http\Requests\UpdateDocumentRequest;
@@ -21,7 +22,8 @@ class DocumentController extends Controller
      */
     public function create()
     {
-        //
+        $documents = Document::all();
+        return Inertia::render('Document/Index',compact('documents'));
     }
 
     /**

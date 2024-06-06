@@ -27,7 +27,7 @@
 
                         </div>
                     </fwb-tab>
-                    <fwb-tab name="second" title="Affectation utilisateurs Group">
+                    <fwb-tab name="second" title="Affectation des documents aux services">
                         <ListServicesWithDocuments :services :documents/>
                     </fwb-tab>
                     <fwb-tab name="third" title="Third">

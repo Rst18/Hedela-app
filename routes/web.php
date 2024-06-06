@@ -32,7 +32,7 @@ Route::controller(App\Http\Controllers\RoleController::class)->group(function(){
     Route::post('role/set-role-user/{user}','addRoles');
     Route::post('role/remove-role-user/{user}','removeRoles');
 });
-Route::controller(App\Http\Controllers\Document::class)->group(function(){
+Route::controller(App\Http\Controllers\DocumentController::class)->group(function(){
     Route::get('document','create')->name('document');
     Route::post('document/add','store');
     Route::post('document/{document}/update','store');
@@ -43,7 +43,7 @@ Route::controller(App\Http\Controllers\ServiceController::class)->group(function
     Route::post('service/add','store');
     Route::post('service/{service}/update','store');
     Route::post('service/set-document-service/{service}','addDocument');
-    Route::post('service/remove-document-service/{serveice}','removeDocument');
+    Route::post('service/remove-document-service/{service}','removeDocument');
 });
 
 require __DIR__.'/auth.php';
