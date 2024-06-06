@@ -50,5 +50,10 @@ Route::controller(App\Http\Controllers\TypeCourrierController::class)->group(fun
     Route::post('typecourrier/add','store');
     Route::post('typecourrier/{typecourrier}/update','update');
 });
+Route::controller(App\Http\Controllers\CourrierController::class)->group(function(){
+    Route::get('courrier','create')->name('courrier');
+    Route::post('courrier/add','store');
+    Route::post('courrier/{courrier}/update','update');
+});
 
 require __DIR__.'/auth.php';

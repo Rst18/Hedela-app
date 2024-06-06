@@ -22,7 +22,7 @@
                             </div>
                             <div>
                                 <ListDocuments :documents v-show="!createDocument" />
-                                <Formulaire action="add" @newAdded="refreshList" :document v-if="createDocument"/>
+                                <Formulaire action="add" @newAdded="refreshList" :document="documenstData" v-if="createDocument"/>
                             </div>
 
                         </div>

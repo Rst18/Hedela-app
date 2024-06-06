@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
+use App\Models\Service;
 use App\Models\Courrier;
+use App\Models\TypeCourrier;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreCourrierRequest;
 use App\Http\Requests\UpdateCourrierRequest;
-use Illuminate\Support\Facades\Storage;
 
 class CourrierController extends Controller
 {
@@ -22,7 +25,10 @@ class CourrierController extends Controller
      */
     public function create()
     {
-        //
+        $services = Service::with('documents')->get();
+        $typeCourriers = TypeCourrier::all();
+
+        return Inertia::render('Courrier/Index',compact('services','typeCourriers'));
     }
 
     /**

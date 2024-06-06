@@ -1,28 +1,28 @@
 
 
 <template>
-    <Head title="Roles" />
+    <Head title="Courriers" />
 
     <SideBarLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Role</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Courriers</h2>
         </template>
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
                 <fwb-tabs v-model="activeTab" variant="underline" class="p-5">
-                    <fwb-tab name="first" title="Creation des groupes">
+                    <fwb-tab name="first" title="Enregistrement  des courrier">
                         <div class="">
                             <div class="">
                                 
-                                <Fwb-button @click="createUser = !createUser">
-                                    {{ createUser ? 'Liste des utilisateurs':'Nouveau groupe' }}
+                                <Fwb-button @click="createCourrier = !createCourrier">
+                                    {{ createCourrier ? 'Liste des courriers':'Nouveau Courrier' }}
                                 </Fwb-button>
                             </div>
                             <div>
-                                <ListRoles :roles v-show="!createUser" />
-                                <Formulaire action="add" @newAdded="refreshList" :role="rolesData" v-if="createUser"/>
+                                <!-- <ListRoles :roles v-show="!createCourrier" /> -->
+                                <Formulaire action="add" @newAdded="refreshList" :courrier v-if="createCourrier"/>
                             </div>
 
                         </div>
@@ -47,7 +47,7 @@
 <script setup>
 import SideBarLayout from '@/Layouts/SideBarLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import Formulaire from '@/Components/Role/Formulaire.vue'
+import Formulaire from '@/Components/Courrier/Formulaire.vue'
 import ListRoles from '@/Components/Role/ListRoles.vue'
 import {ref,onMounted} from 'vue'
 import { FwbTab, FwbTabs,FwbButton } from 'flowbite-vue'
@@ -55,19 +55,19 @@ import ListUsersWithRoles from '@/Components/Role/ListUsersWithRoles.vue';
 
     const activeTab = ref('first')
     const props = defineProps({
-        roles:Object,
-        users:Object
+        typeCourriers:Object,
+        services:Object
     })
-    const rolesData = ref([])
-    const role = ref({})
-    const createUser = ref(false)
+    const courrierData = ref([])
+    const courrier = ref({})
+    const createCourrier = ref(false)
 
     const refreshList = (e)=>{
-        rolesData.value.push(e)
-        createUser.value = false
+        courrierData.value.push(e)
+        createCourrier.value = false
     }
     onMounted(()=>{
-        rolesData.value = props.roles
+        courrierData.value = props.roles
     })
 
 </script>
