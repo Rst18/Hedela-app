@@ -22,6 +22,16 @@
         </div>
         <div>
             <fwb-input
+                v-model="form.objet"
+                placeholder="Information"
+                label="Objet (Motif)"
+            />
+            <div class="text-red-500" v-if="errors.objet">
+                {{ errors.objet[0]}}
+            </div>
+        </div>
+        <div>
+            <fwb-input
                 v-model="form.email"
                 placeholder="Min.Developpement@devrur.ac.cd"
                 label="Email"
@@ -52,12 +62,38 @@
         </div>
         <div>
             <fwb-input
-                v-model="form.letter_file"
                 label="Ficher"
                 type="file"
+                @change="getDocument"
             />
             <div class="text-red-500" v-if="errors.letter_file">
                 {{ errors.letter_file[0]}}
+            </div>
+        </div>
+        <div>
+           <SelectComponent label="service" :options="services"  @selectedOption="getService">
+                Choisir un service
+           </SelectComponent>
+            <div class="text-red-500" v-if="errors.service_id">
+                {{ errors.service_id[0]}}
+            </div>
+        </div>
+        <div>
+           <SelectComponent label="typecourrier" :options="typeCourriers" @selectedOption="getTypeCourrier">
+                Choisir le type de courrier
+           </SelectComponent>
+            <div class="text-red-500" v-if="errors.type_courrier_id">
+                {{ errors.type_courrier_id[0]}}
+            </div>
+        </div>
+        <div>
+            <fwb-input
+                v-model="form.annexes"
+                label="Nombre des annexes"
+                disabled
+            />
+            <div class="text-red-500" v-if="errors.annexes">
+                {{ errors.annexes[0]}}
             </div>
         </div>
        
@@ -73,7 +109,7 @@
 import { FwbInput,FwbButton,FwbRadio,FwbP } from 'flowbite-vue'
 import useAxios from '@/ComponentsServices/axios.js'
 import {ref} from 'vue'
-import ToggleInput from '@/Components/ToggleInput.vue'
+import SelectComponent from '@/Components/SelectComponent.vue'
     const props = defineProps(
         {
             services:Object,
@@ -83,24 +119,29 @@ import ToggleInput from '@/Components/ToggleInput.vue'
         }
     )
     const emit = defineEmits(['newAdded'])
-    const { axios_post_simple } = useAxios();
+    const { axios_post_simple,axios_post } = useAxios();
 
     const form = ref({
         number:props.courrier.number,
         sender:props.courrier.sender,
+        objet:props.courrier.objet,
         email:props.courrier.email,
         phone:props.courrier.phone,
         letter_number:props.courrier.letter_number,
         annexes:props.courrier.annexes,
-        letter_file:props.courrier.letter_file,
+        letter_file:'',
+        service_id:props.courrier.service_id,
+        type_courrier_id:props.courrier.type_courrier_id,
     })
     const errors = ref([]); 
+
+    const currentService = ref();
 
     const submitForm = ()=>{
 
         if (props.action === 'add') {
 
-            axios_post_simple('service/add',form.value).then(({data})=>{
+            axios_post('courrier/add',form.value).then(({data})=>{
                 console.log(data)
                 emit('newAdded',data.new)
             }).catch((error)=>{
@@ -108,7 +149,7 @@ import ToggleInput from '@/Components/ToggleInput.vue'
             })
 
         }else if(props.action === 'update'){
-            axios_post_simple('service/'+props.service.id+'/update',form.value).then(({data})=>{
+            axios_post_simple('courrier/'+props.service.id+'/update',form.value).then(({data})=>{
                 console.log(data)
                 emit('newAdded',data.new)
             }).catch((error)=>{
@@ -120,10 +161,29 @@ import ToggleInput from '@/Components/ToggleInput.vue'
         }
     }
 
-    const getToggleValue = (e)=>{
-        form.value.solicitable = e
+    const getService = (e)=>{
+        currentService.value = props.services.filter((service)=>service.id === e)
+        form.value.annexes = currentService.value[0].documents.length
+        form.value.service_id = e
     }
 
+    const getTypeCourrier = (e)=>{
+        form.value.type_courrier_id = e
+    }
 
-    
+    const getDocument =(e)=>{
+
+        if(e.target.files[0].size > 5000000){
+
+            alert('Le ficher est trop grand')
+            e.target.value = ''
+            return
+
+        }else{
+
+            
+            form.value.letter_file = e.target.files[0]
+
+        } 
+    }  
 </script>

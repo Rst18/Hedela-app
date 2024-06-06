@@ -15,7 +15,7 @@ export default function useAxios(){
         return await axios.get(url)
     }
     const axios_post_simple = async (url,data)=>{
-        return await axios.post(url,data)
+        return await axios.post(url,data,config)
     }
 
     return{
