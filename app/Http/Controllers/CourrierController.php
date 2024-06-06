@@ -38,8 +38,8 @@ class CourrierController extends Controller
     {
         try {
 
-            $fileName = time() . '.' . $request->file->getClientOriginalExtension();
-            $request->file->storeAs('documents/'.$request->number, $fileName); // Store the file
+            $fileName = time() . '.' . $request->letter_file->getClientOriginalExtension();
+            $request->letter_file->storeAs('documents/'.$request->number, $fileName); // Store the file
     
 
            $courrier =  Courrier::create($request->validated());
@@ -53,6 +53,7 @@ class CourrierController extends Controller
 
         } catch (\Throwable $th) {
             //throw $th;
+            return ['type'=>'error','message'=>'Echec d\'enregistrement','errorMessage'=>$th];
         }
     }
 

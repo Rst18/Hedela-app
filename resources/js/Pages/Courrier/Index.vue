@@ -22,7 +22,14 @@
                             </div>
                             <div>
                                 <!-- <ListRoles :roles v-show="!createCourrier" /> -->
-                                <Formulaire action="add" @newAdded="refreshList" :courrier v-if="createCourrier"/>
+                                <Formulaire
+                                    action="add"
+                                    @newAdded="refreshList" 
+                                    :courrier
+                                    :services
+                                    :typeCourriers
+                                    v-if="createCourrier
+                                 "/>
                             </div>
 
                         </div>
