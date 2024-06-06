@@ -24,4 +24,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+Route::controller(App\Http\Controllers\RoleController::class)->group(function(){
+    Route::get('role','create')->name('role');
+    Route::post('role/add','store');
+    Route::post('role/{role}/update','store');
+});
+
 require __DIR__.'/auth.php';

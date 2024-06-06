@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
+use Inertia\Inertia;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 
@@ -21,7 +22,8 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        $roles = Role::all();
+        return Inertia::render('Role/Index',compact('roles'));
     }
 
     /**
@@ -32,6 +34,7 @@ class RoleController extends Controller
         try {
 
             $role = Role::create($request->validated());
+
             return ['type'=>'success','message'=>'Enregistrement reussi','new'=>$role];
 
         } catch (\Throwable $th) {

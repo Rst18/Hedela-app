@@ -20,6 +20,9 @@
         "vue": "^3.4.0"
     },
     "dependencies": {
-        "flowbite": "^2.3.0"
+        "flowbite": "^2.3.0",
+        "flowbite-vue": "^0.1.5",
+        "moment": "^2.30.1",
+        "sweetalert2": "^11.11.1"
     }
 }
