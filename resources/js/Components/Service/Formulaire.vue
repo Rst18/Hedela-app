@@ -2,23 +2,26 @@
     <div class="p-4 shadow-md rounded-md">
         <div>
             <fwb-input
+                v-model="form.code"
+                placeholder="SCRR"
+                label="Entrer le code du Service"
+            />
+            <div class="text-red-500" v-if="errors.code">
+                {{ errors.code[0]}}
+            </div>
+        </div>
+        <div>
+            <fwb-input
                 v-model="form.name"
-                placeholder="Administateur"
-                label="Entrer le nom du Role ( groupe utilisateur)"
+                placeholder="Courrier"
+                label="Entrer le nom du Service"
             />
             <div class="text-red-500" v-if="errors.name">
                 {{ errors.name[0]}}
             </div>
         </div>
+       
         <div class="mt-4">
-           <ToggleInput @getValue="getToggleValue">
-            Solicitable ?
-           </ToggleInput>
-            <div class="text-red-500" v-if="errors.solicitable">
-                {{ errors.solicitable[0]}}
-            </div>
-        </div>
-        <div>
             <Fwb-button @click="submitForm">
                 Enregistrer
             </Fwb-button>
@@ -33,7 +36,7 @@ import {ref} from 'vue'
 import ToggleInput from '@/Components/ToggleInput.vue'
     const props = defineProps(
         {
-            role:Object,
+            service:Object,
             action:String
         }
     )
@@ -41,8 +44,8 @@ import ToggleInput from '@/Components/ToggleInput.vue'
     const { axios_post_simple } = useAxios();
 
     const form = ref({
-        name:props.role.name,
-        solicitable:props.role.solicitable
+        name:props.service.name,
+        code:props.service.code
     })
     const errors = ref([]); 
 
@@ -50,14 +53,15 @@ import ToggleInput from '@/Components/ToggleInput.vue'
 
         if (props.action === 'add') {
 
-            axios_post_simple('role/add',form.value).then(({data})=>{
+            axios_post_simple('service/add',form.value).then(({data})=>{
+                console.log(data)
                 emit('newAdded',data.new)
             }).catch((error)=>{
                 console.log(error.response)
             })
 
         }else if(props.action === 'update'){
-            axios_post_simple('role/'+props.role.id+'/update',form.value).then(({data})=>{
+            axios_post_simple('service/'+props.service.id+'/update',form.value).then(({data})=>{
                 console.log(data)
                 emit('newAdded',data.new)
             }).catch((error)=>{
