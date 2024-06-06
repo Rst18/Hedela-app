@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
+use App\Models\User;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 
@@ -23,7 +25,8 @@ class RoleController extends Controller
     public function create()
     {
         $roles = Role::all();
-        return Inertia::render('Role/Index',compact('roles'));
+        $users = User::with('roles')->get();
+        return Inertia::render('Role/Index',compact('roles','users'));
     }
 
     /**

@@ -1,5 +1,5 @@
 <template>
-    <div class="p-4 max-w-md border rounded-md">
+    <div class="p-4 shadow-md rounded-md">
         <div>
             <fwb-input
                 v-model="form.name"

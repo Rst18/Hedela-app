@@ -29,6 +29,11 @@ Route::controller(App\Http\Controllers\RoleController::class)->group(function(){
     Route::get('role','create')->name('role');
     Route::post('role/add','store');
     Route::post('role/{role}/update','store');
+    Route::post('role/set-role-user/{user}','addRoles');
+    Route::post('role/remove-role-user/{user}','removeRoles');
+
+
+
 });
 
 require __DIR__.'/auth.php';

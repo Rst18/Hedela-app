@@ -13,11 +13,22 @@
 
                 <fwb-tabs v-model="activeTab" variant="underline" class="p-5">
                     <fwb-tab name="first" title="Creation des groupes">
-                        <ListRoles :roles />
-                        <Formulaire action="add" @newAdded="refreshList" :role="role"/>
+                        <div class="">
+                            <div class="">
+                                
+                                <Fwb-button @click="createUser = !createUser">
+                                    {{ createUser ? 'Liste des utilisateurs':'Nouveau groupe' }}
+                                </Fwb-button>
+                            </div>
+                            <div>
+                                <ListRoles :roles v-show="!createUser" />
+                                <Formulaire action="add" @newAdded="refreshList" :role="role" v-if="createUser"/>
+                            </div>
+
+                        </div>
                     </fwb-tab>
                     <fwb-tab name="second" title="Affectation utilisateurs Group">
-                    Lorem ipsum dolor...
+                        <ListUsersWithRoles :roles :users/>
                     </fwb-tab>
                     <fwb-tab name="third" title="Third">
                     Lorem ipsum dolor...
@@ -39,17 +50,21 @@ import { Head } from '@inertiajs/vue3';
 import Formulaire from '@/Components/Role/Formulaire.vue'
 import ListRoles from '@/Components/Role/ListRoles.vue'
 import {ref,onMounted} from 'vue'
-import { FwbTab, FwbTabs } from 'flowbite-vue'
+import { FwbTab, FwbTabs,FwbButton } from 'flowbite-vue'
+import ListUsersWithRoles from '@/Components/Role/ListUsersWithRoles.vue';
 
     const activeTab = ref('first')
     const props = defineProps({
-        roles:Object
+        roles:Object,
+        users:Object
     })
     const rolesData = ref([])
     const role = ref({})
+    const createUser = ref(false)
 
     const refreshList = (e)=>{
         rolesData.value.push(e)
+        createUser.value = false
     }
     onMounted(()=>{
         rolesData.value = props.roles
