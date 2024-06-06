@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Models\TypeCourrier;
 use App\Http\Requests\StoreTypeCourrierRequest;
 use App\Http\Requests\UpdateTypeCourrierRequest;
@@ -21,7 +22,8 @@ class TypeCourrierController extends Controller
      */
     public function create()
     {
-        //
+        $typeCourriers = TypeCourrier::all();
+        return Inertia::render('TypeCourrier/Index',compact('typeCourriers'));
     }
 
     /**

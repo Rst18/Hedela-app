@@ -1,36 +1,34 @@
 
 
 <template>
-    <Head title="Documents" />
+    <Head title="Type Courrier" />
 
     <SideBarLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Documents</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Type Courrier</h2>
         </template>
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
                 <fwb-tabs v-model="activeTab" variant="underline" class="p-5">
-                    <fwb-tab name="first" title="Creation des documents">
+                    <fwb-tab name="first" title="Type Courrier">
                         <div class="">
                             <div class="">
                                 
-                                <Fwb-button @click="createDocument = !createDocument">
-                                    {{ createDocument ? 'Liste des document':'Nouveau Document' }}
+                                <Fwb-button @click="createTypeCourrier = !createTypeCourrier">
+                                    {{ createTypeCourrier ? 'Liste des service':'Nouveau service' }}
                                 </Fwb-button>
                             </div>
                             <div>
-                                <ListDocuments :documents v-show="!createDocument" />
-                                <Formulaire action="add" @newAdded="refreshList" :document="documenstData" v-if="createDocument"/>
+                                <ListTypeCourriers :typeCourriers="typeCourriersData" v-show="!createTypeCourrier" />
+                                <Formulaire action="add" @newAdded="refreshList" :typeCourrier v-if="createTypeCourrier"/>
                             </div>
 
                         </div>
                     </fwb-tab>
                     <fwb-tab name="second" title="...">
-                       
                     </fwb-tab>
-                   
                 </fwb-tabs>
                 
 
@@ -42,25 +40,25 @@
 <script setup>
 import SideBarLayout from '@/Layouts/SideBarLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import Formulaire from '@/Components/Document/Formulaire.vue'
-import ListDocuments from '@/Components/Document/ListDocuments.vue'
+import Formulaire from '@/Components/TypeCourrier/Formulaire.vue'
+import ListTypeCourriers from '@/Components/TypeCourrier/ListTypeCourriers.vue'
 import {ref,onMounted} from 'vue'
 import { FwbTab, FwbTabs,FwbButton } from 'flowbite-vue'
 
     const activeTab = ref('first')
     const props = defineProps({
-        documents:Object
+        typeCourriers:Object,
     })
-    const documenstData = ref([])
-    const document = ref({})
-    const createDocument = ref(false)
+    const typeCourriersData = ref([])
+    const typeCourrier = ref({})
+    const createTypeCourrier = ref(false)
 
     const refreshList = (e)=>{
-        documenstData.value.push(e)
-        createDocument.value = false
+        typeCourriersData.value.push(e)
+        createTypeCourrier.value = false
     }
     onMounted(()=>{
-        documenstData.value = props.documents
+        typeCourriersData.value = props.typeCourriers
     })
 
 </script>
