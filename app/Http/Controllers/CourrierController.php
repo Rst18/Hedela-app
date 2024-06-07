@@ -18,7 +18,8 @@ class CourrierController extends Controller
     public function index()
     {
         return Courrier::select('courriers.*','services.name as service_name ','type_courriers.name as type_courrier_name')
-        ->with('commentaires')
+        ->with(['commentaires'=>function($q){$q->join('users','users.id','commentaire_courriers.user_id');}])
+        ->with(['users'=>function($qry){}])
         ->join('services','services.id','service_id')
         ->join('type_courriers','type_courriers.id','type_courrier_id')
         ->paginate(20);

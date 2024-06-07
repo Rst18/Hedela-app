@@ -20,6 +20,7 @@
         "vue": "^3.4.0"
     },
     "dependencies": {
+        "@tiptap/vue-3": "^2.4.0",
         "flowbite": "^2.3.0",
         "flowbite-vue": "^0.1.5",
         "moment": "^2.30.1",
