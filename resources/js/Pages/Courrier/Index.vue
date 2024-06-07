@@ -21,28 +21,22 @@
                                 </Fwb-button>
                             </div>
                             <div>
-                                <!-- <ListRoles :roles v-show="!createCourrier" /> -->
                                 <Formulaire
+                                    v-if="createCourrier"
                                     action="add"
                                     @newAdded="refreshList" 
                                     :courrier
                                     :services
                                     :typeCourriers
-                                    v-if="createCourrier
-                                 "/>
+                                    @selectedCourrier="getSelectedCourrier"
+                                 />
+                                 <ListCourriers/>
                             </div>
 
                         </div>
                     </fwb-tab>
-                    <fwb-tab name="second" title="Affectation utilisateurs Group">
-                        <ListUsersWithRoles :roles :users/>
-                    </fwb-tab>
-                    <fwb-tab name="third" title="Third">
-                    Lorem ipsum dolor...
-                    </fwb-tab>
-                    <fwb-tab name="fourth" title="Fourth" disabled>
-                    Lorem ipsum dolor...
-                    </fwb-tab>
+                    <fwb-tab name="second" title="...">
+                    </fwb-tab>  
                 </fwb-tabs>
                 
 
@@ -58,7 +52,7 @@ import Formulaire from '@/Components/Courrier/Formulaire.vue'
 import ListRoles from '@/Components/Role/ListRoles.vue'
 import {ref,onMounted} from 'vue'
 import { FwbTab, FwbTabs,FwbButton } from 'flowbite-vue'
-import ListUsersWithRoles from '@/Components/Role/ListUsersWithRoles.vue';
+import ListCourriers from '@/Components/Courrier/ListCourriers.vue'
 
     const activeTab = ref('first')
     const props = defineProps({
@@ -68,6 +62,13 @@ import ListUsersWithRoles from '@/Components/Role/ListUsersWithRoles.vue';
     const courrierData = ref([])
     const courrier = ref({})
     const createCourrier = ref(false)
+    const currentCourrier = ref()
+
+
+    const getSelectedCourrier = (e)=>{
+        currentCourrier.value = e
+        console.log(e)
+    }
 
     const refreshList = (e)=>{
         courrierData.value.push(e)
