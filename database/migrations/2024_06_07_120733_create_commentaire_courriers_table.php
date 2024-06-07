@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('courrier_user', function (Blueprint $table) {
+        Schema::create('commentaire_courriers', function (Blueprint $table) {
+            $table->id();
             $table->foreignIdFor(Courrier::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
-            $table->primary(['role_ id','user_id']);
+            $table->text('commentaire');
+            $table->integer('commentaireParent')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('courrier_user');
+        Schema::dropIfExists('commentaire_courriers');
     }
 };
