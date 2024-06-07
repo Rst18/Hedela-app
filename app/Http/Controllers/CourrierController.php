@@ -99,4 +99,38 @@ class CourrierController extends Controller
             return ['type'=>'error','message'=>'Suppression reussie','errorMessage'=>$th];
         }
     }
+
+
+    
+    /**
+     * ATTRIBUTION DES COURRIERS AUX UTILISATEURS
+     */
+
+     public function addCourrier(Request $request, User $user){  
+
+        try {
+
+            $user->courriers()->attach($request->courrier);
+
+            return ['type'=>'success','message'=>'Enregistrement reussi'];            
+
+        } catch (\Throwable $th) {
+
+            return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
+        }
+        
+    }
+    public function removeCourrier(Request $request, User $user){  
+
+        try {
+
+            $user->courriers()->detach($request->courrier);
+
+            return ['type'=>'success','message'=>'Enregistrement reussi'];            
+
+        } catch (\Throwable $th) {
+
+            return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
+        }
+    }
 }
