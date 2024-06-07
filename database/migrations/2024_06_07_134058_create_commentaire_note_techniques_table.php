@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Role;
 use App\Models\User;
+use App\Models\NoteTechnique;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('role_user', function (Blueprint $table) {
-            $table->foreignIdFor(Role::class)->constrained()->cascadeOnDelete();
+        Schema::create('commentaire_note_techniques', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(NoteTechnique::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
-            $table->primary(['role_ id','user_id']);
+            $table->text('commentaire');
+            $table->integer('commentaireParent')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('role_user');
+        Schema::dropIfExists('commentaire_note_techniques');
     }
 };

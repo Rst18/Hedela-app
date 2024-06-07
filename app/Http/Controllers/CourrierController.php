@@ -17,7 +17,11 @@ class CourrierController extends Controller
      */
     public function index()
     {
-        return Courrier::select('courriers.*','services.name as service_name ','type_courriers.name as type_courrier_name')->join('services','services.id','service_id')->join('type_courriers','type_courriers.id','type_courrier_id')->paginate(20);
+        return Courrier::select('courriers.*','services.name as service_name ','type_courriers.name as type_courrier_name')
+        ->with('commentaires')
+        ->join('services','services.id','service_id')
+        ->join('type_courriers','type_courriers.id','type_courrier_id')
+        ->paginate(20);
     }
 
     /**
@@ -108,4 +112,36 @@ class CourrierController extends Controller
     }
 
 
+    
+    /**
+     * ATTRIBUTION DES COURRIERS AUX UTILISATEURS
+     */
+
+     public function addCourrier(Request $request, User $user){  
+
+        try {
+
+            $user->courriers()->attach($request->courrier);
+
+            return ['type'=>'success','message'=>'Enregistrement reussi'];            
+
+        } catch (\Throwable $th) {
+
+            return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
+        }
+        
+    }
+    public function removeCourrier(Request $request, User $user){  
+
+        try {
+
+            $user->courriers()->detach($request->courrier);
+
+            return ['type'=>'success','message'=>'Enregistrement reussi'];            
+
+        } catch (\Throwable $th) {
+
+            return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
+        }
+    }
 }
