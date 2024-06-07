@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Models\TypeCourrier;
+use App\Models\CommentaireCourrier;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -44,5 +46,15 @@ class Courrier extends Model
    public function users(): BelongsToMany
    {
        return $this->belongsToMany(User::class);
+   }
+
+   /**
+    * Get all of the commentaires for the Courrier
+    *
+    * @return \Illuminate\Database\Eloquent\Relations\HasMany
+    */
+   public function commentaires(): HasMany
+   {
+       return $this->hasMany(CommentaireCourrier::class);
    }
 }

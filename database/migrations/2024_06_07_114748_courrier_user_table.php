@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('courrier_user', function (Blueprint $table) {
             $table->foreignIdFor(Courrier::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
-            $table->primary(['role_ id','user_id']);
+            $table->primary(['courrier_id','user_id']);
             $table->timestamps();
         });
     }
