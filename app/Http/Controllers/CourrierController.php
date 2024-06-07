@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
+use App\Models\Service;
 use App\Models\Courrier;
+use App\Models\TypeCourrier;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreCourrierRequest;
 use App\Http\Requests\UpdateCourrierRequest;
-use Illuminate\Support\Facades\Storage;
 
 class CourrierController extends Controller
 {
@@ -14,7 +17,7 @@ class CourrierController extends Controller
      */
     public function index()
     {
-        //
+        return Courrier::select('courriers.*','services.name as service_name ','type_courriers.name as type_courrier_name')->join('services','services.id','service_id')->join('type_courriers','type_courriers.id','type_courrier_id')->paginate(20);
     }
 
     /**
@@ -22,7 +25,10 @@ class CourrierController extends Controller
      */
     public function create()
     {
-        //
+        $services = Service::with('documents')->get();
+        $typeCourriers = TypeCourrier::all();
+
+        return Inertia::render('Courrier/Index',compact('services','typeCourriers'));
     }
 
     /**
@@ -32,8 +38,8 @@ class CourrierController extends Controller
     {
         try {
 
-            $fileName = time() . '.' . $request->file->getClientOriginalExtension();
-            $request->file->storeAs('documents/'.$request->number, $fileName); // Store the file
+            $fileName = time() . '.' . $request->letter_file->getClientOriginalExtension();
+            $request->letter_file->storeAs('documents/'.$request->number, $fileName); // Store the file
     
 
            $courrier =  Courrier::create($request->validated());
@@ -47,6 +53,7 @@ class CourrierController extends Controller
 
         } catch (\Throwable $th) {
             //throw $th;
+            return ['type'=>'error','message'=>'Echec d\'enregistrement','errorMessage'=>$th];
         }
     }
 

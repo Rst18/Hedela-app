@@ -37,7 +37,7 @@ class StoreCourrierRequest extends FormRequest
                 'required',
                 'file', // Rule for uploaded file
                 'max:1024', // Maximum file size in kilobytes (adjust as needed)
-                Rule::mimeTypes(['pdf', 'docx', 'doc']), // Allowed MIME types (adjust as needed)
+                //'mimeTypes' => ['pdf', 'docx', 'doc'], // Allowed MIME types (adjust as needed)
             ],
             'user_id'=>'required|exists:users,id'
         ];

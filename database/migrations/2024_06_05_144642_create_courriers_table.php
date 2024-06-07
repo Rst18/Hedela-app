@@ -20,8 +20,9 @@ return new class extends Migration
             $table->string('email', 100);
             $table->string('phone', 100);
             $table->string('objet', 100);
-            $table->string('letter_numer', 100);
+            $table->string('letter_number', 100);
             $table->integer('annexes')->default(0);
+            $table->integer('status')->default(1);
             $table->mediumText('letter_file');
             $table->foreignIdFor(Service::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(TypeCourrier::class)->constrained()->cascadeOnDelete();
