@@ -17,7 +17,7 @@ class CourrierController extends Controller
      */
     public function index()
     {
-        //
+        return Courrier::select('courriers.*','services.name as service_name ','type_courriers.name as type_courrier_name')->join('services','services.id','service_id')->join('type_courriers','type_courriers.id','type_courrier_id')->paginate(20);
     }
 
     /**
@@ -106,4 +106,6 @@ class CourrierController extends Controller
             return ['type'=>'error','message'=>'Suppression reussie','errorMessage'=>$th];
         }
     }
+
+
 }
