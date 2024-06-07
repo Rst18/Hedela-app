@@ -65,9 +65,11 @@
 
         </div>
     </div>
+    <NoteTechniqueForm :courrier/>
 </template>
 <script setup>
     import AjoutCommentaire from '@/Components/Courrier/AjoutCommentaire.vue';
+    import NoteTechniqueForm from '@/Components/NoteTechnique/NoteTechniqueForm.vue';
 import moment from 'moment';
     import {ref,onMounted} from 'vue'
 
