@@ -50,6 +50,7 @@ import moment from 'moment';
 
     const setCourrier = (courrier)=>{
         emit('selectedCourrier',courrier)
+        // console.log(courrier);
     }
 
     const fetchCourrier = (url)=>{

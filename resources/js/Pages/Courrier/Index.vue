@@ -9,7 +9,7 @@
         </template>
 
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" v-show="!detailsCourrier">
 
                 <fwb-tabs v-model="activeTab" variant="underline" class="p-5">
                     <fwb-tab name="first" title="Enregistrement  des courrier">
@@ -28,9 +28,9 @@
                                     :courrier
                                     :services
                                     :typeCourriers
-                                    @selectedCourrier="getSelectedCourrier"
+                                   
                                  />
-                                 <ListCourriers/>
+                                 <ListCourriers  @selectedCourrier="getSelectedCourrier"/>
                             </div>
 
                         </div>
@@ -38,10 +38,16 @@
                     <fwb-tab name="second" title="...">
                     </fwb-tab>  
                 </fwb-tabs>
+               
+               
                 
 
                
             </div>
+            <div v-if="detailsCourrier">
+                    <DetailsCourrier :courrier="currentCourrier" />
+
+                </div>
         </div>
     </SideBarLayout>
 </template>
@@ -53,7 +59,7 @@ import ListRoles from '@/Components/Role/ListRoles.vue'
 import {ref,onMounted} from 'vue'
 import { FwbTab, FwbTabs,FwbButton } from 'flowbite-vue'
 import ListCourriers from '@/Components/Courrier/ListCourriers.vue'
-
+import DetailsCourrier from '@/Components/Courrier/DetailsCourrier.vue'
     const activeTab = ref('first')
     const props = defineProps({
         typeCourriers:Object,
@@ -63,11 +69,12 @@ import ListCourriers from '@/Components/Courrier/ListCourriers.vue'
     const courrier = ref({})
     const createCourrier = ref(false)
     const currentCourrier = ref()
-
+    const detailsCourrier = ref(false)
 
     const getSelectedCourrier = (e)=>{
+        
         currentCourrier.value = e
-        console.log(e)
+      detailsCourrier.value = true
     }
 
     const refreshList = (e)=>{
