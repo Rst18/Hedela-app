@@ -61,11 +61,30 @@
             </div>
 
         
-        <div class="col-span-4 shadow-md p-4">
+        <div class="col-span-4 shadow-md p-4 grid grid-cols-1">
+            <div>
+                <span class="font-semibold text-gray-500">
+                    Utilisateurs ({{ courrier.users.length }})
+                </span>
+                <div>
+
+                </div>
+            </div>
+            <div>
+                <span class="font-semibold text-gray-500">
+                    Notes Techniques ({{ courrier.note_techniques.length }})
+                </span>
+                <div class="py-2">
+                    <div v-for="note in courrier.note_techniques" :key="note.id" class="text-xs hover:cursor-pointer hover:bg-slate-100 p-1">
+                       <span> {{ note.name }}</span>
+                       <span class="ml-2"> {{ moment(note.created_at).format('ll') }}</span>
+                    </div>
+                </div>
+            </div>
 
         </div>
     </div>
-    <NoteTechniqueForm :courrier/>
+    <!-- <NoteTechniqueForm :courrier/> -->
 </template>
 <script setup>
     import AjoutCommentaire from '@/Components/Courrier/AjoutCommentaire.vue';

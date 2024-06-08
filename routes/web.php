@@ -62,5 +62,9 @@ Route::controller(App\Http\Controllers\CommentaireCourrierController::class)->mi
     Route::post('commentaire-courrier/add','store');
     // Route::post('courrier/{courrier}/update','update');
 });
+Route::controller(App\Http\Controllers\NoteTechniqueController::class)->middleware('auth')->group(function(){
+
+    Route::post('note-technique/add','store');
+});
 
 require __DIR__.'/auth.php';
