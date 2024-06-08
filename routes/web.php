@@ -66,5 +66,9 @@ Route::controller(App\Http\Controllers\NoteTechniqueController::class)->middlewa
 
     Route::post('note-technique/add','store');
 });
+Route::controller(App\Http\Controllers\CommentaireNoteTechniqueController::class)->middleware('auth')->group(function(){
+
+    Route::post('commentaire-note-technique/add','store');
+});
 
 require __DIR__.'/auth.php';
