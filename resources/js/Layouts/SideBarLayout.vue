@@ -1,7 +1,7 @@
 <template>
-  <div class="antialiased bg-gray-50 dark:bg-gray-900">
+  <div class="antialiased b dark:bg-gray-900">
  
-    <!-- <NavBar/> -->
+    <NavBar/>
  
    
  
@@ -24,9 +24,7 @@
          </div>
         
        </main>
-     </div>
- 
-    
+     </div>  
    </div>
   
    </div>

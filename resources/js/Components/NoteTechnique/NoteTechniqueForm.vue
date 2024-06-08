@@ -102,23 +102,42 @@
             </div>
         </div>
         <div>
-            <!-- <EditorComponent v-model="form.lettre"/> -->
+           <SelectComponent @selectedOption="getSeletedOption" :options="typeLettre">
+            Choisir le type de lettre
+           </SelectComponent>
+            <div class="text-red-500" v-if="errors.annexes">
+                {{ errors.annexes[0]}}
+            </div>
         </div>
+       
 
         
     </div>
+    <div class="p-4">
+        <EditorComponent v-model="form.lettre"/>
+    </div>
+    <div class="mt-4">
+        <Fwb-button @click="submitForm">
+            Enregistrer
+        </Fwb-button>
+    </div>
+    <SuccesToast message="Note Technique Enregistré" v-if="success"/>
 </template>
 <script setup>
 
 import { FwbInput,FwbButton,FwbRadio,FwbP,FwbTextarea  } from 'flowbite-vue'
 import {ref,onMounted} from 'vue'
-// import EditorComponent from '@/Components/EditorComponent.vue'
+import EditorComponent from '@/Components/EditorComponent.vue'
+import useAxios from '@/ComponentsServices/axios.js';
+import SelectComponent from '../SelectComponent.vue';
+import SuccesToast from '@/Components/SuccesToast.vue'
     const props = defineProps({
 
         courrier:Object
     })
+    const {axios_post_simple} = useAxios()
     const errors = ref([])
-
+    const success = ref(false)
     const form = ref({
         faits:'',
         analyse:'',
@@ -133,4 +152,28 @@ import {ref,onMounted} from 'vue'
         lettre:'',
         courrier_id:props.courrier.id
     })
+
+    const submitForm = ()=>{
+        axios_post_simple('note-technique/add',form.value).then(({data})=>{
+            if (data.type ==='success') {
+                success.value = true
+            }
+        }).catch((error)=>{
+            console.log(error.response);
+        })
+    }
+    const getSeletedOption = (e)=>{
+        form.value.type_lettre = e
+    }
+
+    const typeLettre = [
+        {
+            id:1,
+            name:'Invitation'
+        },
+        {
+            id:2,
+            name:'Convocation'
+        },
+    ]
 </script>

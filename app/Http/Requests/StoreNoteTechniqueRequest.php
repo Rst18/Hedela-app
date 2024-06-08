@@ -23,7 +23,7 @@ class StoreNoteTechniqueRequest extends FormRequest
     public function rules(): array
     {
         return [ 
-            'status'=>'required', 
+            'status'=>'integer', 
             'faits'=>'required',
             'analyse'=>'required',
             'conclusion'=>'required',
