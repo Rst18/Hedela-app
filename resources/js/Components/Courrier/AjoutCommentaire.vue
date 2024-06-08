@@ -30,10 +30,8 @@
             note_technique_id:props.model_id,
             commentaire:''
         })
-
         const save = ()=>{
             axios_post_simple(props.url,form.value).then(({data})=>{
-                console.log(data)
                 emit('new',data.new)
             }).catch((error)=>{
                 console.log(error.response);

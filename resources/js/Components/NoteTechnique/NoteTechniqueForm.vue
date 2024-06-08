@@ -121,6 +121,7 @@
             Enregistrer
         </Fwb-button>
     </div>
+    <SuccesToast message="Note Technique Enregistré" v-if="success"/>
 </template>
 <script setup>
 
@@ -129,13 +130,14 @@ import {ref,onMounted} from 'vue'
 import EditorComponent from '@/Components/EditorComponent.vue'
 import useAxios from '@/ComponentsServices/axios.js';
 import SelectComponent from '../SelectComponent.vue';
+import SuccesToast from '@/Components/SuccesToast.vue'
     const props = defineProps({
 
         courrier:Object
     })
     const {axios_post_simple} = useAxios()
     const errors = ref([])
-
+    const success = ref(false)
     const form = ref({
         faits:'',
         analyse:'',
@@ -152,8 +154,10 @@ import SelectComponent from '../SelectComponent.vue';
     })
 
     const submitForm = ()=>{
-        axios_post_simple('note-technique/add',form.value).then((data)=>{
-            console.log(data);
+        axios_post_simple('note-technique/add',form.value).then(({data})=>{
+            if (data.type ==='success') {
+                success.value = true
+            }
         }).catch((error)=>{
             console.log(error.response);
         })
