@@ -20,6 +20,7 @@ class CourrierController extends Controller
         return Courrier::select('courriers.*','services.name as service_name ','type_courriers.name as type_courrier_name')
         ->with(['commentaires'=>function($q){$q->join('users','users.id','commentaire_courriers.user_id');}])
         ->with(['users'=>function($qry){}])
+        ->with(['annexes'=>function($qry){}])
         ->with(['noteTechniques'=>function($qry){
             $qry->with('commentaires');
             $qry->join('users','users.id','note_techniques.user_id');
@@ -48,10 +49,12 @@ class CourrierController extends Controller
         try {
 
             $fileName = time() . '.' . $request->letter_file->getClientOriginalExtension();
-            $request->letter_file->storeAs('documents/'.$request->number, $fileName); // Store the file
-    
+            $filePath = $request->letter_file->storeAs('documents/'.$request->number, $fileName); // Store the file
+            
+            $data = $request->validated();
+            $data['letter_file'] = $filePath;
 
-           $courrier =  Courrier::create($request->validated());
+           $courrier =  Courrier::create($data);
 
            
            // LANCER UN EVENEMENT 

@@ -70,5 +70,9 @@ Route::controller(App\Http\Controllers\CommentaireNoteTechniqueController::class
 
     Route::post('commentaire-note-technique/add','store');
 });
+Route::controller(App\Http\Controllers\AnnexeCourrierController::class)->middleware('auth')->group(function(){
+
+    Route::post('annexe-courrier/add','store');
+});
 
 require __DIR__.'/auth.php';

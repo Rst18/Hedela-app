@@ -30,7 +30,7 @@
                                     :typeCourriers
                                    
                                  />
-                                 <ListCourriers  @selectedCourrier="getSelectedCourrier"/>
+                                 <ListCourriers v-show="!createCourrier"  @selectedCourrier="getSelectedCourrier"/>
                             </div>
 
                         </div>

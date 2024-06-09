@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\TypeCourrier;
 use App\Models\NoteTechnique;
+use App\Models\AnnexeCourrier;
 use App\Models\CommentaireCourrier;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -67,5 +68,15 @@ class Courrier extends Model
    public function noteTechniques(): HasMany
    {
        return $this->hasMany(NoteTechnique::class);
+   }
+
+   /**
+    * Get all of the annexes for the Courrier
+    *
+    * @return \Illuminate\Database\Eloquent\Relations\HasMany
+    */
+   public function annexes(): HasMany
+   {
+       return $this->hasMany(AnnexeCourrier::class);
    }
 }
