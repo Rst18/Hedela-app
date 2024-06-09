@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Courrier;
 use App\Models\AnnexeCourrier;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreAnnexeCourrierRequest;
 use App\Http\Requests\UpdateAnnexeCourrierRequest;
 
@@ -34,16 +36,18 @@ class AnnexeCourrierController extends Controller
             $data = $request->validated();
 
 
-            $fileName = time() . '.' . $request->annexe_file->getClientOriginalExtension();
+            $fileName = time() . '.' . $request->path->getClientOriginalExtension();
             $courrier = Courrier::find($request->courrier_id)->number;
-            $filePath = $request->letter_file->storeAs('documents/'.$courrier.'/Annexes/', $fileName);
+            $filePath = $request->path->storeAs('documents/'.$courrier.'/Annexes/', $fileName);
 
             $data['path'] =  $filePath;
             AnnexeCourrier::create($data);
-            
+
             return ['type'=>'success','message'=>'Enrgistrement reussi'];
         } catch (\Throwable $th) {
             //throw $th;
+            
+            return ['type'=>'error','message'=>'Echec d\'Enrgistrement','errorMessage'=>$th];
         }
     }
 

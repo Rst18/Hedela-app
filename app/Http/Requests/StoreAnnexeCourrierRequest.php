@@ -23,8 +23,7 @@ class StoreAnnexeCourrierRequest extends FormRequest
     {
         return [
             'name'=>'required',
-            'path'=>'required',
-            'annexe_file' => [
+            'path' => [
                 'required',
                 'file', // Rule for uploaded file
                 'max:5024', // Maximum file size in kilobytes (adjust as needed)
