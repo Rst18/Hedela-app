@@ -48,10 +48,12 @@ class CourrierController extends Controller
         try {
 
             $fileName = time() . '.' . $request->letter_file->getClientOriginalExtension();
-            $request->letter_file->storeAs('documents/'.$request->number, $fileName); // Store the file
-    
+            $filePath = $request->letter_file->storeAs('documents/'.$request->number, $fileName); // Store the file
+            
+            $data = $request->validated();
+            $data['letter_file'] = $filePath;
 
-           $courrier =  Courrier::create($request->validated());
+           $courrier =  Courrier::create($data);
 
            
            // LANCER UN EVENEMENT 
