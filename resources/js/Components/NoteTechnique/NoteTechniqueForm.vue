@@ -51,7 +51,7 @@
                 v-model="form.objet"
                 placeholder="objet"
                 :rows="2"
-                label="objet"
+                label="Objet"
             />
             <div class="text-red-500" v-if="errors.objet">
                 {{ errors.objet[0]}}
@@ -62,7 +62,7 @@
                 v-model="form.destinataire"
                 placeholder="destinataire"
                 :rows="2"
-                label="destinataire"
+                label="Destinataire"
             />
             <div class="text-red-500" v-if="errors.destinataire">
                 {{ errors.destinataire[0]}}
@@ -73,7 +73,7 @@
                 v-model="form.signataire"
                 placeholder="signataire"
                 :rows="2"
-                label="signataire"
+                label="Signataire"
             />
             <div class="text-red-500" v-if="errors.signataire">
                 {{ errors.signataire[0]}}
@@ -82,9 +82,9 @@
         <div>
             <fwb-input
                 v-model="form.copiea"
-                placeholder="copiea"
+                placeholder="Copie à "
                 :rows="2"
-                label="copiea"
+                label="Copie à"
             />
             <div class="text-red-500" v-if="errors.copiea">
                 {{ errors.copiea[0]}}
@@ -95,7 +95,7 @@
                 v-model="form.annexes"
                 placeholder="annexes"
                 :rows="2"
-                label="annexes"
+                label="Annexes"
             />
             <div class="text-red-500" v-if="errors.annexes">
                 {{ errors.annexes[0]}}

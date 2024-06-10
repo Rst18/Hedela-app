@@ -8,46 +8,35 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Courriers</h2>
         </template>
 
-        <div class="py-12">
+        <div class="py-2">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" v-show="!detailsCourrier">
 
-                <fwb-tabs v-model="activeTab" variant="underline" class="p-5">
-                    <fwb-tab name="first" title="Enregistrement  des courrier">
-                        <div class="">
-                            <div class="">
-                                
-                                <Fwb-button @click="createCourrier = !createCourrier">
-                                    {{ createCourrier ? 'Liste des courriers':'Nouveau Courrier' }}
-                                </Fwb-button>
-                            </div>
-                            <div>
-                                <Formulaire
-                                    v-if="createCourrier"
-                                    action="add"
-                                    @newAdded="refreshList" 
-                                    :courrier
-                                    :services
-                                    :typeCourriers
-                                   
-                                 />
-                                 <ListCourriers v-show="!createCourrier"  @selectedCourrier="getSelectedCourrier"/>
-                            </div>
+                <div class="">
+                    <div class="">
+                        
+                        <Fwb-button @click="createCourrier = !createCourrier">
+                            {{ createCourrier ? 'Liste des courriers':'Nouveau Courrier' }}
+                        </Fwb-button>
+                    </div>
+                    <div>
+                        <Formulaire
+                            v-if="createCourrier"
+                            action="add"
+                            @newAdded="refreshList" 
+                            :courrier
+                            :services
+                            :typeCourriers
+                            
+                            />
+                            <ListCourriers v-show="!createCourrier"  @selectedCourrier="getSelectedCourrier"/>
+                    </div>
 
-                        </div>
-                    </fwb-tab>
-                    <fwb-tab name="second" title="...">
-                    </fwb-tab>  
-                </fwb-tabs>
-               
-               
-                
-
+                </div>
                
             </div>
             <div v-if="detailsCourrier">
-                    <DetailsCourrier :courrier="currentCourrier" />
-
-                </div>
+                <DetailsCourrier @closeMe="detailsCourrier = false" :courrier="currentCourrier" />
+            </div>
         </div>
     </SideBarLayout>
 </template>

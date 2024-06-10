@@ -58,11 +58,10 @@ Route::controller(App\Http\Controllers\CourrierController::class)->middleware('a
     Route::get('courrier/list','index')->name('courrier.lists');
     Route::post('courrier/add','store');
     Route::post('courrier/{courrier}/update','update');
-    Route::get('courrier/user','mes_courrier');
-    Route::get('courrier-user','mes_courrier_page');
-
     Route::post('courrier/set-courrier-user/{user}','addCourrier');
     Route::post('courrier/remove-courrier-user/{user}','removeCourrier');
+    Route::get('courrier/user','mes_courrier');
+    Route::get('courrier-user','mes_courrier_page')->name('mesCourriers');
 });
 Route::controller(App\Http\Controllers\CommentaireCourrierController::class)->middleware('auth')->group(function(){
     Route::post('commentaire-courrier/add','store');

@@ -1,5 +1,10 @@
 <template>
     <div class="p-4">
+        <div class="grid grid-cols-12 py-2 px-6">
+            <button @click="close" class="border w-fit  col-span-2 px-2 bg-slate-100 text-xs text-slate-800 rounded-full ">Details Courrier</button>
+            <button v-if="currentNote.status == 1"  class="border w-fit p-1 px-2 col-span-4 bg-slate-100 text-xs text-slate-800 rounded-full ">Modifier la Note Technique</button>
+            <button @click="validerNote"  class="border w-fit p-1 px-2 col-span-4 bg-slate-100 text-xs text-slate-800 rounded-full flex ">Valider la note Technique <Check class="h-4 w-4 ml-1 text-green-700"/> </button>
+        </div>
         <div class="grid grid-cols-2 gap-4">
             <div class="grid grid-cols-1">
                 <span class="font-bold bg-gray-100 text-gray-800 px-2">
@@ -59,7 +64,7 @@
             </div>
             <div>
                 <span class="font-bold bg-gray-100 text-gray-800 px-2">
-                    copiea:
+                    Copie à :
                 </span>
                 <p class="text-sm px-4 py-2">
                     {{ currentNote.copiea }}
@@ -67,7 +72,7 @@
             </div>
             <div>
                 <span class="font-bold bg-gray-100 text-gray-800 px-2">
-                    type Lettre :
+                    Type Lettre :
                 </span>
                 <p class="text-sm px-4 py-2">
                     {{ currentNote.type_lettre }}
@@ -82,14 +87,14 @@
                 </p>
             </div>
             </div>
-                <div class="">
-                    <span class="font-bold bg-gray-100 text-gray-800 px-2">
-                        Lettre :
-                    </span>
-                    <div v-html="currentNote.lettre" class="p-4">
-                    
-                    </div>
+            <div class="">
+                <span class="font-bold bg-gray-100 text-gray-800 px-2">
+                    Lettre :
+                </span>
+                <div v-html="currentNote.lettre" class="p-4">
+                
                 </div>
+            </div>
         <div class="p-4 border-t">
             <span class="text-lg font-bold py-2" >Discussions ( {{ currentNote.commentaires ? currentNote.commentaires.length : 0  }} )</span>
             <div class="mt-4">
@@ -122,18 +127,36 @@
     import {ref,onMounted} from 'vue'
     import AjoutCommentaire from '@/Components/Courrier/AjoutCommentaire.vue';
     import moment from 'moment'
+    import Check from '@/Components/Check.vue'
+    import useAxios from '@/ComponentsServices/axios.js'
+
         const profil = ref('https://ui-avatars.com/api/?name=')
         const props = defineProps({
             note:Object
         })
-        
+        const emit = defineEmits(['closeMe'])
+
+        const {axios_post_simple} = useAxios()
+
         const currentNote = ref({})
         const setNewComment = (e)=>{
             currentNote.value.commentaires.push(e)
         }
+        const close = ()=>emit('closeMe')
+
+        const validerNote = ()=>{
+            axios_post_simple('note-technique/valider/'+props.note.id).then(({data})=>{
+                if (data.type ==='success') {
+                    emit('closeMe')
+                }
+            })
+        }
+
+
         onMounted(() => {
             currentNote.value = props.note
         });
+
 
    
 </script>
