@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Courrier;
 use App\Models\Document;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -43,5 +44,15 @@ class Service extends Model
     public function documents(): BelongsToMany
     {
         return $this->belongsToMany(Document::class);
+    }
+
+    /**
+     * The courriers that belong to the Service
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function courriers(): BelongsToMany
+    {
+        return $this->belongsToMany(Courrier::class, 'role_user_table', 'user_id', 'role_id');
     }
 }

@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function () {
 
 Route::controller(App\Http\Controllers\RoleController::class)->middleware('auth')->group(function(){
     Route::get('role','create')->name('role');
+    Route::get('role-with-users','index')->name('list_role');
     Route::post('role/add','store');
     Route::post('role/{role}/update','update');
     Route::post('role/set-role-user/{user}','addRoles');
@@ -51,12 +52,17 @@ Route::controller(App\Http\Controllers\TypeCourrierController::class)->middlewar
     Route::post('typecourrier/{typecourrier}/update','update');
 });
 Route::controller(App\Http\Controllers\CourrierController::class)->middleware('auth')->group(function(){
+    Route::get('download/{id}','downloadFile');
     Route::get('courrier','create')->name('courrier');
+    Route::get('courrier-dispatch','dispatch');
     Route::get('courrier/list','index')->name('courrier.lists');
     Route::post('courrier/add','store');
     Route::post('courrier/{courrier}/update','update');
     Route::get('courrier/user','mes_courrier');
     Route::get('courrier-user','mes_courrier_page');
+
+    Route::post('courrier/set-courrier-user/{user}','addCourrier');
+    Route::post('courrier/remove-courrier-user/{user}','removeCourrier');
 });
 Route::controller(App\Http\Controllers\CommentaireCourrierController::class)->middleware('auth')->group(function(){
     Route::post('commentaire-courrier/add','store');
@@ -72,6 +78,11 @@ Route::controller(App\Http\Controllers\CommentaireNoteTechniqueController::class
 Route::controller(App\Http\Controllers\AnnexeCourrierController::class)->middleware('auth')->group(function(){
 
     Route::post('annexe-courrier/add','store');
+});
+Route::get('/linkstorage', function () {
+	$targetFolder = base_path().'/storage/app/public';
+    $linkFolder = $_SERVER['DOCUMENT_ROOT'].'/storage';
+    symlink($targetFolder, $linkFolder); 
 });
 
 require __DIR__.'/auth.php';

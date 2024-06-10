@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Service;
 use App\Models\Courrier;
 use App\Models\TypeCourrier;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreCourrierRequest;
 use App\Http\Requests\UpdateCourrierRequest;
@@ -22,6 +24,10 @@ class CourrierController extends Controller
         ->with(['commentaires'=>function($q){$q->join('users','users.id','commentaire_courriers.user_id');}])
         ->with(['users'=>function($qry){}])
         ->with(['annexes'=>function($qry){}])
+        ->with(['services'=>function($qry){
+           
+        }])
+
         ->with(['noteTechniques'=>function($qry){
             $qry->with('commentaires');
             $qry->join('users','users.id','note_techniques.user_id');
@@ -57,7 +63,7 @@ class CourrierController extends Controller
 
            $courrier =  Courrier::create($data);
 
-           
+           $courrier->services()->attach($request->service_id);
            // LANCER UN EVENEMENT 
 
 
@@ -153,7 +159,6 @@ class CourrierController extends Controller
             return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
         }
     }
-
     public function mes_courrier (){
         
         return Auth::user()->with(['courriers'=>function($q){
@@ -171,4 +176,21 @@ class CourrierController extends Controller
     public function mes_courrier_page(){
         return Inertia::render('Courrier/MesCourriers');
     }
+    public function downloadFile($id){
+        try {
+            
+            
+            // telechargement de la ressourece
+            return Storage::download(str_replace('++','/',$id));
+
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            
+            return "Une erreur est survennue lors du téléchargement, veillez réessayer plus tard";
+        }
+    }
+
+    
+
 }
