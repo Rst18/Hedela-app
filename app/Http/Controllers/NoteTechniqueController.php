@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Courrier;
 use App\Models\NoteTechnique;
 use App\Http\Requests\StoreNoteTechniqueRequest;
 use App\Http\Requests\UpdateNoteTechniqueRequest;
@@ -34,7 +35,7 @@ class NoteTechniqueController extends Controller
             $note = NoteTechnique::create($request->validated());
 
             // modification du status du courrier
-
+            Courrier::find($request->courrier_id)->update(['status'=>3]);
 
 
             return ['type'=>'success','message'=>'Enregistrement reussi','new'=>$note];
@@ -96,7 +97,25 @@ class NoteTechniqueController extends Controller
         }
     }
 
-    public function getValidatedNotes(){
+    public function valider (NoteTechnique $noteTechnique){
+        try {
+
+            $noteTechnique->update(['status'=>2]);
+
+             // modification du status du courrier
+             Courrier::find($noteTechnique->courrier_id)->update(['status'=>3]);
+            
+            return ['type'=>'success','message'=>'Suppression reussie'];
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            
+            return ['type'=>'error','message'=>'Echec de suppression','errorMessage'=>$th];
+        }
+    }
+
+    public function noteTechniqueForSecretaria (){
+        
         return NoteTechnique::where('status',3)->get();
     }
 }

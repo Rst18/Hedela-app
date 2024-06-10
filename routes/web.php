@@ -62,6 +62,7 @@ Route::controller(App\Http\Controllers\CourrierController::class)->middleware('a
     Route::post('courrier/remove-courrier-user/{user}','removeCourrier');
     Route::get('courrier/user','mes_courrier');
     Route::get('courrier-user','mes_courrier_page')->name('mesCourriers');
+    Route::post('courrier/cloture/{courrier}','clotureCourrier');
 });
 Route::controller(App\Http\Controllers\CommentaireCourrierController::class)->middleware('auth')->group(function(){
     Route::post('commentaire-courrier/add','store');
@@ -69,7 +70,11 @@ Route::controller(App\Http\Controllers\CommentaireCourrierController::class)->mi
 Route::controller(App\Http\Controllers\NoteTechniqueController::class)->middleware('auth')->group(function(){
 
     Route::post('note-technique/add','store');
+<<<<<<< HEAD
     Route::post('note-technique/validated','getValidatedNotes');
+=======
+    Route::post('note-technique/valider/{noteTechnique}','valider');
+>>>>>>> 248c97af2f9e1cd91200c0e095616a2ad5ea3b27
 });
 Route::controller(App\Http\Controllers\CommentaireNoteTechniqueController::class)->middleware('auth')->group(function(){
 
