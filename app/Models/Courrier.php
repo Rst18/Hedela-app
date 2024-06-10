@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Service;
 use App\Models\TypeCourrier;
 use App\Models\NoteTechnique;
 use App\Models\AnnexeCourrier;
@@ -78,5 +79,15 @@ class Courrier extends Model
    public function annexes(): HasMany
    {
        return $this->hasMany(AnnexeCourrier::class);
+   }
+
+   /**
+    * The services that belong to the Courrier
+    *
+    * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    */
+   public function services(): BelongsToMany
+   {
+       return $this->belongsToMany(Service::class);
    }
 }

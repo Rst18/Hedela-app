@@ -16,7 +16,9 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return Role::all();
+        return Role::with(['users' => function($q){
+            $q->with('courriers');
+        }])->get();
     }
 
     /**
