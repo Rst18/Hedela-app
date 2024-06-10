@@ -9,18 +9,13 @@
        </div>
        <div v-if="courrierData">
            <div v-for="(courrier,index) in courrierData" :key="courrier.id" @click="setCourrier(courrier)" class="w-full p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer">
-               <div class="col-span-1">{{ index + 1 }}</div>
+               <div class="col-span-1">{{ index+1 }}</div>
                <div class="col-span-2">{{courrier.type_courrier_name}}</div>
                <div class="col-span-2">{{courrier.sender}}</div>
                <div class="col-span-3">{{courrier.objet}}</div>
                <div class="col-span-2">{{ moment(courrier.created_at).format('ll') }}</div>
            </div>
 
-           <div class="flex flex-row w-full px-4 md:w-9/12 justify-center items-center mx-auto">
-             <div v-for="link in links">
-                <button class="text-grey-darker text-xs md:text-sm px-1  md:px-2 py-1 m-1 border" @click="fetchCourrier(link.url)" v-html="link.label"></button>
-            </div>
-        </div>
        </div>
        <div v-else class="w-full mt-5 p-4 grid place-items-center text-gray-600">
           <span>
@@ -53,16 +48,16 @@ import moment from 'moment';
     }
 
     const fetchCourrier = (url)=>{
-        axios_get(url).then(({data:pagination})=>{
-           courrierData.value = pagination.data           
-            links.value = pagination.links
+        axios_get(url).then(({data})=>{
+           courrierData.value = data.courriers  
+
         }).catch((error)=>{
            // console.log(error.response)
         })
     }
 
     onMounted(() => {
-        fetchCourrier('courrier/list')
+        fetchCourrier('courrier/user')
     })
 
 </script>

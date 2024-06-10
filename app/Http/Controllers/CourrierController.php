@@ -63,7 +63,7 @@ class CourrierController extends Controller
 
            $courrier =  Courrier::create($data);
 
-           $courrier->services()->attach($request->service_id);
+          // $courrier->services()->attach($request->service_id);
            // LANCER UN EVENEMENT 
 
 
@@ -138,6 +138,15 @@ class CourrierController extends Controller
 
             $user->courriers()->attach($request->courrier);
 
+            // change the status of courrier
+            $c = Courrier::find($request->courrier);
+
+            if ($c->status < 2) {
+                
+                $c->status = 2;
+                $c->save();
+            }
+
             return ['type'=>'success','message'=>'Enregistrement reussi'];            
 
         } catch (\Throwable $th) {
@@ -168,9 +177,11 @@ class CourrierController extends Controller
             ->with(['annexes'=>function($qry){}])
             ->with(['noteTechniques'=>function($qry){
                 $qry->with('commentaires');
-             //   $qry->join('users','users.id','note_techniques.user_id');
-                //$qry->where('user_id',Auth::user()->id);
-            }]);
+            }])
+            
+        ->join('services','services.id','service_id')
+        ->join('type_courriers','type_courriers.id','type_courrier_id');
+         $q->select('courriers.*','services.name as service_name ','type_courriers.name as type_courrier_name');
         }])->first();
     }
     public function mes_courrier_page(){
