@@ -4,7 +4,7 @@
         <div class="grid grid-cols-12 px-6 gap-2" v-show="!showNoteTechnique">
             
                 <div class="col-span-8 shadow-md">
-                    <div class="  grid grid-cols-2 gap-2 p-4">
+                    <div class="grid grid-cols-2 gap-2 p-4">
     
                         <div>
                             <span>Numero :</span>
@@ -33,6 +33,16 @@
                         <div>
                             <span>Numero de la lettre :</span>
                             <span> {{ courrierData.letter_number }}</span>
+                        </div>
+                        <div>
+                            <div class="grid grid-cols-1">
+                                <span>Lettre </span>
+                                <a :href="'download/'+ courrierData.letter_file.replaceAll('/','++')" target="_blank" class="font-bold text-sm text-blue-300">Imprimer la lettre</a>
+                            </div>
+                            <div class="grid grid-cols-1">
+                                <span>Annexes ({{ courrierData.annexes.length }})</span>
+                                <a v-for="annexe in courrierData.annexes" :href="'download/'+ annexe.path.replaceAll('/','++')" target="_blank" class="font-bold text-sm text-blue-700"> {{ annexe.name }}</a>
+                            </div>
                         </div>
                     </div>
                     <div class="p-4 border-t">
