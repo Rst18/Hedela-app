@@ -70,7 +70,11 @@ Route::controller(App\Http\Controllers\CommentaireCourrierController::class)->mi
 Route::controller(App\Http\Controllers\NoteTechniqueController::class)->middleware('auth')->group(function(){
 
     Route::post('note-technique/add','store');
+<<<<<<< HEAD
+    Route::post('note-technique/validated','getValidatedNotes');
+=======
     Route::post('note-technique/valider/{noteTechnique}','valider');
+>>>>>>> 248c97af2f9e1cd91200c0e095616a2ad5ea3b27
 });
 Route::controller(App\Http\Controllers\CommentaireNoteTechniqueController::class)->middleware('auth')->group(function(){
 
