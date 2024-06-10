@@ -51,6 +51,7 @@ Route::controller(App\Http\Controllers\TypeCourrierController::class)->middlewar
     Route::post('typecourrier/{typecourrier}/update','update');
 });
 Route::controller(App\Http\Controllers\CourrierController::class)->middleware('auth')->group(function(){
+    Route::get('download/{id}','downloadFile');
     Route::get('courrier','create')->name('courrier');
     Route::get('courrier/list','index')->name('courrier.lists');
     Route::post('courrier/add','store');
@@ -73,6 +74,11 @@ Route::controller(App\Http\Controllers\CommentaireNoteTechniqueController::class
 Route::controller(App\Http\Controllers\AnnexeCourrierController::class)->middleware('auth')->group(function(){
 
     Route::post('annexe-courrier/add','store');
+});
+Route::get('/linkstorage', function () {
+	$targetFolder = base_path().'/storage/app/public';
+    $linkFolder = $_SERVER['DOCUMENT_ROOT'].'/storage';
+    symlink($targetFolder, $linkFolder); 
 });
 
 require __DIR__.'/auth.php';

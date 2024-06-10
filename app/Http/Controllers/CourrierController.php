@@ -152,4 +152,19 @@ class CourrierController extends Controller
             return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
         }
     }
+
+    public function downloadFile($id){
+          try {
+             
+              
+              // telechargement de la ressourece
+              return Storage::download(str_replace('++','/',$id));
+  
+  
+          } catch (\Throwable $th) {
+              //throw $th;
+             
+              return "Une erreur est survennue lors du téléchargement, veillez réessayer plus tard";
+          }
+      }
 }

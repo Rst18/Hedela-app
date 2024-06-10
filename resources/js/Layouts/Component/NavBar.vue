@@ -42,10 +42,10 @@
                     href="#"
                     class="flex items-center justify-between mr-4"
                 >
-                    <!-- <span
+                    <span
                         class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"
-                        >Opt-Academia | Comptabilité</span
-                    > -->
+                        >Hedela-app </span
+                    >
                 </a>
                 <!-- <form action="#" method="GET" class="hidden md:block md:pl-2">
                     <label for="topbar-search" class="sr-only">Search</label>
