@@ -1,7 +1,7 @@
 <template>
     <div class="relative">
 
-        <div class="grid grid-cols-12 px-6 gap-2" v-show="!showNoteTechnique">
+        <div class="grid grid-cols-12 px-6 gap-2" v-show="showComponent == 1">
             
                 <div class="col-span-8">
                     <div class="grid grid-cols-2 gap-2 p-4 mb-2 shadow-md">
@@ -80,8 +80,9 @@
                     <span class="font-semibold text-gray-500">
                         Utilisateurs ({{ courrier.users.length }})
                     </span>
-                    <div>
-    
+                    <span @click="showComponent = 3" class="underline font-semibold py-2 text-green-400 bg-green-50 rounded-full px-2 text-xs cursor-pointer hover:bg-green-200">Ajouter des utilisateurs</span>
+                    <div v-for="user in courrier.users" :key="user.id" class="text-sm mt-2">
+                        <span >{{ user.name }}</span>
                     </div>
                 </div>
                 <div>
@@ -99,7 +100,8 @@
             </div>
         </div>
         <!-- <NoteTechniqueForm :courrier/> -->
-         <DetailsNoteTechnique :note="currentNote" v-if="showNoteTechnique"/>
+         <DetailsNoteTechnique :note="currentNote" v-if="showComponent == 2 "/>
+         <DispatchCourrier :courrier v-if="showComponent == 3"/>
     </div>
 </template>
 <script setup>
@@ -107,6 +109,7 @@
     import NoteTechniqueForm from '@/Components/NoteTechnique/NoteTechniqueForm.vue';
     import DetailsNoteTechnique from '@/Components/NoteTechnique/DetailsNoteTechnique.vue';
     import moment from 'moment';
+    import DispatchCourrier from '@/Components/Courrier/DispatchCourrier.vue'
     import {ref,onMounted} from 'vue'
 
     const props = defineProps({
@@ -117,6 +120,8 @@
     const courrierData = ref(props.courrier)
     const currentNote = ref({})
     const showNoteTechnique = ref(false)
+    const showComponent = ref(1)
+    const showDispatch = ref(false)
     const setNewComment = (e)=>{
         courrierData.commentaires.push(e)
     }
