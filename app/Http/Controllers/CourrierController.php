@@ -152,4 +152,11 @@ class CourrierController extends Controller
             return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
         }
     }
+
+    public function dispatch(){
+
+        $roles = Role::with('users')->get();
+
+        return Inertia::render('Courrier/Dispatch',compact('roles'));
+    }
 }
