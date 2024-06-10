@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use App\Models\Service;
 use App\Models\Courrier;
 use App\Models\TypeCourrier;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreCourrierRequest;
 use App\Http\Requests\UpdateCourrierRequest;
@@ -153,10 +154,21 @@ class CourrierController extends Controller
         }
     }
 
-    public function dispatch(){
-
-        $roles = Role::with('users')->get();
-
-        return Inertia::render('Courrier/Dispatch',compact('roles'));
+    public function mes_courrier (){
+        
+        return Auth::user()->with(['courriers'=>function($q){
+            $q->with('annexes')
+            ->with(['commentaires'=>function($q){$q->join('users','users.id','commentaire_courriers.user_id');}])
+            ->with(['users'=>function($qry){}])
+            ->with(['annexes'=>function($qry){}])
+            ->with(['noteTechniques'=>function($qry){
+                $qry->with('commentaires');
+             //   $qry->join('users','users.id','note_techniques.user_id');
+                //$qry->where('user_id',Auth::user()->id);
+            }]);
+        }])->first();
+    }
+    public function mes_courrier_page(){
+        return Inertia::render('Courrier/MesCourriers');
     }
 }

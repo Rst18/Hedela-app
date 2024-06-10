@@ -55,12 +55,11 @@ Route::controller(App\Http\Controllers\CourrierController::class)->middleware('a
     Route::get('courrier/list','index')->name('courrier.lists');
     Route::post('courrier/add','store');
     Route::post('courrier/{courrier}/update','update');
+    Route::get('courrier/user','mes_courrier');
+    Route::get('courrier-user','mes_courrier_page');
 });
 Route::controller(App\Http\Controllers\CommentaireCourrierController::class)->middleware('auth')->group(function(){
-    // Route::get('courrier','create')->name('courrier');
-    // Route::get('courrier/list','index')->name('courrier.lists');
     Route::post('commentaire-courrier/add','store');
-    // Route::post('courrier/{courrier}/update','update');
 });
 Route::controller(App\Http\Controllers\NoteTechniqueController::class)->middleware('auth')->group(function(){
 
