@@ -47,6 +47,7 @@
         const props = defineProps({
             courrier:Object
         })
+        const emit = defineEmits(['userAdded','userRemoved'])
         const {axios_get,axios_post_simple} = useAxios();
         const roles = ref()
         const currentRole = ref()
@@ -77,12 +78,13 @@
         }
         const setCourrierToUser = (user, courrier) =>{
             axios_post_simple('courrier/set-courrier-user/'+user, {user,courrier}).then(()=>{
+                emit('userAdded',user)
             })
         }
         const removeCourrierToUser = (user, courrier) =>{
-
+          
             axios_post_simple('courrier/remove-courrier-user/'+user, {user,courrier}).then(()=>{
-                
+                emit('userRemoved',user)
             })
         }
 

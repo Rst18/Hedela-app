@@ -95,4 +95,8 @@ class NoteTechniqueController extends Controller
             return ['type'=>'error','message'=>'Echec de suppression','errorMessage'=>$th];
         }
     }
+
+    public function getValidatedNotes(){
+        return NoteTechnique::where('status',3)->get();
+    }
 }

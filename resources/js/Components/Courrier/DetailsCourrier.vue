@@ -83,10 +83,10 @@
             <div class="col-span-4 shadow-md  p-4 grid grid-cols-1">
                 <div>
                     <span class="font-semibold text-gray-500">
-                        Utilisateurs ({{ courrier.users.length }})
+                        Utilisateurs ({{ courrierData.users.length }})
                     </span>
                     <span @click="showComponent = 3" class="underline font-semibold py-2 text-green-400 bg-green-50 rounded-full px-2 text-xs cursor-pointer hover:bg-green-200">Ajouter des utilisateurs</span>
-                    <div v-for="user in courrier.users" :key="user.id" class="text-sm mt-2">
+                    <div v-for="user in courrierData.users" :key="user.id" class="text-sm mt-2">
                         <span >{{ user.name }}</span>
                     </div>
                 </div>
@@ -106,7 +106,7 @@
         </div>
         <NoteTechniqueForm :courrier v-if="showComponent == 4"/>
          <DetailsNoteTechnique @closeMe="showComponent = 1" :note="currentNote" v-if="showComponent == 2 "/>
-         <DispatchCourrier :courrier v-if="showComponent == 3"/>
+         <DispatchCourrier @userAdded="addUser" @userRemoved="removeUser" :courrier v-if="showComponent == 3"/>
     </div>
 </template>
 <script setup>
@@ -121,7 +121,6 @@
         courrier:Object
     })
     const emit = defineEmits(['closeMe'])
-    
     const profil = ref('https://ui-avatars.com/api/?name=')
     const courrierData = ref(props.courrier)
     const currentNote = ref({})
@@ -132,6 +131,15 @@
     const getCurrentNote = (note)=>{
         currentNote.value = note
         showComponent.value = 2
+    }
+    const addUser = (e)=>{
+        // console.log(e);
+        // return
+        // courrierData.users.push(e)
+    }
+    const removeUser = (e)=>{
+        
+        courrierData.value.users =  courrierData.value.users.filter((u)=>u.id != e)
     }
     const close = ()=> emit('closeMe')
     
