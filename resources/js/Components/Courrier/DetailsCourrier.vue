@@ -3,49 +3,51 @@
 
         <div class="grid grid-cols-12 px-6 gap-2" v-show="!showNoteTechnique">
             
-                <div class="col-span-8 shadow-md">
-                    <div class="grid grid-cols-2 gap-2 p-4">
-    
+                <div class="col-span-8">
+                    <div class="grid grid-cols-2 gap-2 p-4 mb-2 shadow-md">
+                        <div class="col-span-2 text-xl font-bold text-slate-700">
+                            Details courrier
+                        </div>
                         <div>
-                            <span>Numero :</span>
+                            <span class="px-2 font-semibold text-slate-500">Numero :</span>
                             <span> {{ courrierData.number }}</span>
                         </div>
                         <div>
-                            <span>Expeditaire :</span>
+                            <span class="px-2 font-semibold text-slate-500">Expeditaire :</span>
                             <span> {{ courrierData.sender }}</span>
                         </div>
                         <div>
-                            <span>Email :</span>
+                            <span class="px-2 font-semibold text-slate-500">Email :</span>
                             <span> {{ courrierData.email }}</span>
                         </div>
                         <div>
-                            <span>Phone :</span>
+                            <span class="px-2 font-semibold text-slate-500">Phone :</span>
                             <span> {{ courrierData.phone }}</span>
                         </div>
                         <div>
-                            <span>Type Courrier :</span>
+                            <span class="px-2 font-semibold text-slate-500">Type Courrier :</span>
                             <span> {{ courrierData.type_courrier_name }}</span>
                         </div>
                         <div>
-                            <span>Objet :</span>
+                            <span class="px-2 font-semibold text-slate-500">Objet :</span>
                             <span> {{ courrierData.objet }}</span>
                         </div>
                         <div>
-                            <span>Numero de la lettre :</span>
+                            <span class="px-2 font-semibold text-slate-500">Numero de la lettre :</span>
                             <span> {{ courrierData.letter_number }}</span>
                         </div>
-                        <div>
+                        <div class="shadow p-2">
                             <div class="grid grid-cols-1">
-                                <span>Lettre </span>
-                                <a :href="'download/'+ courrierData.letter_file.replaceAll('/','++')" target="_blank" class="font-bold text-sm text-blue-300">Imprimer la lettre</a>
+                                <span class="px-2 font-semibold text-slate-500">Lettre </span>
+                                <a :href="'download/'+ courrierData.letter_file.replaceAll('/','++')" target="_blank" class="font-bold text-sm text-blue-300 ml-4">Imprimer la lettre</a>
                             </div>
                             <div class="grid grid-cols-1">
-                                <span>Annexes ({{ courrierData.annexes.length }})</span>
-                                <a v-for="annexe in courrierData.annexes" :href="'download/'+ annexe.path.replaceAll('/','++')" target="_blank" class="font-bold text-sm text-blue-700"> {{ annexe.name }}</a>
+                                <span class="px-2 font-semibold text-slate-500">Annexes ({{ courrierData.annexes.length }})</span>
+                                <a v-for="annexe in courrierData.annexes" :href="'download/'+ annexe.path.replaceAll('/','++')" target="_blank" class="font-bold text-sm text-blue-700 ml-4"> {{ annexe.name }}</a>
                             </div>
                         </div>
                     </div>
-                    <div class="p-4 border-t">
+                    <div class="p-4 shadow-sm border ">
                         <span class="text-lg font-bold py-2" >Discussions ( {{ courrierData.commentaires ? courrierData.commentaires.length : 0  }} )</span>
                         <div class="mt-4">
                             <div class="px-4">
@@ -73,7 +75,7 @@
                 </div>
     
             
-            <div class="col-span-4 shadow-md p-4 grid grid-cols-1">
+            <div class="col-span-4 shadow-md  p-4 grid grid-cols-1">
                 <div>
                     <span class="font-semibold text-gray-500">
                         Utilisateurs ({{ courrier.users.length }})
