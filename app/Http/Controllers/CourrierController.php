@@ -188,17 +188,33 @@ class CourrierController extends Controller
         return Inertia::render('Courrier/MesCourriers');
     }
     public function downloadFile($id){
+
         try {
-            
-            
             // telechargement de la ressourece
             return Storage::download(str_replace('++','/',$id));
+        } catch (\Throwable $th) {
+            //throw $th; 
+            return "Une erreur est survennue lors du téléchargement, veillez réessayer plus tard";
+        }
+    }
 
+    public function clotureCourrier(Courrier $courrier){
+
+        try {
+
+            $courrier->update(['status'=>4]);
+
+            //notification 
+
+            //envoie email de notification
+
+            //Envoie de la reponse avec le fichier de la lettre en annexe
+
+            return ['type'=>'success','message'=>"Enregistrement reussi"];
 
         } catch (\Throwable $th) {
             //throw $th;
-            
-            return "Une erreur est survennue lors du téléchargement, veillez réessayer plus tard";
+            return ['type'=>'error','message'=>"Echec d'enregistrement",'errorMessage'=>$th];
         }
     }
 
