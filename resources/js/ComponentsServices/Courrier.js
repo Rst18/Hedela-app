@@ -8,7 +8,7 @@ export default function UseCourrier(){
     }
     const getColorNote = (status)=>{
 
-        return courrier_status.value.filter((c)=>c.id == status)
+        return note_status.value.filter((c)=>c.id == status)
     }
 
     const courrier_status = ref([

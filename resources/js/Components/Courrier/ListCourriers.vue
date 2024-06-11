@@ -15,7 +15,7 @@
                <div class="col-span-2">{{courrier.sender}}</div>
                <div class="col-span-5">{{courrier.objet}}</div>
                <div class="col-span-1">{{ moment(courrier.created_at).format('ll') }}</div>
-               <div class="col-span-1":class="getColorCourrier(courrier.status)[0].color"></div>
+               <div class="col-span-1 flex justify-center items-center":class="getColorCourrier(courrier.status)[0].color"><Check v-if="courrier.status == 4" class="h-4 w-4 text-white border rounded-full bg-green-600 "/></div>
            </div>
 
            <div class="flex flex-row w-full px-4 md:w-9/12 justify-center items-center mx-auto">
@@ -61,7 +61,7 @@ import UseCourrier from '@/ComponentsServices/Courrier.js'
            courrierData.value = pagination.data           
             links.value = pagination.links
         }).catch((error)=>{
-           // console.log(error.response)
+            console.log(error.response)
         })
     }
 

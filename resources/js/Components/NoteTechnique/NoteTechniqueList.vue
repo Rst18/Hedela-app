@@ -15,7 +15,7 @@
                <div class="col-span-2">{{note.courrier.sender}}</div>
                <div class="col-span-6">{{note.conclusion}}</div>
                <div class="col-span-1">{{ moment(note.created_at).format('ll') }}</div>
-               <div class="col-span-1"  :class="getColorNote(note.status)[0].color"></div>
+               <div class="col-span-1 flex justify-center items-center"  :class="getColorNote(note.status)[0].color"><Check v-if="note.status == 2" class="h-4 w-4 text-white border rounded-full bg-green-600 "/></div>
            </div>
 
            <div class="flex flex-row w-full px-4 md:w-9/12 justify-center items-center mx-auto">
