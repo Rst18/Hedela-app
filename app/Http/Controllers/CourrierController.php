@@ -217,6 +217,4 @@ class CourrierController extends Controller
         }
     }
 
-    
-
 }

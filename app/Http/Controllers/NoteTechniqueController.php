@@ -118,7 +118,7 @@ class NoteTechniqueController extends Controller
 
     public function noteTechniqueForSecretaria (){
         
-        return NoteTechnique::where('status',3)->get();
+        return NoteTechnique::where('status',2)->get();
     }
 
     public function my_technical_notes_page(){
