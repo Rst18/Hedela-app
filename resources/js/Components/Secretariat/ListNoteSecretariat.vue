@@ -2,25 +2,25 @@
     <form >
        <div class="mt-3 w-full p-3 font-semibold bg-gray-100 grid grid-cols-12">
            <div class="col-span-1">#</div>
-           <div class="col-span-2">Type</div>
+           <div class="col-span-1">Courrier</div>
            <div class="col-span-2">Sender</div>
-           <div class="col-span-5">Objet</div>
-           <div class="col-span-1">Date  </div>
-           <div class="col-span-1">Statut</div>
+           <div class="col-span-6">Lettre</div>
+           <div class="col-span-1">Date</div>
+           <div class="col-span-1">Status</div>
        </div>
-       <div v-if="courrierData">
-           <div v-for="(courrier,index) in courrierData" :key="courrier.id" @click="setCourrier(courrier)" class="w-full mb-1 p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer" >
+       <div v-if="noteTechniqueData">
+           <div v-for="(note,index) in noteTechniqueData" :key="note.id" @click="setNote(note)" class="w-full mb-1 p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer bg-gray-50 text-sm" >
                <div class="col-span-1 " >{{ index + 1 }}</div>
-               <div class="col-span-2">{{courrier.type_courrier_name}}</div>
-               <div class="col-span-2">{{courrier.sender}}</div>
-               <div class="col-span-5">{{courrier.objet}}</div>
-               <div class="col-span-1">{{ moment(courrier.created_at).format('ll') }}</div>
-               <div class="col-span-1 flex justify-center items-center":class="getColorCourrier(courrier.status)[0].color"><Check v-if="courrier.status == 4" class="h-4 w-4 text-white border rounded-full bg-green-600 "/></div>
+               <div class="col-span-1">{{note.courrier.number}}</div>
+               <div class="col-span-2">{{note.courrier.sender}}</div>
+               <div class="col-span-6">{{note.lettre.slice(0,40)}}...</div>
+               <div class="col-span-1">{{ moment(note.created_at).format('ll') }}</div>
+               <div class="col-span-1 flex justify-center items-center"  :class="getColorNote(note.status)[0].color"><Check v-if="note.courrier.statut == 4" class="h-4 w-4 text-white border rounded-full bg-green-600 "/></div>
            </div>
 
            <div class="flex flex-row w-full px-4 md:w-9/12 justify-center items-center mx-auto">
              <div v-for="link in links">
-                <button class="text-grey-darker text-xs md:text-sm px-1  md:px-2 py-1 m-1 border" @click="fetchCourrier(link.url)" v-html="link.label"></button>
+                <button class="text-grey-darker text-xs md:text-sm px-1  md:px-2 py-1 m-1 border" @click="fetchNote(link.url)" v-html="link.label"></button>
             </div>
         </div>
        </div>
@@ -45,30 +45,30 @@ import moment from 'moment';
 import UseCourrier from '@/ComponentsServices/Courrier.js'  
 
     const links = ref([])
-    const courrierData = ref() 
+    const noteTechniqueData = ref() 
     const {axios_get} = useAxios();
-    const emit = defineEmits(['selectedCourrier'])
+    const emit = defineEmits(['selectedNote'])
 
-    const { courrier_status,getColorCourrier,getColorNote } = UseCourrier()
+    const { getColorNote } = UseCourrier()
 
-    const setCourrier = (courrier)=>{
-        emit('selectedCourrier',courrier)
+    const setNote = (note)=>{
+        emit('selectedNote',note)
         // console.log(courrier);
     }
 
-    const fetchCourrier = (url)=>{
+    const fetchNote = (url)=>{
         axios_get(url).then(({data:pagination})=>{
-           courrierData.value = pagination.data           
+           noteTechniqueData.value = pagination.data           
             links.value = pagination.links
         }).catch((error)=>{
-            console.log(error.response)
+           console.log(error.response)
         })
     }
 
    
 
     onMounted(() => {
-        fetchCourrier('courrier/list')
+        fetchNote('note-technique/secretariat')
     })
 
 </script>

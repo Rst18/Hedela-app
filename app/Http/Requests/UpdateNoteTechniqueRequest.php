@@ -12,7 +12,7 @@ class UpdateNoteTechniqueRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,7 @@ class UpdateNoteTechniqueRequest extends FormRequest
     {
         return [ 
             
-            'status'=>'required', 
+            //'status'=>'required', 
             'faits'=>'required',
             'analyse'=>'required',
             'conclusion'=>'required',

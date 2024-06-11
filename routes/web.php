@@ -70,11 +70,12 @@ Route::controller(App\Http\Controllers\CommentaireCourrierController::class)->mi
 Route::controller(App\Http\Controllers\NoteTechniqueController::class)->middleware('auth')->group(function(){
 
     Route::post('note-technique/add','store');
-<<<<<<< HEAD
-    Route::post('note-technique/validated','getValidatedNotes');
-=======
+    Route::post('note-technique/update/{noteTechnique}','update');
     Route::post('note-technique/valider/{noteTechnique}','valider');
->>>>>>> 248c97af2f9e1cd91200c0e095616a2ad5ea3b27
+    Route::get('note-technique/list','my_technical_notes');
+    Route::get('note-technique','my_technical_notes_page')->name('mes_Notes');
+    Route::get('note-technique/secretariat','noteTechniqueForSecretaria');
+    Route::get('note-technique/sec','noteTechniqueForSecretaria_page')->name('secretariat');
 });
 Route::controller(App\Http\Controllers\CommentaireNoteTechniqueController::class)->middleware('auth')->group(function(){
 

@@ -24,12 +24,11 @@ class CourrierController extends Controller
         ->with(['commentaires'=>function($q){$q->join('users','users.id','commentaire_courriers.user_id');}])
         ->with(['users'=>function($qry){}])
         ->with(['annexes'=>function($qry){}])
-        ->with(['services'=>function($qry){
-           
-        }])
+        ->with(['services'=>function($qry){}])
 
         ->with(['noteTechniques'=>function($qry){
             $qry->with('commentaires');
+            $qry->select('users.name','note_techniques.*');
             $qry->join('users','users.id','note_techniques.user_id');
         }])
         ->join('services','services.id','service_id')
@@ -217,7 +216,5 @@ class CourrierController extends Controller
             return ['type'=>'error','message'=>"Echec d'enregistrement",'errorMessage'=>$th];
         }
     }
-
-    
 
 }
