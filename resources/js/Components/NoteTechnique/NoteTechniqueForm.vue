@@ -105,8 +105,8 @@
            <SelectComponent @selectedOption="getSeletedOption" :options="typeLettre">
             Choisir le type de lettre
            </SelectComponent>
-            <div class="text-red-500" v-if="errors.annexes">
-                {{ errors.annexes[0]}}
+            <div class="text-red-500" v-if="errors.type_lettre">
+                {{ errors.type_lettre[0]}}
             </div>
         </div>
        
@@ -155,7 +155,6 @@ import SuccesToast from '@/Components/SuccesToast.vue'
         lettre:props.note.lettre,
         courrier_id:props.courrier ? props.courrier.id : props.note.courrier_id
     })
-    console.log(props.note);
 
     const submitForm = ()=>{
 

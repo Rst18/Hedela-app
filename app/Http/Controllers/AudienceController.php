@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Inertia\Inertia;
 use App\Models\Audience;
 use App\Http\Requests\StoreAudienceRequest;
 use App\Http\Requests\UpdateAudienceRequest;
@@ -21,7 +23,8 @@ class AudienceController extends Controller
      */
     public function create()
     {
-        //
+        $users  = User::all();
+        return Inertia::render('Audience/Index',compact('users'));
     }
 
     /**

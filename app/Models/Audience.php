@@ -10,7 +10,7 @@ class Audience extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name','email','phone','motif','user_id','user_requested','date_proposition','piece','status'
+        'name','email','phone','motif','user_id','user_requested','date_proposition','piece','status','fonction'
     ];
 
 }

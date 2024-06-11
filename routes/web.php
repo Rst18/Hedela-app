@@ -85,6 +85,11 @@ Route::controller(App\Http\Controllers\AnnexeCourrierController::class)->middlew
 
     Route::post('annexe-courrier/add','store');
 });
+Route::controller(App\Http\Controllers\AudienceController::class)->middleware('auth')->group(function(){
+
+    Route::get('audience/create','create')->name('audience');
+    Route::post('audience/add','store');
+});
 Route::get('/linkstorage', function () {
 	$targetFolder = base_path().'/storage/app/public';
     $linkFolder = $_SERVER['DOCUMENT_ROOT'].'/storage';
