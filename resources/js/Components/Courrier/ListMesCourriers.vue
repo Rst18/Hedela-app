@@ -4,16 +4,18 @@
            <div class="col-span-1">#</div>
            <div class="col-span-2">Type</div>
            <div class="col-span-2">Sender</div>
-           <div class="col-span-3">Objet</div>
-           <div class="col-span-2">Date  </div>
+           <div class="col-span-5">Objet</div>
+           <div class="col-span-1">Date  </div>
+           <div class="col-span-1">Statut</div>
        </div>
        <div v-if="courrierData">
-           <div v-for="(courrier,index) in courrierData" :key="courrier.id" @click="setCourrier(courrier)" class="w-full p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer" :class="getColorCourrier(courrier.status)[0].color" >
+           <div v-for="(courrier,index) in courrierData" :key="courrier.id" @click="setCourrier(courrier)" class="w-full p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer text-sm" >
                <div class="col-span-1">{{ index+1 }}</div>
                <div class="col-span-2">{{courrier.type_courrier_name}}</div>
                <div class="col-span-2">{{courrier.sender}}</div>
-               <div class="col-span-3">{{courrier.objet}}</div>
-               <div class="col-span-2">{{ moment(courrier.created_at).format('ll') }}</div>
+               <div class="col-span-5">{{courrier.objet}}</div>
+               <div class="col-span-1">{{ moment(courrier.created_at).format('ll') }}</div>
+               <div class="col-span-1" :class="getColorCourrier(courrier.status)[0].color" ></div>
            </div>
 
        </div>

@@ -2,18 +2,20 @@
     <form >
        <div class="mt-3 w-full p-3 font-semibold bg-gray-100 grid grid-cols-12">
            <div class="col-span-1">#</div>
-           <div class="col-span-2">Courrier</div>
+           <div class="col-span-1">Courrier</div>
            <div class="col-span-2">Sender</div>
-           <div class="col-span-3">Conculsion</div>
-           <div class="col-span-2">Date  </div>
+           <div class="col-span-6">Conculsion</div>
+           <div class="col-span-1">Date  </div>
+           <div class="col-span-1">Status  </div>
        </div>
        <div v-if="noteTechniqueData">
-           <div v-for="(note,index) in noteTechniqueData" :key="note.id" @click="setNote(note)" class="w-full mb-1 p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer" :class="getColorCourrier(note.status)[0].color" >
+           <div v-for="(note,index) in noteTechniqueData" :key="note.id" @click="setNote(note)" class="w-full mb-1 p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer bg-gray-50 text-sm" >
                <div class="col-span-1 " >{{ index + 1 }}</div>
-               <div class="col-span-2">{{note.courrier}}</div>
-               <div class="col-span-2">{{note.sender}}</div>
-               <div class="col-span-3">{{note.conclusion}}</div>
-               <div class="col-span-2">{{ moment(note.created_at).format('ll') }}</div>
+               <div class="col-span-1">{{note.courrier.number}}</div>
+               <div class="col-span-2">{{note.courrier.sender}}</div>
+               <div class="col-span-6">{{note.conclusion}}</div>
+               <div class="col-span-1">{{ moment(note.created_at).format('ll') }}</div>
+               <div class="col-span-1"  :class="getColorNote(note.status)[0].color"></div>
            </div>
 
            <div class="flex flex-row w-full px-4 md:w-9/12 justify-center items-center mx-auto">
@@ -47,7 +49,7 @@ import UseCourrier from '@/ComponentsServices/Courrier.js'
     const {axios_get} = useAxios();
     const emit = defineEmits(['selectedNote'])
 
-    const { courrier_status,getColorCourrier,getColorNote } = UseCourrier()
+    const { getColorNote } = UseCourrier()
 
     const setNote = (note)=>{
         emit('selectedNote',note)
@@ -59,14 +61,14 @@ import UseCourrier from '@/ComponentsServices/Courrier.js'
            noteTechniqueData.value = pagination.data           
             links.value = pagination.links
         }).catch((error)=>{
-           // console.log(error.response)
+           console.log(error.response)
         })
     }
 
    
 
     onMounted(() => {
-        fetchNote('note-technique/user')
+        fetchNote('note-technique/list')
     })
 
 </script>

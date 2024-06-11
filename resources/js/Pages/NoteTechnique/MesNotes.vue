@@ -10,7 +10,8 @@
 
         <div class="py-2">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <NoteTechniqueList/>
+                <NoteTechniqueList @selectedNote="getSeletedNote" v-show="!showDetailsNote"/>
+                <DetailsNoteTechnique @closeMe="showDetailsNote = false" :note="currentNote" v-if="showDetailsNote"/>
             </div>
         </div>
     </SideBarLayout>
@@ -21,6 +22,14 @@
     import { Head } from '@inertiajs/vue3';
     import { ref,onMounted } from 'vue'
     import NoteTechniqueList from '@/Components/NoteTechnique/NoteTechniqueList.vue'
+    import DetailsNoteTechnique from '@/Components/NoteTechnique/DetailsNoteTechnique.vue'
 
+        const currentNote = ref()
 
+        const showDetailsNote = ref(false)
+
+        const getSeletedNote = (e)=>{
+            currentNote.value = e
+            showDetailsNote.value = true
+        }
 </script>
