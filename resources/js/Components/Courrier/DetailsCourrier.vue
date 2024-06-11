@@ -104,8 +104,8 @@
     
             </div>
         </div>
-        <NoteTechniqueForm :courrier v-if="showComponent == 4"/>
-         <DetailsNoteTechnique @closeMe="showComponent = 1" :note="currentNote" v-if="showComponent == 2 "/>
+        <NoteTechniqueForm :courrier v-if="showComponent == 4" action="add" :note="newNote"/>
+         <DetailsNoteTechnique @closeMe="showComponent = 1" :note="currentNote"  v-if="showComponent == 2 "/>
          <DispatchCourrier @userAdded="addUser" @userRemoved="removeUser" :courrier v-if="showComponent == 3"/>
     </div>
 </template>
@@ -132,6 +132,8 @@
         currentNote.value = note
         showComponent.value = 2
     }
+
+    const newNote = ref({})
     const addUser = (e)=>{
         // console.log(e);
         // return

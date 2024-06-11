@@ -70,6 +70,7 @@ Route::controller(App\Http\Controllers\CommentaireCourrierController::class)->mi
 Route::controller(App\Http\Controllers\NoteTechniqueController::class)->middleware('auth')->group(function(){
 
     Route::post('note-technique/add','store');
+    Route::post('note-technique/update/{noteTechnique}','update');
     Route::post('note-technique/valider/{noteTechnique}','valider');
     Route::get('note-technique/list','my_technical_notes');
     Route::get('note-technique','my_technical_notes_page')->name('mes_Notes');

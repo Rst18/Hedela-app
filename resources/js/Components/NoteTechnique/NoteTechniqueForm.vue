@@ -133,34 +133,54 @@ import SelectComponent from '../SelectComponent.vue';
 import SuccesToast from '@/Components/SuccesToast.vue'
     const props = defineProps({
 
-        courrier:Object
+        courrier:Object,
+        note:Object,
+        action:String
     })
     const {axios_post_simple} = useAxios()
     const errors = ref([])
     const success = ref(false)
+
     const form = ref({
-        faits:'',
-        analyse:'',
-       conclusion:'',
-       actions:'',
-       objet:'',
-       destinataire:'',
-       signataire:'',
-       copiea:'',
-       type_lettre:'',
-       annexes:'',
-        lettre:'',
-        courrier_id:props.courrier.id
+        faits:props.note.faits,
+        analyse:props.note.analyse,
+        conclusion:props.note.conclusion,
+        actions:props.note.actions,
+        objet:props.note.objet,
+        destinataire:props.note.destinataire,
+        signataire:props.note.signataire,
+        copiea:props.note.copiea,
+        type_lettre:props.note.type_lettre,
+        annexes:props.note.annexes,
+        lettre:props.note.lettre,
+        courrier_id:props.courrier ? props.courrier.id : props.note.courrier_id
     })
+    console.log(props.note);
 
     const submitForm = ()=>{
-        axios_post_simple('note-technique/add',form.value).then(({data})=>{
-            if (data.type ==='success') {
-                success.value = true
-            }
-        }).catch((error)=>{
-            console.log(error.response);
-        })
+
+        if (props.action ==='add') {
+
+            axios_post_simple('note-technique/add',form.value).then(({data})=>{
+              
+                if (data.type ==='success') {
+                    success.value = true
+                }
+            }).catch((error)=>{
+                console.log(error.response);
+            })
+            
+        }else if(props.action ==='update'){
+            // let id =
+            axios_post_simple('note-technique/update/'+props.note.id,form.value).then(({data})=>{
+                console.log(data);
+                if (data.type ==='success') {
+                    success.value = true
+                }
+            }).catch((error)=>{
+                console.log(error.response);
+            })
+        }
     }
     const getSeletedOption = (e)=>{
         form.value.type_lettre = e
