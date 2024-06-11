@@ -13,7 +13,7 @@
                <div class="col-span-1 " >{{ index + 1 }}</div>
                <div class="col-span-1">{{note.courrier.number}}</div>
                <div class="col-span-2">{{note.courrier.sender}}</div>
-               <div class="col-span-6">{{note.lettre.slice(0,40)}}...</div>
+               <div class="col-span-6" v-html="note.lettre.slice(0,40) +' ...' "></div>
                <div class="col-span-1">{{ moment(note.created_at).format('ll') }}</div>
                <div class="col-span-1 flex justify-center items-center"  :class="getColorNote(note.status)[0].color"><Check v-if="note.courrier.statut == 4" class="h-4 w-4 text-white border rounded-full bg-green-600 "/></div>
            </div>
@@ -57,7 +57,7 @@ import UseCourrier from '@/ComponentsServices/Courrier.js'
     }
 
     const fetchNote = (url)=>{
-        axios_get(url).then(({data:pagination})=>{
+        axios_get('../../'+url).then(({data:pagination})=>{
            noteTechniqueData.value = pagination.data           
             links.value = pagination.links
         }).catch((error)=>{
