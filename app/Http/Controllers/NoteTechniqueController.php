@@ -120,6 +120,10 @@ class NoteTechniqueController extends Controller
         
         return NoteTechnique::where('status',2)->get();
     }
+    public function noteTechniqueForSecretaria_page(){
+        
+        return Inertia::render('Secretariat/Index');
+    }
 
     public function my_technical_notes_page(){
 
