@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Models\Courrier;
 use App\Models\NoteTechnique;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreNoteTechniqueRequest;
 use App\Http\Requests\UpdateNoteTechniqueRequest;
 
@@ -117,5 +119,14 @@ class NoteTechniqueController extends Controller
     public function noteTechniqueForSecretaria (){
         
         return NoteTechnique::where('status',3)->get();
+    }
+
+    public function my_technical_notes_page(){
+
+        return Inertia::render('NoteTechnique/MesNotes');
+    }
+    public function my_technical_notes(){
+
+        return NoteTechnique::where('user_id',Auth::user()->id)->paginate(10);
     }
 }
