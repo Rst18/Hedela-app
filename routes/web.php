@@ -71,6 +71,8 @@ Route::controller(App\Http\Controllers\NoteTechniqueController::class)->middlewa
 
     Route::post('note-technique/add','store');
     Route::post('note-technique/valider/{noteTechnique}','valider');
+    Route::post('note-technique/user/','my_technical_notes');
+    Route::get('note-technique/user/page','my_technical_notes_page')->name('mes_Notes');
 });
 Route::controller(App\Http\Controllers\CommentaireNoteTechniqueController::class)->middleware('auth')->group(function(){
 
