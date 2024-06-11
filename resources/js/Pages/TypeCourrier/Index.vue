@@ -17,7 +17,7 @@
                             <div class="">
                                 
                                 <Fwb-button @click="createTypeCourrier = !createTypeCourrier">
-                                    {{ createTypeCourrier ? 'Liste des service':'Nouveau service' }}
+                                    {{ createTypeCourrier ? 'Liste des Type de courrier':'Nouveau Type de courrier' }}
                                 </Fwb-button>
                             </div>
                             <div>

@@ -8,8 +8,8 @@
            <div class="col-span-2">Date  </div>
        </div>
        <div v-if="courrierData">
-           <div v-for="(courrier,index) in courrierData" :key="courrier.id" @click="setCourrier(courrier)" class="w-full p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer">
-               <div class="col-span-1">{{ index + 1 }}</div>
+           <div v-for="(courrier,index) in courrierData" :key="courrier.id" @click="setCourrier(courrier)" class="w-full mb-1 p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer" :class="getColorCourrier(courrier.status)[0].color" >
+               <div class="col-span-1 " >{{ courrier.status }}</div>
                <div class="col-span-2">{{courrier.type_courrier_name}}</div>
                <div class="col-span-2">{{courrier.sender}}</div>
                <div class="col-span-3">{{courrier.objet}}</div>
@@ -40,12 +40,14 @@ import Swal from 'sweetalert2';
 const { axios_post_simple,axios_post } = useAxios ();
 import { onMounted, ref } from 'vue';
 import moment from 'moment';
-    
+import UseCourrier from '@/ComponentsServices/Courrier.js'  
 
     const links = ref([])
     const courrierData = ref() 
     const {axios_get} = useAxios();
     const emit = defineEmits(['selectedCourrier'])
+
+    const { courrier_status,getColorCourrier,getColorNote } = UseCourrier()
 
     const setCourrier = (courrier)=>{
         emit('selectedCourrier',courrier)
@@ -60,6 +62,8 @@ import moment from 'moment';
            // console.log(error.response)
         })
     }
+
+   
 
     onMounted(() => {
         fetchCourrier('courrier/list')
