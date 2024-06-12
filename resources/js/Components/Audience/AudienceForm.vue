@@ -4,7 +4,7 @@
             <fwb-input
                 v-model="form.name"
                 placeholder="Rostand M"
-                label="Names"
+                label="Demandeur"
             />
             <div class="text-red-500" v-if="errors.name">
                 {{ errors.name[0]}}
@@ -81,7 +81,7 @@
             </div>
         </div>
         <div class="mt-4">
-        <Fwb-button @click="submitForm">
+        <Fwb-button class="bg-gray-800" @click="submitForm">
             Enregistrer
         </Fwb-button>
     </div>

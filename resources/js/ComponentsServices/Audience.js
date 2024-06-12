@@ -12,22 +12,22 @@ export default function UseAudience(){
         {
             id:1,
             name:'En attente...',
-            color:''  
+            color:'bg-blue-200'  
         },
         {
             id:2,
             name:'Acceptee, rendez-vous ',
-            color:''  
+            color:'bg-green-300'  
         },
         {
             id:3,
-            name:'Encours',
-            color:''  
+            name:'refuse',
+            color:'bg-red-400'  
         },
         {
             id:4,
             name:'Cloturée',
-            color:''  
+            color:'bg-green-600'  
         },
     ]);
 

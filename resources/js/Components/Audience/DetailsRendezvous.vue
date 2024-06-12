@@ -1,5 +1,6 @@
 <template>
     <div class="grid grid-cols-3">
+        <span @click="close" class="col-span-3 w-fit border rounded-full py-1 px-2 text-xs font-semibold bg-red-600 text-slate-200 cursor-pointer">Retour</span>
         <div class="col-span-2">
 
             <RendezvousForm  
@@ -49,6 +50,9 @@ import {ref} from 'vue'
         audience_id:Number,
         rendezvous:Object
     })
+    const emit = defineEmits(['closeMe'])
+
+    const close = ()=>emit('closeMe')
     
     const profil = ref('https://ui-avatars.com/api/?name=')
     const ajouterParticipant = ref(false)

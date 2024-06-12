@@ -91,6 +91,7 @@ Route::controller(App\Http\Controllers\AudienceController::class)->middleware('a
     Route::get('audience/create','create')->name('audience');
     Route::get('audience/list','index');
     Route::post('audience/add','store');
+    Route::post('audience/close/{audience}','close');
 
 });
 Route::controller(App\Http\Controllers\RendezvousAudienceController::class)->middleware('auth')->group(function(){

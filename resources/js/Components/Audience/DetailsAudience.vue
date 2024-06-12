@@ -1,6 +1,8 @@
 <template>
     <div class="grid grid-cols-3">
         <div v-show="showComponent == 0" class="col-span-2 grid grid-cols-2 gap-2 p-6 ">
+
+            <span @click="close" class="text-xs border w-fit bg-red-600 font-semibold text-slate-100 cursor-pointer py-1 px-2 rounded-full col-span-2 ">Retour</span>
             <span class="text-xl font-semibold text-gray-600 col-span-2 py-4">Details de l'audience </span>
             <div class="grid grid-cols-1 ">
                 <span class="font-semibold text-gray-400">Demandeur</span>
@@ -31,13 +33,16 @@
             <Fwb-button v-if="audienceData.sataus != 4" class="bg-gray-800" >
             Transferer
             </Fwb-button>
+            <Fwb-button @click="CloseAudience" v-if="audienceData.sataus > 2 " class="bg-gray-400" >
+                Cloturer
+            </Fwb-button>
             
         </div>
         <div class="col-span-2" v-if="showComponent == 1">
             <RendezvousForm option="add" @added="refreshRendezvousList" v-if="create_rendezvous" :audience_id="audience.id" :rendezvous/>
         </div>
         <div  :class="showComponent ? 'col-span-3':'col-span-2'" v-if="showComponent == 2">
-            <DetailsRendezvous  :audience_id="audience.id" :rendezvous="currentRendezvous"/>
+            <DetailsRendezvous @closeMe="showComponent = 0"  :audience_id="audience.id" :rendezvous="currentRendezvous"/>
         </div>
         <div v-show="showComponent != 2" class="col-span-1 text-sm mt-6 border-l pl-4 ">
             <span class="py-6 font-semibold text-gray-600 text-lg">Rendez-vous ({{ audienceData.rendezvous.length }})</span>
@@ -66,9 +71,13 @@
     import RendezvousForm from '@/Components/Audience/RendezvousForm.vue'
     import {ref} from 'vue'
     import DetailsRendezvous from '@/Components/Audience/DetailsRendezvous.vue'
+    import useAxios from '@/ComponentsServices/axios.js'
+
         const props = defineProps({
             audience:Object
         })
+        const emit = defineEmits(['closeMe','audienceClosed'])
+        const { axios_post_simple } = useAxios()
 
         const audienceData = ref(props.audience)
         const rendezvous = ref({})
@@ -77,7 +86,17 @@
         const currentRendezvous = ref({})
 
         const { get_status,statut_audience } = UseAudience();
+        const close = ()=>emit('closeMe')
 
+        const CloseAudience = ()=>{
+            let id = props.audience.id
+            axios_post_simple('../audience/close/'+id).then(({data})=>{
+                console.log(data);
+                if (data.type ==='success') {
+                    emit('closeMe')
+                }
+            })
+        }
         const refreshRendezvousList = (e)=>{
             audienceData.value.rendezvous.push(e)
             create_rendezvous.value = false

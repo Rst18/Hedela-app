@@ -97,4 +97,19 @@ class AudienceController extends Controller
             return ['type'=>'success','message'=>"Echec de suppression ",'errorMessage'=>$th];
         }
     }
+
+    public function close(Audience  $audience){
+        
+        try {
+
+            $audience->update(['status'=>4]);
+
+            return ['type'=>'success','message'=>'Enregistrement reussi'];
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            
+            return ['type'=>'error','message'=>'Echec d\'Enregistrement','errorMessage'=>$th];
+        }
+    }
 }
