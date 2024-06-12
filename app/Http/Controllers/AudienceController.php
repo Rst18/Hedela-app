@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Inertia\Inertia;
 use App\Models\Audience;
 use App\Http\Requests\StoreAudienceRequest;
 use App\Http\Requests\UpdateAudienceRequest;
@@ -13,7 +15,13 @@ class AudienceController extends Controller
      */
     public function index()
     {
-        //
+        return Audience::select('audiences.*','users.name as autorite')
+        ->with(['rendezvous'=>function($q){
+            $q->with(['users'=>function($qry){
+                $qry->with('roles');
+            }]);
+        }])
+        ->join('users','users.id','audiences.user_requested')->paginate(10);
     }
 
     /**
@@ -21,7 +29,8 @@ class AudienceController extends Controller
      */
     public function create()
     {
-        //
+        $users  = User::all();
+        return Inertia::render('Audience/Index',compact('users'));
     }
 
     /**
@@ -86,6 +95,21 @@ class AudienceController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
             return ['type'=>'success','message'=>"Echec de suppression ",'errorMessage'=>$th];
+        }
+    }
+
+    public function close(Audience  $audience){
+        
+        try {
+
+            $audience->update(['status'=>4]);
+
+            return ['type'=>'success','message'=>'Enregistrement reussi'];
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            
+            return ['type'=>'error','message'=>'Echec d\'Enregistrement','errorMessage'=>$th];
         }
     }
 }

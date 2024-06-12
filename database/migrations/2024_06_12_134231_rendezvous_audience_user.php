@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\User;
-use App\Models\Audience;
+use App\Models\RendezvousAudience;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rendezvous_audiences', function (Blueprint $table) {
-            $table->id();
-            $table->foreignIdFor(Audience::class)->constrained()->cascadeOnDelete();
-            $table->dateTime('date_heure');
-            $table->string('lieu', 100)->nullable();
-            $table->integer('status')->default(1);
+        Schema::create('rendezvous_audience_user', function (Blueprint $table) {
+            $table->foreignIdFor(RendezvousAudience::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+            $table->primary(['rendezvous_audience_id','user_id']);
             $table->timestamps();
         });
     }
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rendezvous_audiences');
+        Schema::dropIfExists('rendezvous_audience_user');
     }
 };

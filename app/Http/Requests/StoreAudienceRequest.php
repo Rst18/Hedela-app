@@ -27,6 +27,7 @@ class StoreAudienceRequest extends FormRequest
               'email'=>'required|email',
               'phone'=>'required',
               'motif'=>'required',
+              'fonction'=>'required',
               'user_id'=>'required|exists:users,id',
               'user_requested'=>'required|exists:users,id',
               'date_proposition'=>'date',
