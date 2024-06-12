@@ -130,4 +130,8 @@ class RoleController extends Controller
             return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
         }
     }
+
+    public function search_user (Request $request){
+        return User::where('name','like','%'.$request->name.'%')->with('roles')->get();
+    }
 }

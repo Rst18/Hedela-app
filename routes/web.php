@@ -32,6 +32,7 @@ Route::controller(App\Http\Controllers\RoleController::class)->middleware('auth'
     Route::post('role/{role}/update','update');
     Route::post('role/set-role-user/{user}','addRoles');
     Route::post('role/remove-role-user/{user}','removeRoles');
+    Route::post('user/search','search_user');
 });
 Route::controller(App\Http\Controllers\DocumentController::class)->middleware('auth')->group(function(){
     Route::get('document','create')->name('document');
@@ -90,13 +91,19 @@ Route::controller(App\Http\Controllers\AudienceController::class)->middleware('a
     Route::get('audience/create','create')->name('audience');
     Route::get('audience/list','index');
     Route::post('audience/add','store');
+
 });
 Route::controller(App\Http\Controllers\RendezvousAudienceController::class)->middleware('auth')->group(function(){
-
-    // Route::get('rendezvous/create','create')->name('audience');
-    // Route::get('rendezvous/list','index');
     Route::post('rendezvous/add','store');
+    Route::post('rendezvous/update/{rendezvousAudience}','update');
+
+    Route::post('rendezvous/set-rendezvous-user/{user}','addRendezvous');
+    Route::post('rendezvous/remove-rendezvous-user/{user}','removeRendezvous');
 });
+
+
+
+
 Route::get('/linkstorage', function () {
 	$targetFolder = base_path().'/storage/app/public';
     $linkFolder = $_SERVER['DOCUMENT_ROOT'].'/storage';

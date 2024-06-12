@@ -1,6 +1,6 @@
 <template>
     <div class="grid grid-cols-1 gap-4 py-6 lg:px-10">
-        <span class="col-span-1 text-xl font-semibold text-gray-600">Créer un Rendez vous</span>
+        <span class="col-span-1 text-xl font-semibold text-gray-600">{{ option ==='add' ? "Créer un Rendez vous":'Modifier Rendez vous' }}</span>
         <div>
             <fwb-input
                 v-model="form.lieu"
@@ -12,7 +12,7 @@
             </div>
         </div>
         <div>
-            <InputDateTime label="date_heure" @inputValue="get_date_heure">
+            <InputDateTime label="date_heure" :defaultDate="form.date_heure" @inputValue="get_date_heure">
                 Date et heure du rendez vous
             </InputDateTime>
             <div class="text-red-500" v-if="errors.date_heure">
@@ -68,10 +68,9 @@
 
                 let id = props.rendezvous.id;
 
-                axios_post_simple('audience/rendezvous/'+id,form.value).then(({data})=>{
+                axios_post_simple('../../rendezvous/update/'+id,form.value).then(({data})=>{
                     console.log(data);
                     if (data.type ==='success') {
-                        
                         emit('updated',data.new)
                     }
                 })

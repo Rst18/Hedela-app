@@ -16,7 +16,11 @@ class AudienceController extends Controller
     public function index()
     {
         return Audience::select('audiences.*','users.name as autorite')
-        ->with('rendezvous')
+        ->with(['rendezvous'=>function($q){
+            $q->with(['users'=>function($qry){
+                $qry->with('roles');
+            }]);
+        }])
         ->join('users','users.id','audiences.user_requested')->paginate(10);
     }
 

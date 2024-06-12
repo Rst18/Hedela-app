@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Audience;
+use Illuminate\Http\Request;
 use App\Models\RendezvousAudience;
 use App\Http\Requests\StoreRendezvousAudienceRequest;
 use App\Http\Requests\UpdateRendezvousAudienceRequest;
@@ -96,5 +98,40 @@ class RendezvousAudienceController extends Controller
              //throw $th;
              return ['type'=>'error','message'=>"Echec de suppression"];
          }
+    }
+
+    
+    /**
+     * ATTRIBUTION DES Renezvous AUX UTILISATEURS
+     */
+
+     public function addRendezvous(Request $request, User $user){  
+    
+        try {
+
+            $user->rendezvouss()->attach($request->rendezvous);
+
+            return ['type'=>'success','message'=>'Enregistrement reussi'];            
+
+        } catch (\Throwable $th) {
+
+            return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
+        }
+        
+    }
+    public function removeRendezvous(Request $request, User $user){  
+
+        try {
+
+            $user->rendezvous()->detach($request->rendezvous);
+
+            //envoi de la notifiation a l'utilisateur
+
+            return ['type'=>'success','message'=>'Enregistrement reussi'];            
+
+        } catch (\Throwable $th) {
+
+            return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
+        }
     }
 }

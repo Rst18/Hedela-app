@@ -1,6 +1,6 @@
 <template>
     <div class="grid grid-cols-3">
-        <div v-show="!create_rendezvous" class="col-span-2 grid grid-cols-2 gap-2 p-6 ">
+        <div v-show="showComponent == 0" class="col-span-2 grid grid-cols-2 gap-2 p-6 ">
             <span class="text-xl font-semibold text-gray-600 col-span-2 py-4">Details de l'audience </span>
             <div class="grid grid-cols-1 ">
                 <span class="font-semibold text-gray-400">Demandeur</span>
@@ -25,25 +25,28 @@
             <Fwb-button class="bg-red-500" v-if="audienceData.rendezvous.length == 0" >
             Refuser
             </Fwb-button>
-            <Fwb-button @click="create_rendezvous = true" >
-                 Accepter et programmer un Rendez vous
+            <Fwb-button v-if="audienceData.sataus != 4" class="bg-green-700" @click="create_rendezvous = true" >
+               {{ audienceData.rendezvous.length > 0 ? '   Programmer autre un Rendez vous':'Accepter et Programmer un  Rendez vous' }}
             </Fwb-button>
-            <Fwb-button >
+            <Fwb-button v-if="audienceData.sataus != 4" class="bg-gray-800" >
             Transferer
             </Fwb-button>
             
         </div>
-        <div class="col-span-2" v-if="create_rendezvous">
+        <div class="col-span-2" v-if="showComponent == 1">
             <RendezvousForm option="add" @added="refreshRendezvousList" v-if="create_rendezvous" :audience_id="audience.id" :rendezvous/>
         </div>
-        <div class="col-span-1 text-sm ">
-            <span class="py-6">Rendez-vous ({{ audienceData.rendezvous.length }})</span>
+        <div  :class="showComponent ? 'col-span-3':'col-span-2'" v-if="showComponent == 2">
+            <DetailsRendezvous  :audience_id="audience.id" :rendezvous="currentRendezvous"/>
+        </div>
+        <div v-show="showComponent != 2" class="col-span-1 text-sm mt-6 border-l pl-4 ">
+            <span class="py-6 font-semibold text-gray-600 text-lg">Rendez-vous ({{ audienceData.rendezvous.length }})</span>
             <div class="grid grid-cols-12 gap-2 mt-4 bg-slate-100 px-4 py-2">
                 <span class="col-span-1" >#</span>
                 <span class="col-span-5" >Lieu</span>
                 <span class="col-span-5">Heure et date</span>
             </div>
-            <div v-for="(r,i) in audienceData.rendezvous" class="py-2">
+            <div @click ="get_rendezvous(r)" v-for="(r,i) in audienceData.rendezvous" class="py-2 hover:bg-gray-100 hover:cursor-pointer">
                
                 <div class="grid grid-cols-12 gap-6 px-4">
                     <span class="col-span-1"  >{{ i + 1 }}</span>
@@ -57,11 +60,12 @@
 
 <script setup>
 
-import { FwbInput,FwbButton,FwbRadio,FwbP,FwbTextarea } from 'flowbite-vue'
-import Check from '@/Components/Check.vue'
-import UseAudience from '@/ComponentsServices/Audience.js'
-import RendezvousForm from '@/Components/Audience/RendezvousForm.vue'
-import {ref} from 'vue'
+    import { FwbInput,FwbButton,FwbRadio,FwbP,FwbTextarea } from 'flowbite-vue'
+    import Check from '@/Components/Check.vue'
+    import UseAudience from '@/ComponentsServices/Audience.js'
+    import RendezvousForm from '@/Components/Audience/RendezvousForm.vue'
+    import {ref} from 'vue'
+    import DetailsRendezvous from '@/Components/Audience/DetailsRendezvous.vue'
         const props = defineProps({
             audience:Object
         })
@@ -69,11 +73,19 @@ import {ref} from 'vue'
         const audienceData = ref(props.audience)
         const rendezvous = ref({})
         const create_rendezvous = ref(false)
+        const showComponent = ref(0)
+        const currentRendezvous = ref({})
+
         const { get_status,statut_audience } = UseAudience();
 
         const refreshRendezvousList = (e)=>{
             audienceData.value.rendezvous.push(e)
             create_rendezvous.value = false
+        }
+
+        const get_rendezvous = (e)=>{
+            currentRendezvous.value = e
+            showComponent.value = 2
         }
 
 

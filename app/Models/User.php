@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Courrier;
+use App\Models\RendezvousAudience;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -65,6 +66,16 @@ class User extends Authenticatable
     public function courriers(): BelongsToMany
     {
         return $this->belongsToMany(Courrier ::class);
+    }
+
+    /**
+     * The rendezvous that belong to the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function rendezvouss(): BelongsToMany
+    {
+        return $this->belongsToMany(RendezvousAudience::class);
     }
 
 
