@@ -15,7 +15,9 @@ class AudienceController extends Controller
      */
     public function index()
     {
-        //
+        return Audience::select('audiences.*','users.name as autorite')
+        ->with('rendezvous')
+        ->join('users','users.id','audiences.user_requested')->paginate(10);
     }
 
     /**

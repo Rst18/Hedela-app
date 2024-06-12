@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(Audience::class)->constrained()->cascadeOnDelete();
             $table->dateTime('date_heure');
             $table->string('lieu', 100)->nullable();
-            $table->integer('statut')->default(1);
+            $table->integer('status')->default(1);
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

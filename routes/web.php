@@ -88,7 +88,14 @@ Route::controller(App\Http\Controllers\AnnexeCourrierController::class)->middlew
 Route::controller(App\Http\Controllers\AudienceController::class)->middleware('auth')->group(function(){
 
     Route::get('audience/create','create')->name('audience');
+    Route::get('audience/list','index');
     Route::post('audience/add','store');
+});
+Route::controller(App\Http\Controllers\RendezvousAudienceController::class)->middleware('auth')->group(function(){
+
+    // Route::get('rendezvous/create','create')->name('audience');
+    // Route::get('rendezvous/list','index');
+    Route::post('rendezvous/add','store');
 });
 Route::get('/linkstorage', function () {
 	$targetFolder = base_path().'/storage/app/public';

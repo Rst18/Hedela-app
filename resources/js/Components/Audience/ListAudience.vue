@@ -1,22 +1,25 @@
 <template>
     <form >
-       <div class="mt-3 w-full p-3 font-semibold bg-gray-100 grid grid-cols-12">
-           <div class="col-span-1">#</div>
-           <div class="col-span-2">Demandeur</div>
-           <div class="col-span-2">Autorite</div>
-           <div class="col-span-5">Motif</div>
-           <div class="col-span-1">Date  </div>
-           <div class="col-span-1">Statut</div>
-       </div>
+
+        <div class="mt-3 w-full p-3 font-semibold bg-gray-100 grid grid-cols-12 text-sm">
+            <div class="col-span-1">#</div>
+            <div class="col-span-2"> Demandeur </div>
+            <div class="col-span-2"> Autorite </div>
+            <div class="col-span-5"> Motif </div>
+            <div class="col-span-1"> Date </div>
+            <div class="col-span-1"> Statut </div>
+        </div>
+
        <div v-if="audienceData">
-           <div v-for="(audience,index) in audienceData" :key="courrier.id" @click="setCourrier(audience)" class="w-full mb-1 p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer" >
-               <div class="col-span-1 " >{{ index + 1 }}</div>
-               <div class="col-span-2">{{audience.name}}</div>
-               <div class="col-span-2">{{audience.user_requested}}</div>
-               <div class="col-span-5">{{audience.motif}}</div>
-               <div class="col-span-1">{{ moment(audience.created_at).format('ll') }}</div>
-               <div class="col-span-1 flex justify-center items-center"><Check v-if="courrier.status == 4" class="h-4 w-4 text-white border rounded-full bg-green-600 "/></div>
-           </div>
+
+            <div v-for="(audience,index) in audienceData" :key="audience.id" @click="setAudience(audience)" class="w-full mb-1 p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer text-sm">
+                <div class="col-span-1 " >{{ index + 1 }}</div>
+                <div class="col-span-2">{{ audience.name }}</div>
+                <div class="col-span-2">{{ audience.autorite }}</div>
+                <div class="col-span-5">{{ audience.motif }}</div>
+                <div class="col-span-1">{{ moment(audience.created_at).format('ll') }}</div>
+                <div class="col-span-1 flex justify-center items-center"><Check v-if="audience.status == 4" class="h-4 w-4 text-white border rounded-full bg-green-600 "/></div>
+            </div>
 
            <div class="flex flex-row w-full px-4 md:w-9/12 justify-center items-center mx-auto">
              <div v-for="link in links">
@@ -47,12 +50,12 @@ import UseCourrier from '@/ComponentsServices/Courrier.js'
     const links = ref([])
     const audienceData = ref() 
     const {axios_get} = useAxios();
-    const emit = defineEmits(['selectedCourrier'])
+    const emit = defineEmits(['selectedAudience'])
 
     const { courrier_status,getColorCourrier,getColorNote } = UseCourrier()
 
-    const setCourrier = (courrier)=>{
-        emit('selectedCourrier',courrier)
+    const setAudience = (courrier)=>{
+        emit('selectedAudience',courrier)
         // console.log(courrier);
     }
 
@@ -68,7 +71,7 @@ import UseCourrier from '@/ComponentsServices/Courrier.js'
    
 
     onMounted(() => {
-        fetchAudience('audience/list')
+        fetchAudience('../../audience/list')
     })
 
 </script>

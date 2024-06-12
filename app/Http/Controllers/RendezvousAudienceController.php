@@ -36,7 +36,7 @@ class RendezvousAudienceController extends Controller
 
            // changer le statut de l'audience
 
-           Audience::find($request->status)->update(['status'=>2]);
+            Audience::find($request->audience_id)->update(['status'=>2]);
 
            //envoi la notification au user qui a enregistrer l'audience et au mail du demandeur
 
@@ -44,7 +44,7 @@ class RendezvousAudienceController extends Controller
 
         } catch (\Throwable $th) {
             //throw $th;
-            return ['type'=>'error','message'=>"Echec d'enregistrement"];
+            return ['type'=>'error','message'=>"Echec d'enregistrement","errorMessage"=>$th];
         }
     }
 
