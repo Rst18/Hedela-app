@@ -27,7 +27,7 @@
                             :typeCourriers
                             
                             />
-                            <ListCourriers v-show="!createCourrier"  @selectedCourrier="getSelectedCourrier"/>
+                            <ListCourriers v-if="!createCourrier"  @selectedCourrier="getSelectedCourrier"/>
                     </div>
 
                 </div>

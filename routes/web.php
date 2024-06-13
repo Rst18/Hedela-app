@@ -42,6 +42,7 @@ Route::controller(App\Http\Controllers\DocumentController::class)->middleware('a
 
 Route::controller(App\Http\Controllers\ServiceController::class)->middleware('auth')->group(function(){
     Route::get('service','create')->name('service');
+    Route::get('service/{service}/get-doc','get_doc_service');
     Route::post('service/add','store');
     Route::post('service/{service}/update','update');
     Route::post('service/set-document-service/{service}','addDocument');

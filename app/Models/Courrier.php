@@ -39,7 +39,7 @@ class Courrier extends Model
 
             return 'DevRl-'.explode('-',$last_number->number)[1] + 1;
 
-        }else return 'DevRl-'.substr(date("Y"),2).'0000000000';
+        }else return 'DevRl-'.substr(date("Y"),2).'0000000001';
     }
 
    /**

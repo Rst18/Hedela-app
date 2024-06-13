@@ -21,6 +21,7 @@ export default function useAxios(){
     return{
         axios_post,
         axios_get,
-        axios_post_simple
+        axios_post_simple,
+        config
     }
 }

@@ -130,4 +130,9 @@ class ServiceController extends Controller
         }
         
     }
+
+    public function get_doc_service(Service $service){
+        
+        return $service->documents;
+    }
 }
