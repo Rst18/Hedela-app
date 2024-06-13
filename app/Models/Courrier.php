@@ -31,6 +31,17 @@ class Courrier extends Model
         'status'
     ];
 
+    static function genereNumCourrier (){
+        
+        $last_number = Courrier::latest('number')->first();
+
+        if ($last_number !== null) {
+
+            return 'DevRl-'.explode('-',$last_number->number)[1] + 1;
+
+        }else return 'DevRl-'.substr(date("Y"),2).'0000000000';
+    }
+
    /**
     * Get the typeCourrier that owns the Courrier
     *

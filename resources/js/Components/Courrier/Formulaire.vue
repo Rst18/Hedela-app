@@ -61,11 +61,7 @@
             </div>
         </div>
         <div>
-            <fwb-input
-                label="Ficher"
-                type="file"
-                @change="getDocument"
-            />
+            <fwb-file-input v-model="letter_file" label="Ajouter la lettre" />
             <div class="text-red-500" v-if="errors.letter_file">
                 {{ errors.letter_file[0]}}
             </div>
@@ -98,7 +94,7 @@
         </div>
        
         <div class="mt-4">
-            <Fwb-button @click="submitForm">
+            <Fwb-button class="bg-gray-800 hover:bg-slate-400" @click="submitForm">
                 Enregistrer
             </Fwb-button>
         </div>
@@ -123,21 +119,22 @@
     </div>
 </template>
 <script setup >
-import { FwbInput,FwbButton,FwbRadio,FwbP } from 'flowbite-vue'
+import { FwbInput,FwbButton,FwbFileInput ,FwbP } from 'flowbite-vue'
 import useAxios from '@/ComponentsServices/axios.js'
-import {ref} from 'vue'
+import {ref,onMounted} from 'vue'
 import SelectComponent from '@/Components/SelectComponent.vue'
 import UploadAnnexes from '@/Components/UploadAnnexes.vue'
+
     const props = defineProps(
         {
             services:Object,
             typeCourriers:Object,
             courrier:Object,
-            action:String
+            action:String,
         }
     )
     const emit = defineEmits(['newAdded'])
-    const { axios_post_simple,axios_post } = useAxios();
+    const { axios_post_simple,axios_post,axios_get } = useAxios();
 
     const form = ref({
         number:props.courrier.number,
@@ -147,14 +144,14 @@ import UploadAnnexes from '@/Components/UploadAnnexes.vue'
         phone:props.courrier.phone,
         letter_number:props.courrier.letter_number,
         annexes:props.courrier.annexes,
-        letter_file:'',
+        letter_file:null,
         service_id:props.courrier.service_id,
         type_courrier_id:props.courrier.type_courrier_id,
     })
 
     const created_courrier = ref()
     const errors = ref([]); 
-
+    
     const currentService = ref();
 
     const submitForm = ()=>{
@@ -208,4 +205,15 @@ import UploadAnnexes from '@/Components/UploadAnnexes.vue'
 
         } 
     }  
+
+    onMounted(() => {
+
+      axios_get('courrier/new-number').then(({data})=>{
+
+        if (props.action === 'add') {
+
+            form.value.number = data
+        }
+      })  
+    })
 </script>

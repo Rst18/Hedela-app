@@ -64,6 +64,7 @@ Route::controller(App\Http\Controllers\CourrierController::class)->middleware('a
     Route::get('courrier/user','mes_courrier');
     Route::get('courrier-user','mes_courrier_page')->name('mesCourriers');
     Route::post('courrier/cloture/{courrier}','clotureCourrier');
+    Route::get('courrier/new-number','new_number');
 });
 Route::controller(App\Http\Controllers\CommentaireCourrierController::class)->middleware('auth')->group(function(){
     Route::post('commentaire-courrier/add','store');

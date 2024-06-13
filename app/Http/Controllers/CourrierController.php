@@ -46,6 +46,10 @@ class CourrierController extends Controller
 
         return Inertia::render('Courrier/Index',compact('services','typeCourriers'));
     }
+    public function new_number(){
+        
+        return  Courrier::genereNumCourrier();
+    }
 
     /**
      * Store a newly created resource in storage.
