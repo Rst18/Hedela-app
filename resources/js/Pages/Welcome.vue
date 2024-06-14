@@ -1,5 +1,6 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
+import WelcomCardPresentation from '@/Components/WelcomCardPresentation.vue'
 
 defineProps({
     canLogin: {
@@ -36,5 +37,70 @@ function handleImageError() {
                 <a href="/login" class="text-2xl bg-white rounded-full py-2 px-3 hover:ring-4 transition-all duration-500 hover:bg-gray-100 hover:ring-[#ffffff8d] ring-offset-2">Commencez</a>
             </div>
         </div>
+    </div>
+    <div>
+        
+    </div>
+    <div class="grid grid-cols-2 py-24 px-28 gap-9">
+        <span class="text-6xl font-bold text-gray-900 py-8 col-span-2 text-center ">Fonctionnalités puissantes pour une gestion efficace</span>
+
+        <div class="">   
+            <WelcomCardPresentation title="Réception et traitement centralisés">
+                Enregistrez et gérez tous vos courriers entrants et sortants en un seul endroit
+            </WelcomCardPresentation>  
+          
+            <WelcomCardPresentation title="Suivi et traçabilité améliorés">
+                Suivez le parcours de chaque courrier en temps réel et recevez des notifications à chaque étape.
+            </WelcomCardPresentation>  
+            <WelcomCardPresentation title="Organisation simplifiée">
+                Classez et archivez vos courriers de manière intuitive pour un accès rapide et facile.
+            </WelcomCardPresentation>  
+            <WelcomCardPresentation title="Collaboration fluide">
+                Partagez des courriers et des notes avec vos collègues pour une collaboration efficace.
+            </WelcomCardPresentation>  
+            <WelcomCardPresentation title=" Automatisation intelligente">
+                Automatisez des tâches répétitives comme la création de rapports et la gestion des délais.
+                Sécurité renforcée: Protégez vos données sensibles avec des mesures de sécurité robustes.
+            </WelcomCardPresentation>  
+        </div>
+        <div class="">
+
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. 
+            Perferendis recusandae cumque vel illum officiis sapiente ut delectus quis
+             soluta ipsam quibusdam incidunt, quia eum numquam reprehenderit expedita vero vitae consequuntur!
+        </div>
+    </div>
+    <div class="grid grid-cols-2 pb-24 px-28  place-items-center from-[#000000f0] bg-gradient-to-t z-10 to-[#f6f8fac7] ">
+        <span class="text-6xl font-bold text-gray-900 py-8 col-span-2 text-center  ">Gestion des audiences</span>
+        
+        <div class="">
+            <p class="text-4xl px-2 text-slate-200">
+                 Optimisez votre organisation et gagnez en efficacité grâce à 
+           <span class="font-semibold text-gray-700">Hedela-app</span> , la solution complète de gestion des audiences pour les entreprises et les cabinets.
+            </p>
+           
+        </div>
+
+        <div class="">   
+            <WelcomCardPresentation title="Gain de temps, d'efficacité et Réduction des coûts opérationnels">
+                Optimisez vos processus et réduisez le temps consacré à la gestion manuelle des audiences,
+                Diminuez les dépenses liées aux erreurs de planification et aux manques de communication
+            </WelcomCardPresentation>  
+            <WelcomCardPresentation title="Planification simplifiée des audiences">
+                Créez, modifiez et planifiez des audiences en toute simplicité, 
+                en tenant compte des disponibilités des parties prenantes.
+                Organisez des réunions internes et des rencontres avec des clients de manière structurée et efficace.
+            </WelcomCardPresentation>  
+          
+            <WelcomCardPresentation title="Notifications automatiques">
+                Recevez des rappels par e-mail et SMS pour les audiences à venir,
+                 garantissant ainsi que vous ne manquerez jamais un rendez-vous.
+            </WelcomCardPresentation>  
+            <WelcomCardPresentation title="Suivi des progrès en temps réel">
+                 Suivez l'avancement de chaque audience et consultez les notes et les documents associés à tout moment.
+            </WelcomCardPresentation>  
+              
+        </div>
+        
     </div>
 </template>
