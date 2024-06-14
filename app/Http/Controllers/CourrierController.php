@@ -221,4 +221,36 @@ class CourrierController extends Controller
         }
     }
 
+    public function statistique_courrier (){
+
+        // total courrier 
+        $total_Courrier = Courrier::count();
+
+        //total courrier dispatch 
+
+        $total_dispatch = Courrier::where('status',2)->count();
+
+        //courrier non dispatch
+
+        $total_non_dispatch = Courrier::where('status',1)->count();
+
+        //courrier en cours de traitement
+
+        $total_en_cours_traitement = Courrier::where('status',3)->count();
+
+        // courrier cloture
+
+        $total_cloture = Courrier::where('status',4)->count();
+
+        return [
+
+            'total_courriers'=>$total_Courrier,
+            'total_dispatch'=>$total_dispatch,
+            'total_non_dispatch'=>$total_non_dispatch,
+            'total_cloture'=>$total_cloture,
+            'total_en_cours_traitement'=>$total_en_cours_traitement,
+        ];
+
+    }
+
 }
