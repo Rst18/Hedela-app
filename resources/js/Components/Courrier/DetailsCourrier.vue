@@ -2,7 +2,7 @@
     <div class="relative">
         <div class="grid grid-cols-12 py-1 px-6">
             <button v-if="showComponent == 1"  @click="close" class="border w-fit p-1 col-span-2 px-2 bg-slate-100 text-xs text-slate-800 rounded-full ">Liste des courriers</button>
-            <button v-if="showComponent == 1"  @click="showComponent = 4" class="border w-fit p-1 px-2 col-span-2 bg-slate-100 text-xs text-slate-800 rounded-full ">Creer Une note technique</button>
+            <button v-if="showComponent == 1"  @click="showComponent = 4" class="border w-fit p-1 px-2 col-span-2 bg-slate-100 text-xs text-slate-800 rounded-full ">Créer Une note technique</button>
             <button v-if="showComponent > 2"  @click="showComponent = 1" class="border w-fit p-1 px-2 col-span-2 bg-slate-100 text-xs text-slate-800 rounded-full ">Details Courrier</button>
         </div>
 
@@ -47,8 +47,14 @@
                                 <a :href="'download/'+ courrierData.letter_file.replaceAll('/','++')" target="_blank" class="font-bold text-sm text-blue-300 ml-4">Imprimer la lettre</a>
                             </div>
                             <div class="grid grid-cols-1">
-                                <span class="px-2 font-semibold text-slate-500">Annexes ({{ courrierData.annexes.length }})</span>
-                                <a v-for="annexe in courrierData.annexes" :href="'download/'+ annexe.path.replaceAll('/','++')" target="_blank" class="font-bold text-sm text-blue-700 ml-4"> {{ annexe.name }}</a>
+                                <div>
+                                    <span class="px-2 font-semibold text-slate-500">Annexes ({{ courrierData.annexes.length }})</span>
+                                    <span class="text-xs font-semibold text-gray-400 underline cursor-pointer" v-if="total_annexes > courrierData.annexes.length" @click="addAnnexes = !addAnnexes">{{ addAnnexes ? 'Ajouter Annexes':'Annuler' }}</span>
+                                </div>
+                                <div>
+                                    <a v-for="annexe in courrierData.annexes" :href="'download/'+ annexe.path.replaceAll('/','++')" target="_blank" class="font-bold text-sm text-blue-700 ml-4"> {{ annexe.name }}</a>
+                                    <UploadAnnexes v-if="addAnnexes" v-for="doc in annexes_missed" :key="doc.id"  url="annexe-courrier/add" :model_id="courrierData.id" :name="doc.name"/>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -116,18 +122,27 @@
     import moment from 'moment';
     import DispatchCourrier from '@/Components/Courrier/DispatchCourrier.vue'
     import {ref,onMounted} from 'vue'
+    import useAxios from '@/ComponentsServices/axios';
+    
+import UploadAnnexes from '@/Components/UploadAnnexes.vue'
 
     const props = defineProps({
         courrier:Object
     })
+    const {axios_get} = useAxios()
+    
     const emit = defineEmits(['closeMe'])
     const profil = ref('https://ui-avatars.com/api/?name=')
     const courrierData = ref(props.courrier)
     const currentNote = ref({})
     const showComponent = ref(1)
+    const annexes_missed = ref()
+    const total_annexes = ref()
+    const addAnnexes = ref(false)
     const setNewComment = (e)=>{
         courrierData.commentaires.push(e)
     }
+
     const getCurrentNote = (note)=>{
         currentNote.value = note
         showComponent.value = 2
@@ -135,14 +150,24 @@
 
     const newNote = ref({})
     const addUser = (e)=>{
-        // console.log(e);
-        // return
-        // courrierData.users.push(e)
     }
     const removeUser = (e)=>{
         
         courrierData.value.users =  courrierData.value.users.filter((u)=>u.id != e)
     }
+
+    onMounted(() => {
+
+        axios_get('service/'+props.courrier.service_id+'/get-doc').then(({data})=>{
+
+            total_annexes.value = data.length
+            annexes_missed.value = data.filter((obj) => !props.courrier.annexes.some((otherObj) => otherObj.name === obj.name));
+            console.log(annexes_missed.value);
+
+        })  
+    })
+
+
     const close = ()=> emit('closeMe')
     
 </script>

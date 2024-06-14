@@ -12,9 +12,8 @@
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" v-show="!detailsCourrier">
 
                 <div class="">
-                    <div class="">
-                        
-                        <Fwb-button @click="createCourrier = !createCourrier">
+                    <div class="py-2">   
+                        <Fwb-button class="bg-gray-800 hover:bg-slate-500 " @click="createCourrier = !createCourrier">
                             {{ createCourrier ? 'Liste des courriers':'Nouveau Courrier' }}
                         </Fwb-button>
                     </div>
@@ -28,7 +27,7 @@
                             :typeCourriers
                             
                             />
-                            <ListCourriers v-show="!createCourrier"  @selectedCourrier="getSelectedCourrier"/>
+                            <ListCourriers v-if="!createCourrier"  @selectedCourrier="getSelectedCourrier"/>
                     </div>
 
                 </div>
@@ -44,26 +43,24 @@
 import SideBarLayout from '@/Layouts/SideBarLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import Formulaire from '@/Components/Courrier/Formulaire.vue'
-import ListRoles from '@/Components/Role/ListRoles.vue'
 import {ref,onMounted} from 'vue'
-import { FwbTab, FwbTabs,FwbButton } from 'flowbite-vue'
+import { FwbButton } from 'flowbite-vue'
 import ListCourriers from '@/Components/Courrier/ListCourriers.vue'
 import DetailsCourrier from '@/Components/Courrier/DetailsCourrier.vue'
-    const activeTab = ref('first')
     const props = defineProps({
         typeCourriers:Object,
-        services:Object
+        services:Object,
     })
     const courrierData = ref([])
-    const courrier = ref({})
+    const courrier = ref({
+    })
     const createCourrier = ref(false)
     const currentCourrier = ref()
     const detailsCourrier = ref(false)
 
     const getSelectedCourrier = (e)=>{
-        
         currentCourrier.value = e
-      detailsCourrier.value = true
+        detailsCourrier.value = true
     }
 
     const refreshList = (e)=>{

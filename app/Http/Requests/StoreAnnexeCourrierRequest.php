@@ -26,8 +26,8 @@ class StoreAnnexeCourrierRequest extends FormRequest
             'path' => [
                 'required',
                 'file', // Rule for uploaded file
-                'max:5024', // Maximum file size in kilobytes (adjust as needed)
-                //'mimeTypes' => ['pdf', 'docx', 'doc'], // Allowed MIME types (adjust as needed)
+                'max:1024', // Maximum file size in kilobytes (adjust as needed)
+                // 'mimeTypes' => ['pdf', 'docx', 'doc','png'], // Allowed MIME types (adjust as needed)
             ],
             'courrier_id'=>'required|exists:courriers,id'
         ];

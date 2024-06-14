@@ -62,7 +62,7 @@ import Animation from '@/Components/Animation.vue';
     const audienceData = ref() 
     const {axios_get} = useAxios();
     const emit = defineEmits(['selectedAudience','new'])
-
+   
     const { statut_audience,get_status } = UseAudience()
 
     const setAudience = (courrier)=>{
@@ -70,6 +70,8 @@ import Animation from '@/Components/Animation.vue';
     }
     const create = ()=>emit('new')
     const waitingData = ref(true)
+
+
     const fetchAudience = (url)=>{
         axios_get(url).then(({data:pagination})=>{
            audienceData.value = pagination.data           
