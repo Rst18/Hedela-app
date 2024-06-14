@@ -2,7 +2,7 @@
     <div class="relative">
         <div class="grid grid-cols-12 py-1 px-6">
             <button v-if="showComponent == 1"  @click="close" class="border w-fit p-1 col-span-2 px-2 bg-slate-100 text-xs text-slate-800 rounded-full ">Liste des courriers</button>
-            <button v-if="showComponent == 1"  @click="showComponent = 4" class="border w-fit p-1 px-2 col-span-2 bg-slate-100 text-xs text-slate-800 rounded-full ">Creer Une note technique</button>
+            <button v-if="showComponent == 1"  @click="showComponent = 4" class="border w-fit p-1 px-2 col-span-2 bg-slate-100 text-xs text-slate-800 rounded-full ">Créer Une note technique</button>
             <button v-if="showComponent > 2"  @click="showComponent = 1" class="border w-fit p-1 px-2 col-span-2 bg-slate-100 text-xs text-slate-800 rounded-full ">Details Courrier</button>
         </div>
 
