@@ -3,7 +3,9 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Task;
 use App\Models\Courrier;
+use App\Models\Timesheet;
 use App\Models\RendezvousAudience;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -76,6 +78,18 @@ class User extends Authenticatable
     public function rendezvouss(): BelongsToMany
     {
         return $this->belongsToMany(RendezvousAudience::class);
+    }
+
+   
+    public function tasks(): BelongsToMany
+    {
+        return $this->belongsToMany(Task::class);
+    }
+
+    
+    public function timesheets(): HasMany
+    {
+        return $this->hasMany(Timesheet::class);
     }
 
 
