@@ -47,7 +47,7 @@ class TaskController extends Controller
                 $task = Task::create($request->validated());
 
                 // set the creator of this task as a keep inform
-               // $tache->keepInformed()->attach(Auth::user()->id);
+                $task->keepInformed()->attach(Auth::user()->id);
 
                 return ['type'=>'success','message'=>'Enregistrement reussi','new'=>$task];
 
@@ -81,8 +81,10 @@ class TaskController extends Controller
      * Update the specified resource in storage.
      */
     public function update(UpdateTaskRequest $request, Task $task)
+
     {
         try {
+            return $task->user_id;
             
            // if (Group::test_group(['Admin','AdminBiblio','AdminDevs'])) {
 
@@ -211,17 +213,17 @@ class TaskController extends Controller
       
     }
 
-    public function tache_list()
+    public function task_list()
     {
        
-        $taches = Tasks::join('users','users.id','tasks.user_id')->with(['timesheets'=>function($q){
+        $tasks = Task::join('users','users.id','tasks.user_id')->with(['timesheets'=>function($q){
             $q->join('users','users.id','timesheets.user_id')
-            ->with('commentaires');
+           ->with('comments');
         }])
           ->with('users')
           ->with('keepInformed')
-           ->with(['commentaires'=>function($query){
-                $query->join('users','users.id','tache_commentaires.user_id');
+           ->with(['comments'=>function($query){
+                $query->join('users','users.id','task_comments.user_id');
             }])
         ->get();
        
@@ -254,12 +256,12 @@ class TaskController extends Controller
         return User::where('id',$user)->with(['tasks'=>function($query){
             $query->with(['timesheets'=>function($q){
                 $q->join('users','users.id','timesheets.user_id')
-                ->with('commentaires');
+                ->with('comments');
             }])
             ->with('users')
             ->with('keepInformed')
-            ->with(['commentaires'=>function($query){
-                $query->join('users','users.id','tache_commentaires.user_id');
+            ->with(['comments'=>function($query){
+                $query->join('users','users.id','task_comments.user_id');
             }]);
         }])->first();
        
@@ -276,8 +278,8 @@ class TaskController extends Controller
             }])
             ->with('users')
             ->with('keepInformed')
-            ->with(['commentaires'=>function($query){
-                $query->join('users','users.id','tache_commentaires.user_id');
+            ->with(['comments'=>function($query){
+                $query->join('users','users.id','task_comments.user_id');
             }]);
         }])->first();
        

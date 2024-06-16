@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Role;
+use App\Models\TaskComment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -31,5 +32,16 @@ class Task extends Model
     public function timesheets(): HasMany
     {
         return $this->hasMany(Timesheet::class);
+    }
+    public function comments(): HasMany
+    {
+        return $this->hasMany(TaskComment::class);
+    }
+
+    
+    // Task model
+    public function keepInformed()
+    {
+        return $this->belongsToMany(User::class, 'task_keep_informed');
     }
 }

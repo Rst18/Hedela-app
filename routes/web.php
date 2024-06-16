@@ -104,6 +104,37 @@ Route::controller(App\Http\Controllers\RendezvousAudienceController::class)->mid
     Route::post('rendezvous/set-rendezvous-user/{user}','addRendezvous');
     Route::post('rendezvous/remove-rendezvous-user/{user}','removeRendezvous');
 });
+Route::controller(App\Http\Controllers\TaskController::class)->middleware('auth')->group(function(){
+    Route::get('task','task_dashbord')->name('task');
+    Route::get('task-create','create')->name('task-create');
+    Route::get('task-list','task_list')->name('task-list');
+    Route::get('task-attrib-group','task_attrib_group')->name('task-attrib-group');
+    Route::post('task-save','store');
+    Route::post('task-update/{tache}','update');
+    Route::post('set-tache-group','addGroupTache');
+    Route::post('remove-tache-group','removeUserTache');
+    Route::post('set-tache-user','addUserTache');
+    Route::post('remove-tache-user','removeUserTache');
+    Route::get('group-user-tache','group_user_tasks')->name('task-attrib-user');
+    Route::get('user/{user}/task','getMyTasks');
+    Route::get('user/task','getMyTasksweb');
+    Route::get('statistic/task','getStatistic');
+});
+
+Route::controller(App\Http\Controllers\TaskCommentController::class)->middleware('auth')->group(function(){
+  
+    Route::post('taks/comment/add','store');
+    Route::post('task/update/comment/{taskComment}','update');
+});
+
+
+Route::controller(App\Http\Controllers\TimesheetController::class)->middleware('auth')->group(function(){
+  
+    Route::post('timesheet','store');
+    Route::get('task/timesheet/{tache}','getMyTimesheetsForTask');
+    Route::get('task/timesheet/user/{tache}','getTimesheetsForTask');
+    Route::post('timesheet/update/{timesheet}','update');
+});
 
 
 
