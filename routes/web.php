@@ -55,7 +55,7 @@ Route::controller(App\Http\Controllers\TypeCourrierController::class)->middlewar
 });
 Route::controller(App\Http\Controllers\CourrierController::class)->middleware('auth')->group(function(){
     Route::get('download/{id}','downloadFile');
-    Route::get('courrier','create')->name('courrier');
+    Route::get('courrier','create')->name('courrier.create');
     Route::get('courrier-dispatch','dispatch');
     Route::get('courrier/list','index')->name('courrier.lists');
     Route::post('courrier/add','store');

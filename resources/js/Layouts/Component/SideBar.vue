@@ -122,7 +122,7 @@
             </svg>
           </template>
         </SideBarItemDropDown>
-        <SideBarItemDropDown  path="courrier" name="Courrier">
+        <SideBarItemDropDown  path="courrier.create" name="Courrier">
           <template #icon>
             <svg
               aria-hidden="true"
