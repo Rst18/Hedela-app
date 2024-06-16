@@ -57,7 +57,8 @@ Route::controller(App\Http\Controllers\CourrierController::class)->middleware('a
     Route::get('download/{id}','downloadFile');
     Route::get('courrier','create')->name('courrier.create');
     Route::get('courrier-dispatch','dispatch');
-    Route::get('courrier/list','index')->name('courrier.lists');
+    Route::get('courrier/list','index')->name('courrier.list');
+    Route::get('courrier/list-protocole','list_courrier_protocol')->name('courrier.listProtocole');
     Route::post('courrier/add','store');
     Route::post('courrier/{courrier}/update','update');
     Route::post('courrier/set-courrier-user/{user}','addCourrier');

@@ -33,7 +33,15 @@ class CourrierController extends Controller
         }])
         ->join('services','services.id','service_id')
         ->join('type_courriers','type_courriers.id','type_courrier_id')
+        ->orderBy('created_at','DESC')
         ->paginate(20);
+    }
+
+    public function list_courrier_protocol(){
+        $services = Service::with('documents')->get();
+        $typeCourriers = TypeCourrier::all();
+
+        return Inertia::render('Courrier/ListCourrierProtocole',compact('services','typeCourriers'));
     }
 
     /**

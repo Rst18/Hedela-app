@@ -71,7 +71,7 @@ import Animation from '@/Components/Animation.vue';
    
 
     onMounted(() => {
-        fetchCourrier('courrier/list')
+        fetchCourrier('../courrier/list')
     })
 
 </script>
