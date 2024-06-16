@@ -44,6 +44,11 @@ class CourrierController extends Controller
         return Inertia::render('Courrier/ListCourrierProtocole',compact('services','typeCourriers'));
     }
 
+    public function dispatch(){
+
+        return Inertia::render('Courrier/Dispatch');
+    }
+
     /**
      * Show the form for creating a new resource.
      */

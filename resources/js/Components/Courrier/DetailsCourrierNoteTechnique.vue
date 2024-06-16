@@ -2,7 +2,8 @@
     <div class="relative">
         <div class="grid grid-cols-12 py-1 px-6">
             <button v-if="showComponent == 1"  @click="close" class="border w-fit p-1 col-span-2 px-2 bg-slate-100 text-xs text-slate-800 rounded-full ">Liste des courriers</button>
-            <button v-if="showComponent > 2"  @click="showComponent = 1" class="border w-fit p-1 px-2 col-span-2 bg-slate-100 text-xs text-slate-800 rounded-full ">Retour</button>
+            <button v-if="showComponent == 1"  @click="showComponent = 4" class="border w-fit p-1 px-2 col-span-2 bg-slate-100 text-xs text-slate-800 rounded-full ">Créer Une note technique</button>
+            <button v-if="showComponent > 2"  @click="showComponent = 1" class="border w-fit p-1 px-2 col-span-2 bg-slate-100 text-xs text-slate-800 rounded-full ">Details Courrier</button>
         </div>
 
         <div class="grid grid-cols-12 px-6 gap-2" v-show="showComponent == 1">
@@ -58,7 +59,7 @@
                         </div>
                     </div>
                     <div class="p-4 shadow-sm border ">
-                        <span class="text-md font-bold py-2" >Discussions ( {{ courrierData.commentaires ? courrierData.commentaires.length : 0  }} )</span>
+                        <span class="text-lg font-bold py-2" >Discussions ( {{ courrierData.commentaires ? courrierData.commentaires.length : 0  }} )</span>
                         <div class="mt-4">
                             <div class="px-4">
                                 <div v-for="commentaire in courrierData.commentaires" class="shadow-sm p-4 m-2 grid grid-cols-12">
@@ -95,10 +96,22 @@
                         <span >{{ user.name }}</span>
                     </div>
                 </div>
-               
+                <div>
+                    <span class="font-semibold text-gray-500">
+                        Notes Techniques ({{ courrier.note_techniques.length }})
+                    </span>
+                    <div class="py-2">
+                        <div @click="getCurrentNote(note)" v-for="note in courrier.note_techniques" :key="note.id" class="text-xs hover:cursor-pointer hover:bg-slate-100 p-1">
+                           <span> {{ note.name }}</span>
+                           <span class="ml-2"> {{ moment(note.created_at).format('ll') }}</span>
+                        </div>
+                    </div>
+                </div>
     
             </div>
         </div>
+        <NoteTechniqueForm :courrier v-if="showComponent == 4" action="add" :note="newNote"/>
+         <DetailsNoteTechnique @closeMe="showComponent = 1" :note="currentNote"  v-if="showComponent == 2 "/>
          <DispatchCourrier @userAdded="addUser" @userRemoved="removeUser" :courrier v-if="showComponent == 3"/>
     </div>
 </template>
@@ -127,7 +140,7 @@ import UploadAnnexes from '@/Components/UploadAnnexes.vue'
     const total_annexes = ref()
     const addAnnexes = ref(false)
     const setNewComment = (e)=>{
-        courrierData.value.commentaires.push(e)
+        courrierData.commentaires.push(e)
     }
 
     const getCurrentNote = (note)=>{
