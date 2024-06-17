@@ -116,6 +116,11 @@ Route::controller(App\Http\Controllers\RendezvousAudienceController::class)->mid
     Route::post('rendezvous/set-rendezvous-user/{user}','addRendezvous');
     Route::post('rendezvous/remove-rendezvous-user/{user}','removeRendezvous');
 });
+Route::controller(App\Http\Controllers\BatimentController::class)->middleware('auth')->group(function(){
+    Route::post('batiment/add','store');
+    Route::get('batiment/list','index');
+    Route::get('batiment/create','create');
+});
 
 
 
