@@ -81,10 +81,20 @@
             </div>
         </div>
         <div class="mt-4">
-        <Fwb-button class="bg-gray-800" @click="submitForm">
-            Enregistrer
-        </Fwb-button>
+        
+            <Fwb-button class="bg-gray-800 hover:bg-slate-700" @click="submitForm">
+                Enregistrer
+            </Fwb-button>
+            <Fwb-button @click="addAcc = true" class="bg-gray-500 hover:bg-slate-400">
+                Ajout Accompagnateurs
+            </Fwb-button>
+        </div>
+    
+
     </div>
+    <div>
+        <AjoutAccompagnateurForm @add="addAccompagnateur" v-if="addAcc"/>
+        <ListAccompagnateurs @delete="removeElement" :accompagnateurs v-if="addAcc"/>
     </div>
 </template>
 <script setup>
@@ -92,13 +102,17 @@
 import { FwbInput,FwbButton,FwbRadio,FwbP,FwbTextarea } from 'flowbite-vue'
 import SelectComponent from '@/Components/SelectComponent.vue'
     import useAxios from '@/ComponentsServices/axios.js'
+    import AjoutAccompagnateurForm from '@/Components/Audience/AjoutAccompagnateurForm.vue'
+    import ListAccompagnateurs from '@/Components/Audience/ListAccompagnateurs.vue'
     import {ref} from 'vue'
-        
+    import Swal from 'sweetalert2';  
+
         const props = defineProps({
             audience:Object,
             option:String,
             users:Object
         })
+        const addAcc= ref(false)
 
         const emit = defineEmits(['added','updated'])
 
@@ -111,7 +125,9 @@ import SelectComponent from '@/Components/SelectComponent.vue'
             user_requested:'',
             date_proposition:props.audience.date_proposition,
             piece:props.audience.piece,
-            fonction:props.audience.fonction
+            fonction:props.audience.fonction,
+            accompag :''
+           
 
 
         })
@@ -120,13 +136,21 @@ import SelectComponent from '@/Components/SelectComponent.vue'
         const getSeletedOption = (e) => form.value.user_requested = e
 
         const submitForm = ()=>{
-            console.log(form.value);
             if (props.option ==='add') {
 
+                form.value.accompag = JSON.stringify(accompagnateurs.value)
+
                 axios_post_simple('../../audience/add',form.value).then(({data})=>{
-                    console.log(data);
+
+
                    if (data.type ==='success') {
-                        emit('added',data.new)
+
+                        Swal.fire(data.type,data.message,data.type).then(()=>{
+                            addAcc.value = false
+                            form.value = {}
+                            emit('added',data.new)
+                        })
+
                    }
                 })
             }else if(props.option ==='update'){
@@ -143,5 +167,12 @@ import SelectComponent from '@/Components/SelectComponent.vue'
             }
         }
 
+        const accompagnateurs =ref([])
+        const addAccompagnateur = (e)=>{
+            accompagnateurs.value.push(e)
+        }
+        const removeElement =(e)=>{
+            accompagnateurs.value = accompagnateurs.value.filter((el)=>el!=e)
+        }
 
 </script>

@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Models\Audience;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\AccompagnateurAudience;
 use App\Http\Requests\StoreAudienceRequest;
 use App\Http\Requests\UpdateAudienceRequest;
 
@@ -23,7 +24,10 @@ class AudienceController extends Controller
                 $qry->with('roles');
             }]);
         }])
-        ->join('users','users.id','audiences.user_requested')->paginate(10);
+        ->with('accompagnateurs')
+        ->join('users','users.id','audiences.user_requested')
+        ->orderBy('created_at','DESC')
+        ->paginate(10);
     }
     public function myList()
     {
@@ -33,8 +37,10 @@ class AudienceController extends Controller
                 $qry->with('roles');
             }]);
         }])
+        ->with('accompagnateurs')
         ->join('users','users.id','audiences.user_requested')
         ->where('user_requested',Auth::user()->id)
+        ->orderBy('created_at','DESC')
         ->paginate(10);
     }
 
@@ -52,9 +58,24 @@ class AudienceController extends Controller
      */
     public function store(StoreAudienceRequest $request)
     {
+      
         try {
+            $acaccompagnateurs = json_decode($request->accompag);
 
             $audience = Audience::create($request->validated());
+
+            if ( count($acaccompagnateurs) > 0) {
+
+                for ($i=0; $i <count($acaccompagnateurs) ; $i++) {
+                     
+                    AccompagnateurAudience::create([
+                        'name'=>$acaccompagnateurs[$i]->name,
+                        'email'=>$acaccompagnateurs[$i]->email,
+                        'phone'=>$acaccompagnateurs[$i]->phone,
+                        'audience_id'=>$audience->id
+                    ]);
+                }
+            }
 
             //Envoie de la notification a l'user_requested
 

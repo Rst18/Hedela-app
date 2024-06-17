@@ -10,9 +10,6 @@
 
         <div class="py-14 max-w-7xl mx-auto sm:px-6 lg:px-8">
             <AudienceForm :users option="add" @added="showComponent=1" :audience/>
-            <!-- <ListAudience @new="showComponent = 2"   :audience v-if="showComponent == 1" @selectedAudience="get_selected_audience"/> -->
-            <!-- <DetailsAudience @closeMe="showComponent = 1"   :audience="currentAudience" v-if="showComponent == 3" /> -->
-            
         </div>
     </SideBarLayout>
 </template>
