@@ -1,19 +1,15 @@
 
 
 <template>
-    <Head title="Courriers" />
+    <Head title="Audiences" />
 
     <SideBarLayout>
         <template #header>
-            <h2 class="font-semibold text-xl  text-gray-800 leading-tight">Audience</h2>
+            <h2 class="font-semibold text-xl  text-gray-800 leading-tight">Soliciter une audience</h2>
         </template>
 
-        <div class="py-2">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <AudienceForm :users option="add" @added="showComponent=1" :audience v-if="showComponent == 2"/>
-                <ListAudience @new="showComponent = 2"   :audience v-if="showComponent == 1" @selectedAudience="get_selected_audience"/>
-                <DetailsAudience @closeMe="showComponent = 1"   :audience="currentAudience" v-if="showComponent == 3" />
-            </div>
+        <div class="py-14 max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <AudienceForm :users option="add" @added="showComponent=1" :audience/>
         </div>
     </SideBarLayout>
 </template>

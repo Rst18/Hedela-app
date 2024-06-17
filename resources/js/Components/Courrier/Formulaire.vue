@@ -1,6 +1,6 @@
 <template>
     <div >
-        <div class="p-4 shadow-md rounded-md grid grid-cols-2 gap-4" v-if="!created_courrier">
+        <div class="p-6 shadow-md rounded-md grid grid-cols-2 gap-4" v-if="!created_courrier">
             <div>
                 <fwb-input
                     v-model="form.number"
@@ -165,12 +165,9 @@ import Swal from 'sweetalert2';
 
             axios_post('courrier/add',form.value).then(({data})=>{
                 Swal.fire(data.type,data.message,data.type)
-
-
-                console.log(data)
                 created_courrier.value = data.new
                 emit('newAdded',data.new)
-
+                form.value = {}
             }).catch((error)=>{
 
                 if (error.response.status === 422) {
@@ -184,7 +181,6 @@ import Swal from 'sweetalert2';
         }else if(props.action === 'update'){
             let id = +props.courrier.id
             axios_post_simple('courrier/'+id+'/update',form.value).then(({data})=>{
-                console.log(data)
                 emit('newAdded',data.new)
             }).catch((error)=>{
                 console.log(error.response)

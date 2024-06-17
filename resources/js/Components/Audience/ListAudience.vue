@@ -4,9 +4,6 @@
         <Animation  />
     </div>
     <div v-else>
-        <Fwb-button class="bg-gray-800" @click="create">
-           Soliciter Audience
-       </Fwb-button>
        <form >
            <div class="mt-3 w-full p-3 font-semibold bg-gray-100 grid grid-cols-12 text-sm">
                <div class="col-span-1">#</div>
@@ -30,7 +27,7 @@
    
               <div class="flex flex-row w-full px-4 md:w-9/12 justify-center items-center mx-auto">
                 <div v-for="link in links">
-                   <button class="text-grey-darker text-xs md:text-sm px-1  md:px-2 py-1 m-1 border" @click="fetchAudience(link.url)" v-html="link.label"></button>
+                   <button class="text-grey-darker text-xs md:text-sm px-1  md:px-2 py-1 m-1 border" @click.prevent="fetchAudience(link.url)" v-html="link.label"></button>
                </div>
            </div>
           </div>
@@ -61,6 +58,7 @@ import Animation from '@/Components/Animation.vue';
     const links = ref([])
     const audienceData = ref() 
     const {axios_get} = useAxios();
+    const props = defineProps({path:String})
     const emit = defineEmits(['selectedAudience','new'])
    
     const { statut_audience,get_status } = UseAudience()
@@ -85,7 +83,7 @@ import Animation from '@/Components/Animation.vue';
    
 
     onMounted(() => {
-        fetchAudience('../../audience/list')
+        fetchAudience(props.path)
     })
 
 </script>

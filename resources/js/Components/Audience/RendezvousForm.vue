@@ -59,7 +59,7 @@
             if (props.option ==='add') {
 
                 axios_post_simple('../../rendezvous/add',form.value).then(({data})=>{
-                    console.log(data);
+                   
                    if (data.type ==='success') {
                         emit('added',data.new)
                    }
@@ -69,7 +69,7 @@
                 let id = props.rendezvous.id;
 
                 axios_post_simple('../../rendezvous/update/'+id,form.value).then(({data})=>{
-                    console.log(data);
+                   
                     if (data.type ==='success') {
                         emit('updated',data.new)
                     }

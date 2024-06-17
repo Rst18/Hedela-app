@@ -55,9 +55,13 @@ Route::controller(App\Http\Controllers\TypeCourrierController::class)->middlewar
 });
 Route::controller(App\Http\Controllers\CourrierController::class)->middleware('auth')->group(function(){
     Route::get('download/{id}','downloadFile');
-    Route::get('courrier','create')->name('courrier');
+    Route::get('courrier','create')->name('courrier.create');
     Route::get('courrier-dispatch','dispatch');
-    Route::get('courrier/list','index')->name('courrier.lists');
+    Route::get('courrier/list','index')->name('courrier.list');
+    Route::get('courrier/list-validation','courrier_where_has_note');
+    Route::get('courrier/validation','courrier_where_has_note_page')->name('courrier.listValidation');
+    Route::get('courrier/list-protocole','list_courrier_protocol')->name('courrier.listProtocole');
+    Route::get('courrier/dispatch','dispatch')->name('courrier.dispatch');
     Route::post('courrier/add','store');
     Route::post('courrier/{courrier}/update','update');
     Route::post('courrier/set-courrier-user/{user}','addCourrier');
@@ -67,6 +71,7 @@ Route::controller(App\Http\Controllers\CourrierController::class)->middleware('a
     Route::post('courrier/cloture/{courrier}','clotureCourrier');
     Route::get('courrier/new-number','new_number');
     Route::get('courrier/statistique','statistique_courrier');
+    Route::get('testmail','testMail');
 });
 Route::controller(App\Http\Controllers\CommentaireCourrierController::class)->middleware('auth')->group(function(){
     Route::post('commentaire-courrier/add','store');
@@ -76,6 +81,7 @@ Route::controller(App\Http\Controllers\NoteTechniqueController::class)->middlewa
     Route::post('note-technique/add','store');
     Route::post('note-technique/update/{noteTechnique}','update');
     Route::post('note-technique/valider/{noteTechnique}','valider');
+    Route::post('note-technique/inValider/{noteTechnique}','inValider');
     Route::get('note-technique/list','my_technical_notes');
     Route::get('note-technique','my_technical_notes_page')->name('mes_Notes');
     Route::get('note-technique/secretariat','noteTechniqueForSecretaria');
@@ -91,9 +97,15 @@ Route::controller(App\Http\Controllers\AnnexeCourrierController::class)->middlew
 });
 Route::controller(App\Http\Controllers\AudienceController::class)->middleware('auth')->group(function(){
 
-    Route::get('audience/create','create')->name('audience');
+    Route::get('audience/create','create')->name('audience.create');
     Route::get('audience/list','index');
+    Route::get('audience/myList','myList');
+    Route::get('audience/list-protocole','list_protocole')->name('audience.listProtocole');
+    Route::get('audience/mes-audiences','mes_audiences')->name('audience.mesAudiences');
     Route::post('audience/add','store');
+    Route::post('audience/{audience}/transfert','transfert');
+    Route::post('audience/{audience}/accept','accept');
+    Route::post('audience/{audience}/refuse','refuse');
     Route::post('audience/close/{audience}','close');
 
 });

@@ -5,38 +5,20 @@
 
     <SideBarLayout>
         <template #header>
-            <h2 class="font-semibold text-xl  text-gray-800 leading-tight">Courriers</h2>
+            <h2 class="font-semibold text-xl  text-gray-800 leading-tight">Enregistrement Courriers</h2>
         </template>
 
-        <div class="py-2">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" v-show="!detailsCourrier">
-
-                <div class="">
-                    <div class="py-2">   
-                        <Fwb-button class="bg-gray-800 hover:bg-slate-500 " @click="createCourrier = !createCourrier">
-                            {{ createCourrier ? 'Liste des courriers':'Nouveau Courrier' }}
-                        </Fwb-button>
-                    </div>
-                    <div>
-                        <Formulaire
-                            v-if="createCourrier"
-                            action="add"
-                            @newAdded="refreshList" 
-                            :courrier
-                            :services
-                            :typeCourriers
-                            
-                            />
-                            <ListCourriers v-if="!createCourrier"  @selectedCourrier="getSelectedCourrier"/>
-                    </div>
-
-                </div>
-               
-            </div>
-            <div v-if="detailsCourrier">
-                <DetailsCourrier @closeMe="detailsCourrier = false" :courrier="currentCourrier" />
-            </div>
+        <div class="py-2 max-w-7xl mx-auto sm:px-6 lg:px-8">
+          
+            <Formulaire
+                action="add"
+                :courrier
+                :services
+                :typeCourriers
+                
+                />
         </div>
+
     </SideBarLayout>
 </template>
 <script setup>
@@ -54,19 +36,7 @@ import DetailsCourrier from '@/Components/Courrier/DetailsCourrier.vue'
     const courrierData = ref([])
     const courrier = ref({
     })
-    const createCourrier = ref(false)
-    const currentCourrier = ref()
-    const detailsCourrier = ref(false)
 
-    const getSelectedCourrier = (e)=>{
-        currentCourrier.value = e
-        detailsCourrier.value = true
-    }
-
-    const refreshList = (e)=>{
-        courrierData.value.push(e)
-        createCourrier.value = false
-    }
     onMounted(()=>{
         courrierData.value = props.roles
     })

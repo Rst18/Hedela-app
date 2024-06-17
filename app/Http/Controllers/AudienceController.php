@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Audience;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\AccompagnateurAudience;
 use App\Http\Requests\StoreAudienceRequest;
 use App\Http\Requests\UpdateAudienceRequest;
 
@@ -21,7 +24,24 @@ class AudienceController extends Controller
                 $qry->with('roles');
             }]);
         }])
-        ->join('users','users.id','audiences.user_requested')->paginate(10);
+        ->with('accompagnateurs')
+        ->join('users','users.id','audiences.user_requested')
+        ->orderBy('created_at','DESC')
+        ->paginate(10);
+    }
+    public function myList()
+    {
+        return Audience::select('audiences.*','users.name as autorite')
+        ->with(['rendezvous'=>function($q){
+            $q->with(['users'=>function($qry){
+                $qry->with('roles');
+            }]);
+        }])
+        ->with('accompagnateurs')
+        ->join('users','users.id','audiences.user_requested')
+        ->where('user_requested',Auth::user()->id)
+        ->orderBy('created_at','DESC')
+        ->paginate(10);
     }
 
     /**
@@ -38,9 +58,24 @@ class AudienceController extends Controller
      */
     public function store(StoreAudienceRequest $request)
     {
+      
         try {
+            $acaccompagnateurs = json_decode($request->accompag);
 
             $audience = Audience::create($request->validated());
+
+            if ( count($acaccompagnateurs) > 0) {
+
+                for ($i=0; $i <count($acaccompagnateurs) ; $i++) {
+                     
+                    AccompagnateurAudience::create([
+                        'name'=>$acaccompagnateurs[$i]->name,
+                        'email'=>$acaccompagnateurs[$i]->email,
+                        'phone'=>$acaccompagnateurs[$i]->phone,
+                        'audience_id'=>$audience->id
+                    ]);
+                }
+            }
 
             //Envoie de la notification a l'user_requested
 
@@ -110,6 +145,73 @@ class AudienceController extends Controller
             //throw $th;
             
             return ['type'=>'error','message'=>'Echec d\'Enregistrement','errorMessage'=>$th];
+        }
+    }
+
+    public function list_protocole(){
+        return Inertia::render('Audience/ListAudienceProtocole');
+    }
+    public function mes_audiences(){
+        
+        return Inertia::render('Audience/MesAudiences');
+    }
+    public function list_admin(){
+        $users  = User::all();
+        return Inertia::render('Audience/ListAudienceAdmin',compact('users'));
+    }
+
+    public function transfert(Request $request,Audience $audience){
+
+        try {
+
+            $user = User::find($request->user_id);
+           
+            if ($user != null) {
+                
+                $audience->update([
+                    'user_requested'=> $user->id,
+                    'audience_from'=>Auth::user()->id
+                ]);
+
+                return ['type'=>'success','message'=>'Audience Transferee'];
+
+            }
+            return ['type'=>'error','message'=>'Aucune information trouvee pour cet utilisateur'];
+
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            return ['type'=>'error','message'=>'Echec de transfert','errorMessage'=>$th];
+        }
+    }
+    public function accept(Audience $audience){
+
+        try {  
+            
+            $audience->update([
+                'status'=>2
+            ]);
+
+            return ['type'=>'success','message'=>'Audience Transferee'];
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            return ['type'=>'error','message'=>'Echec de transfert','errorMessage'=>$th];
+        }
+    }
+    public function refuse(Audience $audience){
+
+        try {  
+
+            $audience->update([
+                'status'=>1
+            ]);
+
+            return ['type'=>'success','message'=>'Audience Transferee'];
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            return ['type'=>'error','message'=>'Echec de transfert','errorMessage'=>$th];
         }
     }
 }

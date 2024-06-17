@@ -7,10 +7,12 @@ use Inertia\Inertia;
 use App\Models\Service;
 use App\Models\Courrier;
 use App\Models\TypeCourrier;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreCourrierRequest;
+use App\Notifications\DispatchNotification;
 use App\Http\Requests\UpdateCourrierRequest;
 
 class CourrierController extends Controller
@@ -28,12 +30,44 @@ class CourrierController extends Controller
 
         ->with(['noteTechniques'=>function($qry){
             $qry->with('commentaires');
-            $qry->select('users.name','note_techniques.*');
+            $qry->select('users.name as user_name','note_techniques.*');
             $qry->join('users','users.id','note_techniques.user_id');
         }])
         ->join('services','services.id','service_id')
         ->join('type_courriers','type_courriers.id','type_courrier_id')
+        ->orderBy('created_at','DESC')
         ->paginate(20);
+    }
+
+    public function courrier_where_has_note(){
+        return Courrier::select('courriers.*','services.name as service_name ','type_courriers.name as type_courrier_name')
+        ->whereHas('noteTechniques')
+        ->with(['commentaires'=>function($q){$q->join('users','users.id','commentaire_courriers.user_id');}])
+        ->with(['users'=>function($qry){}])
+        ->with(['annexes'=>function($qry){}])
+        ->with(['services'=>function($qry){}])
+
+        ->with(['noteTechniques'=>function($qry){
+            $qry->with('commentaires');
+            $qry->select('users.name as user_name','note_techniques.*');
+            $qry->join('users','users.id','note_techniques.user_id');
+        }])
+        ->join('services','services.id','service_id')
+        ->join('type_courriers','type_courriers.id','type_courrier_id')
+        ->orderBy('created_at','DESC')
+        ->paginate(10);
+    }
+
+    public function list_courrier_protocol(){
+        $services = Service::with('documents')->get();
+        $typeCourriers = TypeCourrier::all();
+
+        return Inertia::render('Courrier/ListCourrierProtocole',compact('services','typeCourriers'));
+    }
+
+    public function dispatch(){
+
+        return Inertia::render('Courrier/Dispatch');
     }
 
     /**
@@ -140,7 +174,7 @@ class CourrierController extends Controller
         try {
 
             $user->courriers()->attach($request->courrier);
-
+            $user->notify(new DispatchNotification());
             // change the status of courrier
             $c = Courrier::find($request->courrier);
 
@@ -180,6 +214,8 @@ class CourrierController extends Controller
             ->with(['annexes'=>function($qry){}])
             ->with(['noteTechniques'=>function($qry){
                 $qry->with('commentaires');
+                $qry->select('users.name as user_name','note_techniques.*');
+                $qry->join('users','users.id','note_techniques.user_id');
             }])
             
         ->join('services','services.id','service_id')
@@ -251,6 +287,24 @@ class CourrierController extends Controller
             'total_en_cours_traitement'=>$total_en_cours_traitement,
         ];
 
+    }
+
+    public function courrier_where_has_note_page(){
+        return Inertia::render('Courrier/ValidationNoteTechnique');
+    }
+
+    public function testMail(){
+        // $data = [
+        //     'name' => 'John Doe',
+        //     'message' => 'This is a test email from Laravel.',
+        // ];
+    
+        // Mail::send('emails.test', $data, function ($message) {
+        //     $message->to('recipient@example.com')->subject('Laravel Test Email');
+        // });
+    
+       // return 'Test email sent!';
+       return Auth::user()->notify(new DispatchNotification());
     }
 
 }
