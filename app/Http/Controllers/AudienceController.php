@@ -112,4 +112,8 @@ class AudienceController extends Controller
             return ['type'=>'error','message'=>'Echec d\'Enregistrement','errorMessage'=>$th];
         }
     }
+
+    public function list_protocole(){
+        return Inertia::render('Audience/ListAudienceProtocole');
+    }
 }

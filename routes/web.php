@@ -97,8 +97,9 @@ Route::controller(App\Http\Controllers\AnnexeCourrierController::class)->middlew
 });
 Route::controller(App\Http\Controllers\AudienceController::class)->middleware('auth')->group(function(){
 
-    Route::get('audience/create','create')->name('audience');
+    Route::get('audience/create','create')->name('audience.create');
     Route::get('audience/list','index');
+    Route::get('audience/list-protocole','list_protocole')->name('audience.listProtocole');
     Route::post('audience/add','store');
     Route::post('audience/close/{audience}','close');
 
