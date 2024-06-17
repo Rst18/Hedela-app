@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Bureau;
 use App\Models\Batiment;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreBureauRequest;
 use App\Http\Requests\UpdateBureauRequest;
 
@@ -88,6 +90,39 @@ class BureauController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
             return ['type'=>'error','message'=>'Echec de suppression','errorMessage'=>$th];
+        }
+    }
+
+    
+    /**
+     * ATTRIBUTION DES Bureaux AUX UTILISATEURS
+     */
+
+     public function addBureau(Request $request, User $user){  
+
+        try {
+
+            $user->bureaux()->attach($request->bureau);
+
+            return ['type'=>'success','message'=>'Enregistrement reussi'];            
+
+        } catch (\Throwable $th) {
+
+            return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
+        }
+        
+    }
+    public function removeBureau(Request $request, User $user){  
+
+        try {
+
+            $user->bureaux()->detach($request->role);
+
+            return ['type'=>'success','message'=>'Enregistrement reussi'];            
+
+        } catch (\Throwable $th) {
+
+            return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
         }
     }
 }

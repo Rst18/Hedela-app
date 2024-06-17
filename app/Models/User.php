@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Task;
+use App\Models\Bureau;
 use App\Models\Courrier;
 use App\Models\Timesheet;
 use App\Models\RendezvousAudience;
@@ -92,6 +93,15 @@ class User extends Authenticatable
         return $this->hasMany(Timesheet::class);
     }
 
+    /**
+     * The bureaux that belong to the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function bureaux(): BelongsToMany
+    {
+        return $this->belongsToMany(Bureau::class);
+    }
 
     
 }
