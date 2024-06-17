@@ -24,7 +24,7 @@
 
             <div class="flex flex-row w-full px-4 md:w-9/12 justify-center items-center mx-auto">
                 <div v-for="link in links">
-                    <button class="text-grey-darker text-xs md:text-sm px-1  md:px-2 py-1 m-1 border" @click="fetchCourrier(link.url)" v-html="link.label"></button>
+                    <button class="text-grey-darker text-xs md:text-sm px-1  md:px-2 py-1 m-1 border" @click.prevent="fetchCourrier(link.url)" v-html="link.label"></button>
                 </div>
             </div>
         </div>

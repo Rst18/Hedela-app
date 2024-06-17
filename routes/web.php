@@ -58,6 +58,8 @@ Route::controller(App\Http\Controllers\CourrierController::class)->middleware('a
     Route::get('courrier','create')->name('courrier.create');
     Route::get('courrier-dispatch','dispatch');
     Route::get('courrier/list','index')->name('courrier.list');
+    Route::get('courrier/list-validation','courrier_where_has_note');
+    Route::get('courrier/validation','courrier_where_has_note_page')->name('courrier.listValidation');
     Route::get('courrier/list-protocole','list_courrier_protocol')->name('courrier.listProtocole');
     Route::get('courrier/dispatch','dispatch')->name('courrier.dispatch');
     Route::post('courrier/add','store');
@@ -78,6 +80,7 @@ Route::controller(App\Http\Controllers\NoteTechniqueController::class)->middlewa
     Route::post('note-technique/add','store');
     Route::post('note-technique/update/{noteTechnique}','update');
     Route::post('note-technique/valider/{noteTechnique}','valider');
+    Route::post('note-technique/inValider/{noteTechnique}','inValider');
     Route::get('note-technique/list','my_technical_notes');
     Route::get('note-technique','my_technical_notes_page')->name('mes_Notes');
     Route::get('note-technique/secretariat','noteTechniqueForSecretaria');

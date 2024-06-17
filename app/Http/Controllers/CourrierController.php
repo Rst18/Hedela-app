@@ -37,6 +37,25 @@ class CourrierController extends Controller
         ->paginate(20);
     }
 
+    public function courrier_where_has_note(){
+        return Courrier::select('courriers.*','services.name as service_name ','type_courriers.name as type_courrier_name')
+        ->whereHas('noteTechniques')
+        ->with(['commentaires'=>function($q){$q->join('users','users.id','commentaire_courriers.user_id');}])
+        ->with(['users'=>function($qry){}])
+        ->with(['annexes'=>function($qry){}])
+        ->with(['services'=>function($qry){}])
+
+        ->with(['noteTechniques'=>function($qry){
+            $qry->with('commentaires');
+            $qry->select('users.name as user_name','note_techniques.*');
+            $qry->join('users','users.id','note_techniques.user_id');
+        }])
+        ->join('services','services.id','service_id')
+        ->join('type_courriers','type_courriers.id','type_courrier_id')
+        ->orderBy('created_at','DESC')
+        ->paginate(10);
+    }
+
     public function list_courrier_protocol(){
         $services = Service::with('documents')->get();
         $typeCourriers = TypeCourrier::all();
@@ -266,6 +285,10 @@ class CourrierController extends Controller
             'total_en_cours_traitement'=>$total_en_cours_traitement,
         ];
 
+    }
+
+    public function courrier_where_has_note_page(){
+        return Inertia::render('Courrier/ValidationNoteTechnique');
     }
 
 }

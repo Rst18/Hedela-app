@@ -2,8 +2,8 @@
     <div class="p-4 mt-4 shadow">
         <div class="grid grid-cols-12 py-2 px-6">
             <button @click="close" class="border w-fit  col-span-2 px-2 bg-slate-100 text-xs text-slate-800 rounded-full ">Retour</button>
-            <button @click="modif = true" v-if="currentNote.status == 1"  class="border w-fit p-1 px-2 col-span-4 bg-slate-100 text-xs text-slate-800 rounded-full ">Modifier la Note Technique</button>
-            <button @click="validerNote"  class="border w-fit p-1 px-2 col-span-4 bg-slate-100 text-xs text-slate-800 rounded-full flex ">Valider la note Technique <Check class="h-4 w-4 ml-1 text-green-700"/> </button>
+            <button v-if="currentNote.status == 1" @click="validerNote"  class="border w-fit p-1 px-2 col-span-4 bg-green-400 text-xs text-slate-50 font-semibold rounded-full flex ">Valider la note Technique <Check class="h-4 w-4 ml-1 text-green-700"/> </button>
+            <button v-if="currentNote.status == 2" @click="annuletValiderNote"  class="border w-fit p-1 px-2 col-span-4 bg-red-500 text-xs text-slate-50 font-semibold rounded-full flex ">Annuler la validation <Check class="h-4 w-4 ml-1 text-green-700"/> </button>
         </div>
         <div v-show="!modif">
             <div class="grid grid-cols-2 gap-4">
@@ -156,6 +156,13 @@
 
         const validerNote = ()=>{
             axios_post_simple('note-technique/valider/'+props.note.id).then(({data})=>{
+                if (data.type ==='success') {
+                    emit('closeMe')
+                }
+            })
+        }
+        const annuletValiderNote = ()=>{
+            axios_post_simple('note-technique/inValider/'+props.note.id).then(({data})=>{
                 if (data.type ==='success') {
                     emit('closeMe')
                 }
