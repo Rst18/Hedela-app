@@ -16,27 +16,26 @@ import {ref} from 'vue'
 
     const props = defineProps({
         user:Object,
-        rendezvous_id:Number
+        audience_id:Number
     })
 
     const emit = defineEmits([
-        'userAdded'
+        'transfert'
     ])
 
     const form = ref({
-        rendezvous:props.rendezvous_id
+        user_id:props.user.id
     })
 
     const {axios_post_simple} = useAxios()
 
     const add = ()=>{
 
-        let user_id = props.user.id
-        axios_post_simple('../rendezvous/set-rendezvous-user/'+user_id,form.value).then(({data})=>{
-          
+        let audience_id = props.audience_id
+        axios_post_simple('../audience/'+audience_id+'/transfert',form.value).then(({data})=>{
             if (data.type==='success') {
 
-                emit('userAdded',props.user)
+                emit('transfert',props.user)
             }
         }).catch((error)=>{
             console.log(error.response);

@@ -99,8 +99,13 @@ Route::controller(App\Http\Controllers\AudienceController::class)->middleware('a
 
     Route::get('audience/create','create')->name('audience.create');
     Route::get('audience/list','index');
+    Route::get('audience/myList','myList');
     Route::get('audience/list-protocole','list_protocole')->name('audience.listProtocole');
+    Route::get('audience/mes-audiences','mes_audiences')->name('audience.mesAudiences');
     Route::post('audience/add','store');
+    Route::post('audience/{audience}/transfert','transfert');
+    Route::post('audience/{audience}/accept','accept');
+    Route::post('audience/{audience}/refuse','refuse');
     Route::post('audience/close/{audience}','close');
 
 });

@@ -24,11 +24,11 @@
                 <span class="font-semibold text-gray-400">Statut </span>
                 <span>{{ get_status(audienceData.status).name }}</span>
             </div>
-            <Fwb-button @click="refuserAudience" class="bg-red-500" v-if="audienceData.rendezvous.length == 0" >
+            <Fwb-button class="bg-red-500" v-if="audienceData.rendezvous.length == 0" >
             Refuser
             </Fwb-button>
-            <Fwb-button @click="accepterAudience" v-if="audienceData.sataus != 4" class="bg-green-700" >
-               Accepter
+            <Fwb-button v-if="audienceData.sataus != 4" class="bg-green-700" @click="showComponent = 1" >
+               {{ audienceData.rendezvous.length > 0 ? '   Programmer autre un Rendez vous':'Accepter et Programmer un  Rendez vous' }}
             </Fwb-button>
             <Fwb-button @click="showComponent = 3" v-if="audienceData.sataus != 4" class="bg-gray-800" >
             Transferer
@@ -37,6 +37,12 @@
                 Cloturer
             </Fwb-button>
             
+        </div>
+        <div class="col-span-2" v-if="showComponent == 1">
+            <RendezvousForm option="add" @added="refreshRendezvousList" :audience_id="audience.id" :rendezvous/>
+        </div>
+        <div  :class="showComponent ? 'col-span-3':'col-span-2'" v-if="showComponent == 2">
+            <DetailsRendezvous @closeMe="showComponent = 0"  :audience_id="audience.id" :rendezvous="currentRendezvous"/>
         </div>
         <div  :class="showComponent ? 'col-span-3':'col-span-2'" v-if="showComponent == 3">
             <TransfertAudience @closeMe="close"  :audience_id="audience.id" :rendezvous="currentRendezvous"/>
@@ -89,28 +95,21 @@
         const CloseAudience = ()=>{
             let id = props.audience.id
             axios_post_simple('../audience/close/'+id).then(({data})=>{
+                console.log(data);
                 if (data.type ==='success') {
                     emit('closeMe')
                 }
             })
         }
-        const accepterAudience = ()=>{
-            let id = props.audience.id
-            axios_post_simple('../audience/'+id+'/accept').then(({data})=>{
-                if (data.type ==='success') {
-                    emit('closeMe')
-                }
-            })
+        const refreshRendezvousList = (e)=>{
+            audienceData.value.rendezvous.push(e)
+            create_rendezvous.value = false
         }
-        const refuserAudience = ()=>{
-            let id = props.audience.id
-            axios_post_simple('../audience/'+id+'/refuse').then(({data})=>{
-                if (data.type ==='success') {
-                    emit('closeMe')
-                }
-            })
+
+        const get_rendezvous = (e)=>{
+            currentRendezvous.value = e
+            showComponent.value = 2
         }
-       
 
 
 

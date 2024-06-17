@@ -58,6 +58,7 @@ import Animation from '@/Components/Animation.vue';
     const links = ref([])
     const audienceData = ref() 
     const {axios_get} = useAxios();
+    const props = defineProps({path:String})
     const emit = defineEmits(['selectedAudience','new'])
    
     const { statut_audience,get_status } = UseAudience()
@@ -82,7 +83,7 @@ import Animation from '@/Components/Animation.vue';
    
 
     onMounted(() => {
-        fetchAudience('../../audience/list')
+        fetchAudience(props.path)
     })
 
 </script>
