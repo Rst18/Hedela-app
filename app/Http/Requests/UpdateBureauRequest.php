@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreBatimentRequest extends FormRequest
+class UpdateBureauRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,10 @@ class StoreBatimentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=>'required|string|max:255|unique:batiment,name',
-            'niveaux'=>'required|integer'
+            'batiment_id'=>'required|exists:batiment,id',
+            'number'=>'required|unique:bureaus,number|integer',
+            'name'=>'string'
+           
         ];
     }
 }

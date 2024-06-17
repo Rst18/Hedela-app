@@ -3,18 +3,19 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
+use App\Models\Bureau;
 use App\Models\Batiment;
-use App\Http\Requests\StoreBatimentRequest;
-use App\Http\Requests\UpdateBatimentRequest;
+use App\Http\Requests\StoreBureauRequest;
+use App\Http\Requests\UpdateBureauRequest;
 
-class BatimentController extends Controller
+class BureauController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Batiment::all();
+        //
     }
 
     /**
@@ -22,47 +23,52 @@ class BatimentController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Batiment/Index');
+        $batiments = Batiment::all();
+        return Inertia::render('Bureau/Index');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreBatimentRequest $request)
+    public function store(StoreBureauRequest $request)
     {
         try {
+
             $new = Batiment::create($request->validated());
+
             return ['type'=>'success','message'=>'Enregistrement reussi','new'=>$new];
+
         } catch (\Throwable $th) {
             //throw $th;
-            return ['type'=>'error','message'=>'Echec d\'enregistrement','errorMessage'=>$th];
+            
+            return ['type'=>'error','message'=>'Echec d\'Enregistrement'];
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Batiment $batiment)
+    public function show(Bureau $bureau)
     {
-        return $batiment;
+        return $bureau;
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Batiment $batiment)
+    public function edit(Bureau $bureau)
     {
-        return $batiment;
+        return $bureau;
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBatimentRequest $request, Batiment $batiment)
+    public function update(UpdateBureauRequest $request, Bureau $bureau)
     {
         try {
+            $bureau->update($request->validated());
 
-            $batiment->update($request->validated());
             return ['type'=>'success','message'=>'Modification reussie'];
 
         } catch (\Throwable $th) {
@@ -74,10 +80,10 @@ class BatimentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Batiment $batiment)
+    public function destroy(Bureau $bureau)
     {
         try {
-            $batiment->delete();
+            $bureau->delete();
             return ['type'=>'success','message'=>'Suppression reussie'];
         } catch (\Throwable $th) {
             //throw $th;
