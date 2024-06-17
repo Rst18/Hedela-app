@@ -48,7 +48,7 @@
                             <div class="grid grid-cols-1">
                                 <div>
                                     <span class="px-2 font-semibold text-slate-500">Annexes ({{ courrierData.annexes.length }})</span>
-                                    <span class="text-xs font-semibold text-gray-400 underline cursor-pointer" v-if="total_annexes > courrierData.annexes.length" @click="addAnnexes = !addAnnexes">{{ addAnnexes ? 'Ajouter Annexes':'Annuler' }}</span>
+                                    <!-- <span class="text-xs font-semibold text-gray-400 underline cursor-pointer" v-if="total_annexes > courrierData.annexes.length" @click="addAnnexes = !addAnnexes">{{ addAnnexes ? 'Ajouter Annexes':'Annuler' }}</span> -->
                                 </div>
                                 <div>
                                     <a v-for="annexe in courrierData.annexes" :href="'download/'+ annexe.path.replaceAll('/','++')" target="_blank" class="font-bold text-sm text-blue-700 ml-4"> {{ annexe.name }}</a>

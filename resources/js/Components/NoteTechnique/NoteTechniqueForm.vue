@@ -139,9 +139,12 @@ import SuccesToast from '@/Components/SuccesToast.vue'
         note:Object,
         action:String
     })
+
+    const emit = defineEmits(['added','updated'])
     const {axios_post_simple} = useAxios()
     const errors = ref([])
     const success = ref(false)
+    
 
     const form = ref({
         faits:props.note.faits,
@@ -163,10 +166,12 @@ import SuccesToast from '@/Components/SuccesToast.vue'
         if (props.action ==='add') {
 
             axios_post_simple('note-technique/add',form.value).then(({data})=>{
-              
+              console.log(data);
                 if (data.type ==='success') {
                     success.value = true
+                    emit('added',data.new)
                 }
+
             }).catch((error)=>{
                 if (error.response.status === 422) {
                     errors.value = error.response.data.errors
@@ -180,6 +185,7 @@ import SuccesToast from '@/Components/SuccesToast.vue'
                 console.log(data);
                 if (data.type ==='success') {
                     success.value = true
+                    emit('updated')
                 }
             }).catch((error)=>{
                 console.log(error.response);

@@ -48,7 +48,7 @@
                             <div class="grid grid-cols-1">
                                 <div>
                                     <span class="px-2 font-semibold text-slate-500">Annexes ({{ courrierData.annexes.length }})</span>
-                                    <span class="text-xs font-semibold text-gray-400 underline cursor-pointer" v-if="total_annexes > courrierData.annexes.length" @click="addAnnexes = !addAnnexes">{{ addAnnexes ? 'Annuler':'Ajouter Annexes' }}</span>
+                                    <span class="text-xs font-bold text-green-400 underline cursor-pointer" v-if="total_annexes > courrierData.annexes.length" @click="addAnnexes = !addAnnexes">{{ addAnnexes ? 'Annuler':'Ajouter Annexes' }}</span>
                                 </div>
                                 <div>
                                     <a v-for="annexe in courrierData.annexes" :href="'../download/'+ annexe.path.replaceAll('/','++')" target="_blank" class="font-bold text-sm text-blue-700 ml-4"> {{ annexe.name }}</a>
@@ -84,7 +84,7 @@ import UploadAnnexes from '@/Components/UploadAnnexes.vue'
 
     onMounted(() => {
 
-        axios_get('service/'+props.courrier.service_id+'/get-doc').then(({data})=>{
+        axios_get('../service/'+props.courrier.service_id+'/get-doc').then(({data})=>{
 
             total_annexes.value = data.length
             annexes_missed.value = data.filter((obj) => !props.courrier.annexes.some((otherObj) => otherObj.name === obj.name));

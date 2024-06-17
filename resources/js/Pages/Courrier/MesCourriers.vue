@@ -5,20 +5,20 @@
 
     <SideBarLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Courriers</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight"> Mes Courriers à traiter</h2>
         </template>
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" >
 
                
-                <div v-show="!detailsCourrier">
+                <div v-if="!detailsCourrier">
                     <ListCourriers   @selectedCourrier="getSelectedCourrier"/>
                 </div>
                
                
                 <div v-if="detailsCourrier">
-                    <DetailsCourrier :courrier="currentCourrier" />
+                    <DetailsCourrierNoteTechnique @closeMe="detailsCourrier = !detailsCourrier" :courrier="currentCourrier" />
                 </div>
      
             </div>
@@ -32,7 +32,7 @@ import Formulaire from '@/Components/Courrier/Formulaire.vue'
 import ListRoles from '@/Components/Role/ListRoles.vue'
 import {ref,onMounted} from 'vue'
 import ListCourriers from '@/Components/Courrier/ListMesCourriers.vue'
-import DetailsCourrier from '@/Components/Courrier/DetailsCourrier.vue'
+import DetailsCourrierNoteTechnique from '@/Components/Courrier/DetailsCourrierNoteTechnique.vue'
     const activeTab = ref('first')
 
     const courrierData = ref([])

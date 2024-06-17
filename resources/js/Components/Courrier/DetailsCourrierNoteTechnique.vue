@@ -49,7 +49,7 @@
                             <div class="grid grid-cols-1">
                                 <div>
                                     <span class="px-2 font-semibold text-slate-500">Annexes ({{ courrierData.annexes.length }})</span>
-                                    <span class="text-xs font-semibold text-gray-400 underline cursor-pointer" v-if="total_annexes > courrierData.annexes.length" @click="addAnnexes = !addAnnexes">{{ addAnnexes ? 'Ajouter Annexes':'Annuler' }}</span>
+                                    <!-- <span class="text-xs font-semibold text-gray-400 underline cursor-pointer" v-if="total_annexes > courrierData.annexes.length" @click="addAnnexes = !addAnnexes">{{ addAnnexes ? 'Ajouter Annexes':'Annuler' }}</span> -->
                                 </div>
                                 <div>
                                     <a v-for="annexe in courrierData.annexes" :href="'download/'+ annexe.path.replaceAll('/','++')" target="_blank" class="font-bold text-sm text-blue-700 ml-4"> {{ annexe.name }}</a>
@@ -91,7 +91,7 @@
                     <span class="font-semibold text-gray-500">
                         Utilisateurs ({{ courrierData.users.length }})
                     </span>
-                    <span @click="showComponent = 3" class="underline font-semibold py-2 text-green-400 bg-green-50 rounded-full px-2 text-xs cursor-pointer hover:bg-green-200">Ajouter des utilisateurs</span>
+                    
                     <div v-for="user in courrierData.users" :key="user.id" class="text-sm mt-2">
                         <span >{{ user.name }}</span>
                     </div>
@@ -101,8 +101,8 @@
                         Notes Techniques ({{ courrier.note_techniques.length }})
                     </span>
                     <div class="py-2">
-                        <div @click="getCurrentNote(note)" v-for="note in courrier.note_techniques" :key="note.id" class="text-xs hover:cursor-pointer hover:bg-slate-100 p-1">
-                           <span> {{ note.name }}</span>
+                        <div @click="getCurrentNote(note)" v-for="note in courrierData.note_techniques" :key="note.id" class="text-xs hover:cursor-pointer hover:bg-slate-100 p-1">
+                           <span class="font-semibold"> {{ note.user_name }}</span>
                            <span class="ml-2"> {{ moment(note.created_at).format('ll') }}</span>
                         </div>
                     </div>
@@ -110,9 +110,8 @@
     
             </div>
         </div>
-        <NoteTechniqueForm :courrier v-if="showComponent == 4" action="add" :note="newNote"/>
+        <NoteTechniqueForm :courrier v-if="showComponent == 4" @added="close" action="add" :note="newNote"/>
          <DetailsNoteTechnique @closeMe="showComponent = 1" :note="currentNote"  v-if="showComponent == 2 "/>
-         <DispatchCourrier @userAdded="addUser" @userRemoved="removeUser" :courrier v-if="showComponent == 3"/>
     </div>
 </template>
 <script setup>
@@ -149,13 +148,7 @@ import UploadAnnexes from '@/Components/UploadAnnexes.vue'
     }
 
     const newNote = ref({})
-    const addUser = (e)=>{
-    }
-    const removeUser = (e)=>{
-        
-        courrierData.value.users =  courrierData.value.users.filter((u)=>u.id != e)
-    }
-
+    
     onMounted(() => {
 
         axios_get('../service/'+props.courrier.service_id+'/get-doc').then(({data})=>{
