@@ -7,10 +7,12 @@ use Inertia\Inertia;
 use App\Models\Service;
 use App\Models\Courrier;
 use App\Models\TypeCourrier;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreCourrierRequest;
+use App\Notifications\DispatchNotification;
 use App\Http\Requests\UpdateCourrierRequest;
 
 class CourrierController extends Controller
@@ -172,7 +174,7 @@ class CourrierController extends Controller
         try {
 
             $user->courriers()->attach($request->courrier);
-
+            $user->notify(new DispatchNotification());
             // change the status of courrier
             $c = Courrier::find($request->courrier);
 
@@ -289,6 +291,20 @@ class CourrierController extends Controller
 
     public function courrier_where_has_note_page(){
         return Inertia::render('Courrier/ValidationNoteTechnique');
+    }
+
+    public function testMail(){
+        // $data = [
+        //     'name' => 'John Doe',
+        //     'message' => 'This is a test email from Laravel.',
+        // ];
+    
+        // Mail::send('emails.test', $data, function ($message) {
+        //     $message->to('recipient@example.com')->subject('Laravel Test Email');
+        // });
+    
+       // return 'Test email sent!';
+       return Auth::user()->notify(new DispatchNotification());
     }
 
 }

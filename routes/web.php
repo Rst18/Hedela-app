@@ -71,6 +71,7 @@ Route::controller(App\Http\Controllers\CourrierController::class)->middleware('a
     Route::post('courrier/cloture/{courrier}','clotureCourrier');
     Route::get('courrier/new-number','new_number');
     Route::get('courrier/statistique','statistique_courrier');
+    Route::get('testmail','testMail');
 });
 Route::controller(App\Http\Controllers\CommentaireCourrierController::class)->middleware('auth')->group(function(){
     Route::post('commentaire-courrier/add','store');

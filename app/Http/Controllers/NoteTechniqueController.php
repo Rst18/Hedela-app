@@ -131,6 +131,22 @@ class NoteTechniqueController extends Controller
             return ['type'=>'error','message'=>'Echec de suppression','errorMessage'=>$th];
         }
     }
+    public function imprimmer (NoteTechnique $noteTechnique){
+        try {
+
+            $noteTechnique->update(['status'=>2]);
+
+             // modification du status du courrier
+             Courrier::find($noteTechnique->courrier_id)->update(['status'=>4]);
+            
+            return ['type'=>'success','message'=>'Suppression reussie'];
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            
+            return ['type'=>'error','message'=>'Echec de suppression','errorMessage'=>$th];
+        }
+    }
 
     public function noteTechniqueForSecretaria (){
         
