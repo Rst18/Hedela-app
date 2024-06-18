@@ -14,7 +14,7 @@ class MenuController extends Controller
      */
     public function index()
     {
-        //
+        return Menu::all();
     }
 
     /**
@@ -30,9 +30,10 @@ class MenuController extends Controller
      */
     public function store(StoreMenuRequest $request)
     {
+        
         try {
 
-            Menu::create($request->validated);
+            $new = Menu::create($request->validated());
 
             return ['type'=>'success','message'=>'Enregistrement reussi','new'=>$new];
 

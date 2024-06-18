@@ -120,13 +120,18 @@ Route::controller(App\Http\Controllers\RendezvousAudienceController::class)->mid
 Route::controller(App\Http\Controllers\BatimentController::class)->middleware('auth')->group(function(){
     Route::post('batiment/add','store');
     Route::get('batiment/list','index');
-    Route::get('batiment/create','create');
+    Route::get('batiment/create','create')->name('batiment.create');
 });
 
 Route::controller(App\Http\Controllers\BureauController::class)->middleware('auth')->group(function(){
     Route::post('bureau/add','store');
     Route::get('bureau/list','index');
-    Route::get('bureau/create','create');
+    Route::get('bureau/create','create')->name('bureau.create');
+});
+Route::controller(App\Http\Controllers\MenuController::class)->middleware('auth')->group(function(){
+    Route::post('menu/add','store');
+    Route::get('menu/list','index');
+    Route::get('menu/create','create')->name('menu.create');
 });
 
 
