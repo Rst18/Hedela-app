@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Menu;
 use App\Models\User;
 use Inertia\Inertia;
-use App\Models\Bureau;
-use App\Models\Batiment;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreBureauRequest;
-use App\Http\Requests\UpdateBureauRequest;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreMenuRequest;
+use App\Http\Requests\UpdateMenuRequest;
 
-class BureauController extends Controller
+class MenuController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Bureau::with('batiment')->get();
+        return Menu::all();
     }
 
     /**
@@ -25,58 +25,55 @@ class BureauController extends Controller
      */
     public function create()
     {
-
-        $batiments = Batiment::all();
-        $users = User::with('bureaux')->get();
-        $bureaux = Bureau::all();
-
-        return Inertia::render('Bureau/Index',compact('batiments','users','bureaux'));
-
+        $users = User::with('menus')->get();
+        $menus = Menu::all();
+        return Inertia::render('Menu/Index',compact('users','menus'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreBureauRequest $request)
+    public function store(StoreMenuRequest $request)
     {
+        
         try {
 
-            $new = Bureau::create($request->validated());
+            $new = Menu::create($request->validated());
 
             return ['type'=>'success','message'=>'Enregistrement reussi','new'=>$new];
 
         } catch (\Throwable $th) {
             //throw $th;
-            
-            return ['type'=>'error','message'=>'Echec d\'Enregistrement','errorMessage'=>$th];
+            return ['type'=>'error','message'=>'Echec d\'enregistrement','errorMessage'=>$th];
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Bureau $bureau)
+    public function show(Menu $menu)
     {
-        return $bureau;
+        return $menu;
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Bureau $bureau)
+    public function edit(Menu $menu)
     {
-        return $bureau;
+        return $menu;
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBureauRequest $request, Bureau $bureau)
+    public function update(UpdateMenuRequest $request, Menu $menu)
     {
         try {
-            $bureau->update($request->validated());
 
-            return ['type'=>'success','message'=>'Modification reussie'];
+           $menu->update($request->validated());
+
+            return ['type'=>'error','message'=>'Modification reussie'];
 
         } catch (\Throwable $th) {
             //throw $th;
@@ -87,27 +84,28 @@ class BureauController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Bureau $bureau)
+    public function destroy(Menu $menu)
     {
         try {
-            $bureau->delete();
-            return ['type'=>'success','message'=>'Suppression reussie'];
+
+            $menu->delete();
+            return ['type'=>'success','message'=>'Suppression reussi'];
+
         } catch (\Throwable $th) {
             //throw $th;
-            return ['type'=>'error','message'=>'Echec de suppression','errorMessage'=>$th];
+            return ['type'=>'error','message'=>'Echec de suppression'];
         }
     }
 
-    
-    /**
-     * ATTRIBUTION DES Bureaux AUX UTILISATEURS
+      /**
+     * ATTRIBUTION DES MENUS AUX UTILISATEURS
      */
 
-     public function addBureau(Request $request, User $user){  
+     public function addMenu(Request $request, User $user){  
 
         try {
 
-            $user->bureaux()->attach($request->bureau);
+            $user->menus()->attach($request->menu);
 
             return ['type'=>'success','message'=>'Enregistrement reussi'];            
 
@@ -121,7 +119,7 @@ class BureauController extends Controller
 
         try {
 
-            $user->bureaux()->detach($request->bureau);
+            $user->menus()->detach($request->menu);
 
             return ['type'=>'success','message'=>'Enregistrement reussi'];            
 
@@ -129,5 +127,9 @@ class BureauController extends Controller
 
             return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
         }
+    }
+
+    public function get_menu_user(){
+       return  Auth::user()->menus;
     }
 }

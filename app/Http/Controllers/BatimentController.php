@@ -31,8 +31,11 @@ class BatimentController extends Controller
     public function store(StoreBatimentRequest $request)
     {
         try {
+
             $new = Batiment::create($request->validated());
+
             return ['type'=>'success','message'=>'Enregistrement reussi','new'=>$new];
+
         } catch (\Throwable $th) {
             //throw $th;
             return ['type'=>'error','message'=>'Echec d\'enregistrement','errorMessage'=>$th];

@@ -68,7 +68,7 @@ import UseCourrier from '@/ComponentsServices/Courrier.js'
    
 
     onMounted(() => {
-        fetchNote('note-technique/list')
+        fetchNote('../note-technique/list')
     })
 
 </script>

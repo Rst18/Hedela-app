@@ -26,7 +26,7 @@ Route::middleware('auth')->group(function () {
 
 
 Route::controller(App\Http\Controllers\RoleController::class)->middleware('auth')->group(function(){
-    Route::get('role','create')->name('role');
+    Route::get('role/create','create')->name('role.create');
     Route::get('role-with-users','index')->name('list_role');
     Route::post('role/add','store');
     Route::post('role/{role}/update','update');
@@ -35,13 +35,13 @@ Route::controller(App\Http\Controllers\RoleController::class)->middleware('auth'
     Route::post('user/search','search_user');
 });
 Route::controller(App\Http\Controllers\DocumentController::class)->middleware('auth')->group(function(){
-    Route::get('document','create')->name('document');
+    Route::get('document/create','create')->name('document.create');
     Route::post('document/add','store');
     Route::post('document/{document}/update','update');
 });
 
 Route::controller(App\Http\Controllers\ServiceController::class)->middleware('auth')->group(function(){
-    Route::get('service','create')->name('service');
+    Route::get('service/create','create')->name('service.create');
     Route::get('service/{service}/get-doc','get_doc_service');
     Route::post('service/add','store');
     Route::post('service/{service}/update','update');
@@ -49,13 +49,13 @@ Route::controller(App\Http\Controllers\ServiceController::class)->middleware('au
     Route::post('service/remove-document-service/{service}','removeDocument');
 });
 Route::controller(App\Http\Controllers\TypeCourrierController::class)->middleware('auth')->group(function(){
-    Route::get('typecourrier','create')->name('typecourrier');
+    Route::get('typecourrier/create','create')->name('typecourrier.create');
     Route::post('typecourrier/add','store');
     Route::post('typecourrier/{typecourrier}/update','update');
 });
 Route::controller(App\Http\Controllers\CourrierController::class)->middleware('auth')->group(function(){
     Route::get('download/{id}','downloadFile');
-    Route::get('courrier','create')->name('courrier.create');
+    Route::get('courrier/create','create')->name('courrier.create');
     Route::get('courrier-dispatch','dispatch');
     Route::get('courrier/list','index')->name('courrier.list');
     Route::get('courrier/list-validation','courrier_where_has_note');
@@ -67,7 +67,7 @@ Route::controller(App\Http\Controllers\CourrierController::class)->middleware('a
     Route::post('courrier/set-courrier-user/{user}','addCourrier');
     Route::post('courrier/remove-courrier-user/{user}','removeCourrier');
     Route::get('courrier/user','mes_courrier');
-    Route::get('courrier-user','mes_courrier_page')->name('mesCourriers');
+    Route::get('courrier-user','mes_courrier_page')->name('courrier.mesCourriers');
     Route::post('courrier/cloture/{courrier}','clotureCourrier');
     Route::get('courrier/new-number','new_number');
     Route::get('courrier/statistique','statistique_courrier');
@@ -83,9 +83,9 @@ Route::controller(App\Http\Controllers\NoteTechniqueController::class)->middlewa
     Route::post('note-technique/valider/{noteTechnique}','valider');
     Route::post('note-technique/inValider/{noteTechnique}','inValider');
     Route::get('note-technique/list','my_technical_notes');
-    Route::get('note-technique','my_technical_notes_page')->name('mes_Notes');
+    Route::get('note-technique/myList','my_technical_notes_page')->name('note_technique.mes_Notes');
     Route::get('note-technique/secretariat','noteTechniqueForSecretaria');
-    Route::get('note-technique/sec','noteTechniqueForSecretaria_page')->name('secretariat');
+    Route::get('note-technique/sec','noteTechniqueForSecretaria_page')->name('note_technique.secretariat');
 });
 Route::controller(App\Http\Controllers\CommentaireNoteTechniqueController::class)->middleware('auth')->group(function(){
 
@@ -99,6 +99,8 @@ Route::controller(App\Http\Controllers\AudienceController::class)->middleware('a
 
     Route::get('audience/create','create')->name('audience.create');
     Route::get('audience/list','index');
+    Route::get('audience/list-accept','my_accepted_audiences');
+    Route::get('audience/boss/list-accept','accepted_audiences_boss');
     Route::get('audience/myList','myList');
     Route::get('audience/list-protocole','list_protocole')->name('audience.listProtocole');
     Route::get('audience/mes-audiences','mes_audiences')->name('audience.mesAudiences');
@@ -111,10 +113,35 @@ Route::controller(App\Http\Controllers\AudienceController::class)->middleware('a
 });
 Route::controller(App\Http\Controllers\RendezvousAudienceController::class)->middleware('auth')->group(function(){
     Route::post('rendezvous/add','store');
+    Route::get('rendezvous/create','mes_rendezvous')->name('rendezvous.mesRendezvous');
+    Route::get('rendezvous/create-protocole','create_for_the_boss')->name('rendezvous.rendezvous_du_boss');
     Route::post('rendezvous/update/{rendezvousAudience}','update');
 
     Route::post('rendezvous/set-rendezvous-user/{user}','addRendezvous');
     Route::post('rendezvous/remove-rendezvous-user/{user}','removeRendezvous');
+});
+
+Route::controller(App\Http\Controllers\BatimentController::class)->middleware('auth')->group(function(){
+    Route::post('batiment/add','store');
+    Route::get('batiment/list','index');
+    Route::get('batiment/create','create')->name('batiment.create');
+});
+
+Route::controller(App\Http\Controllers\BureauController::class)->middleware('auth')->group(function(){
+    Route::post('bureau/add','store');
+    Route::get('bureau/list','index');
+    Route::get('bureau/create','create')->name('bureau.create');
+    
+    Route::post('bureau/set-bureau-user/{user}','addBureau');
+    Route::post('bureau/remove-bureau-user/{user}','removeBureau');
+});
+Route::controller(App\Http\Controllers\MenuController::class)->middleware('auth')->group(function(){
+    Route::post('menu/add','store');
+    Route::get('menu/list','index');
+    Route::get('menu/user','get_menu_user');
+    Route::get('menu/create','create')->name('menu.create');
+    Route::post('menu/set-menu-user/{user}','addMenu');
+    Route::post('menu/remove-menu-user/{user}','removeMenu');
 });
 
 

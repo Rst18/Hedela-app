@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Menu;
 use App\Models\Task;
 use App\Models\Bureau;
 use App\Models\Courrier;
@@ -101,6 +102,16 @@ class User extends Authenticatable
     public function bureaux(): BelongsToMany
     {
         return $this->belongsToMany(Bureau::class);
+    }
+
+    /**
+     * The menus that belong to the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function menus(): BelongsToMany
+    {
+        return $this->belongsToMany(Menu::class);
     }
 
     

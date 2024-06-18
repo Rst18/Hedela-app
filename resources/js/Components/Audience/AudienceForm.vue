@@ -85,7 +85,7 @@
             <Fwb-button class="bg-gray-800 hover:bg-slate-700" @click="submitForm">
                 Enregistrer
             </Fwb-button>
-            <Fwb-button @click="addAcc = true" class="bg-gray-500 hover:bg-slate-400">
+            <Fwb-button @click="addAcc = true" class="bg-gray-500 hover:bg-slate-400 ml-8">
                 Ajout Accompagnateurs
             </Fwb-button>
         </div>

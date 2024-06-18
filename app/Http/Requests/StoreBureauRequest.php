@@ -22,9 +22,10 @@ class StoreBureauRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'batiment_id'=>'required|exists:batiment,id',
-            'number'=>'required|unique:bureaus,number|integer',
-            'name'=>'string'
+            'batiment_id'=>'required|exists:batiments,id',
+            'number'=>'required|integer',
+            'name'=>'string',
+            'niveau'=>'required|integer',
         ];
     }
 }

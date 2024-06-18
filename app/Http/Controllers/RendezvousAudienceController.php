@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Inertia\Inertia;
 use App\Models\Audience;
 use Illuminate\Http\Request;
 use App\Models\RendezvousAudience;
@@ -105,7 +106,7 @@ class RendezvousAudienceController extends Controller
      * ATTRIBUTION DES Renezvous AUX UTILISATEURS
      */
 
-     public function addRendezvous(Request $request, User $user){  
+    public function addRendezvous(Request $request, User $user){  
     
         try {
 
@@ -133,5 +134,16 @@ class RendezvousAudienceController extends Controller
 
             return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
         }
+    }
+
+    public function mes_rendezvous(){
+
+        return Inertia::render('Audience/ListAudienceRendezvous');
+        
+    }
+    public function create_for_the_boss(){
+
+        return Inertia::render('Audience/ListAudienceRendezvousBoss');
+        
     }
 }

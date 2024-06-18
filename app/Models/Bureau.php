@@ -13,7 +13,7 @@ class Bureau extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['batiement_id','number','name','niveau'];
+    protected $fillable = ['batiment_id','number','name','niveau'];
 
     /**
      * Get the batiment that owns the Bureau
