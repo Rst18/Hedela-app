@@ -11,7 +11,7 @@
        <div v-if="bureau">
            <div v-for="b of bureau" :key="b.id" class="w-full p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer">
                <div class="col-span-1">#</div>
-               <div class="col-span-2">{{b.batiment }}</div>
+               <div class="col-span-2">{{b.batiment.name }}</div>
                <div class="col-span-2">{{b.number }}</div>
                <div class="col-span-3">{{b.name }}</div>
                <div class="col-span-2">{{b.niveau }}</div>
@@ -42,6 +42,7 @@
 
         onMounted(() => {
             axios_get('../bureau/list').then(({data})=>{
+                console.log(data);
                 bureau.value = data
             })
         })

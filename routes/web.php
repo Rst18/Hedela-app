@@ -127,6 +127,9 @@ Route::controller(App\Http\Controllers\BureauController::class)->middleware('aut
     Route::post('bureau/add','store');
     Route::get('bureau/list','index');
     Route::get('bureau/create','create')->name('bureau.create');
+    
+    Route::post('bureau/set-bureau-user/{user}','addBureau');
+    Route::post('bureau/remove-bureau-user/{user}','removeBureau');
 });
 Route::controller(App\Http\Controllers\MenuController::class)->middleware('auth')->group(function(){
     Route::post('menu/add','store');

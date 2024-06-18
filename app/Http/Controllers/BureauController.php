@@ -17,7 +17,7 @@ class BureauController extends Controller
      */
     public function index()
     {
-        return Bureau::select('bureaus.*','batiments.name as batiment')->join('batiments','batiment_id','bureaus.batiment_id')->get();
+        return Bureau::with('batiment')->get();
     }
 
     /**
@@ -27,8 +27,10 @@ class BureauController extends Controller
     {
 
         $batiments = Batiment::all();
+        $users = User::with('bureaux')->get();
+        $bureaux = Bureau::all();
 
-        return Inertia::render('Bureau/Index',compact('batiments'));
+        return Inertia::render('Bureau/Index',compact('batiments','users','bureaux'));
 
     }
 
@@ -119,7 +121,7 @@ class BureauController extends Controller
 
         try {
 
-            $user->bureaux()->detach($request->role);
+            $user->bureaux()->detach($request->bureau);
 
             return ['type'=>'success','message'=>'Enregistrement reussi'];            
 
