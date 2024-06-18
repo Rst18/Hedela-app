@@ -1,9 +1,9 @@
 <template>
      <li>
-      <NavLink :href="!dropDown && route(path)" :active="!dropDown && route().current(path)" class="flex flex-col w-full p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+      <NavLink :href="!dropDown && route(path)" :active="!dropDown && route().current(path)" class="flex flex-col w-full p-2 text-sm font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
         <button
         type="button"
-        class="flex items-center  w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+        class="flex items-center w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
         :aria-controls="`dropdown-${name.trim().toLowerCase()}`"
         :data-collapse-toggle="`dropdown-${name.trim().toLowerCase()}`"
         >
@@ -32,10 +32,10 @@
         </li>
 </template>
 <script setup>
-import NavLink from '@/Components/NavLink.vue'
+  import NavLink from '@/Components/NavLink.vue'
     const props = defineProps({
-        name : String,
-        dropDown : Boolean,
-        path : String
+      name : String,
+      dropDown : Boolean,
+      path : String
     })
 </script>

@@ -214,4 +214,23 @@ class AudienceController extends Controller
             return ['type'=>'error','message'=>'Echec de transfert','errorMessage'=>$th];
         }
     }
+
+    public function my_accepted_audiences(){
+        return Audience::select('audiences.*','users.name as autorite')
+        ->with(['rendezvous'=>function($q){
+            $q->with(['users'=>function($qry){
+                $qry->with('roles');
+            }]);
+        }])
+        ->with('accompagnateurs')
+        ->join('users','users.id','audiences.user_requested')
+        ->where('user_requested',Auth::user()->id)
+        ->where('status',2)
+        ->orderBy('created_at','DESC')
+        ->paginate(10);
+    }
+
+    public function accepted_audiences_boss(){
+        
+    }
 }

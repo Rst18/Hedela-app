@@ -31,8 +31,8 @@ function handleImageError() {
     <Head title="Welcome" />
     <div class="backgroup_image">
         <div class="w-full h-screen grid place-items-center from-[#000000f0] bg-gradient-to-b z-10 to-[#181a1cc7] ">
-            <div class="w-8/12 h-[500px]">
-                <h1 class="text-7xl w-8/12 font-bold text-white"><span class="text-gray-400">Découvrez une gestion des courriers simplifiée avec</span> Hedela-app</h1>
+            <div class="px-4 lg:w-4/5 h-fit lg:h-[500px]">
+                <h1 class="text-2xl lg:text-7xl w-8/12 font-bold text-white"><span class="text-gray-400">Découvrez une gestion des courriers simplifiée avec</span> Hedela-app</h1>
                 <p class="text-gray-200  text-2xl my-6 w-8/12"><span class="text-white font-semibold">Hedela-app</span>, Optimise vos processus de traitement de courrier et vous fait gagnez en temps et en productivité. la solution complète de gestion des courriers.</p>
                 <a href="/login" class="text-2xl bg-white rounded-full py-2 px-3 hover:ring-4 transition-all duration-500 hover:bg-gray-100 hover:ring-[#ffffff8d] ring-offset-2">Commencez</a>
             </div>
@@ -41,8 +41,8 @@ function handleImageError() {
     <div>
         
     </div>
-    <div class="grid grid-cols-2 py-24 px-28 gap-9">
-        <span class="text-6xl font-bold text-gray-900 py-8 col-span-2 text-center ">Fonctionnalités puissantes pour une gestion efficace</span>
+    <div class="grid grid-col-1 lg:grid-cols-2 lg:py-24  px-4 lg:px-28 gap-9">
+        <span class="text-4xl lg:text-6xl font-bold text-gray-900 py-8 lg:col-span-2 lg:text-center ">Fonctionnalités puissantes pour une gestion efficace</span>
 
         <div class="">   
             <WelcomCardPresentation title="Réception et traitement centralisés">
@@ -70,8 +70,8 @@ function handleImageError() {
              soluta ipsam quibusdam incidunt, quia eum numquam reprehenderit expedita vero vitae consequuntur!
         </div>
     </div>
-    <div class="grid grid-cols-2 pb-24 px-28  place-items-center from-[#000000f0] bg-gradient-to-t z-10 to-[#f6f8fac7] ">
-        <span class="text-6xl font-bold text-gray-900 py-8 col-span-2 text-center  ">Gestion des audiences</span>
+    <div class="grid grid-cols-1 lg:grid-cols-2 pb-24 px-4 lg:px-28  place-items-center from-[#000000f0] bg-gradient-to-t z-10 to-[#f6f8fac7] ">
+        <span class="text-4xl lg:text-6xl font-bold text-gray-900 py-8 lg:col-span-2 lg:text-center  ">Gestion des audiences</span>
         
         <div class="">
             <p class="text-4xl px-2 text-slate-200">

@@ -3,19 +3,19 @@
        <div class="mt-3 w-full p-3 font-semibold bg-gray-100 grid grid-cols-12">
            <div class="col-span-1">#</div>
            <div class="col-span-2">Utilisateur</div>
-           <div class="col-span-6">menu</div>
-           <div class="col-span-2">Date</div>
+           <div class="col-span-8">menu</div>
+           <div class="col-span-1">Date</div>
        </div>
        <div v-if="users[0]">
            <div v-for="u of users" :key="u.name" class="w-full p-3 grid grid-cols-12">
                <div class="col-span-1">#</div>
                <div class="col-span-2">{{u.name }}</div>
-               <div class="col-span-6">
+               <div class="col-span-8 text-xs">
                     <div class="flex gap-2 flex-wrap" v-if="menus[0]">
                         <span v-for="r of menus" :key="r.name" @click.stop="addMenuToUser(r,u)" :class="` ${pickedMenu.includes(r.id+'__'+u.id) ? 'bg-gray-800 text-white' : ''} rounded-lg px-1 bg-gray-100 border border-gray-500 flex items-center gap-2 hover:bg-gray-800 cursor-pointer hover:text-white`">{{r.name }} <Check class='w-4 h-4' v-if="pickedMenu.includes(r.id+'__'+u.id)" /></span>
                     </div>
                </div>
-               <div class="col-span-2">{{ moment(u.updated_at).format('ll') }}</div>
+               <div class="col-span-1 text-xs">{{ moment(u.updated_at).format('ll') }}</div>
            </div>
        </div>
        <div v-else class="w-full mt-5 p-4 grid place-items-center text-gray-600">
@@ -56,11 +56,11 @@ import moment from 'moment';
  }
 
  const setMenuToUser = (menu, user) =>{
-    axios_post('menu/set-menu-user/'+user, {menu,user}).then(()=>{
+    axios_post('../menu/set-menu-user/'+user, {menu,user}).then(()=>{
     })
  }
  const removeMenuToUser = (menu, user) =>{
-    axios_post('menu/remove-menu-user/'+user, {menu,user}).then(()=>{
+    axios_post('../menu/remove-menu-user/'+user, {menu,user}).then(()=>{
         
     })
  }
@@ -70,7 +70,7 @@ import moment from 'moment';
  }
  onMounted(()=>{
     props.users.forEach(u =>{
-        u.menu.forEach(r =>{
+        u.menus.forEach(r =>{
             pickedMenu.value.push(r.id+'__'+u.id)
         })
     })

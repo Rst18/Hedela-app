@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Menu;
+use App\Models\User;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreMenuRequest;
 use App\Http\Requests\UpdateMenuRequest;
 
@@ -22,7 +25,9 @@ class MenuController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Menu/Index');
+        $users = User::with('menus')->get();
+        $menus = Menu::all();
+        return Inertia::render('Menu/Index',compact('users','menus'));
     }
 
     /**
@@ -90,5 +95,41 @@ class MenuController extends Controller
             //throw $th;
             return ['type'=>'error','message'=>'Echec de suppression'];
         }
+    }
+
+      /**
+     * ATTRIBUTION DES MENUS AUX UTILISATEURS
+     */
+
+     public function addMenu(Request $request, User $user){  
+
+        try {
+
+            $user->menus()->attach($request->menu);
+
+            return ['type'=>'success','message'=>'Enregistrement reussi'];            
+
+        } catch (\Throwable $th) {
+
+            return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
+        }
+        
+    }
+    public function removeBureau(Request $request, User $user){  
+
+        try {
+
+            $user->menus()->detach($request->menu);
+
+            return ['type'=>'success','message'=>'Enregistrement reussi'];            
+
+        } catch (\Throwable $th) {
+
+            return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
+        }
+    }
+
+    public function get_menu_user(){
+       return  Auth::user()->menus;
     }
 }

@@ -1,5 +1,5 @@
 <template>
-    <div class="grid grid-cols-1 gap-4 py-6 lg:px-10">
+    <div class="grid grid-cols-1 gap-4 py-6 lg:px-10 shadow">
         <span class="col-span-1 text-xl font-semibold text-gray-600">{{ option ==='add' ? "Créer un Rendez vous":'Modifier Rendez vous' }}</span>
         <div>
             <fwb-input
@@ -25,6 +25,9 @@
             <Fwb-button class="bg-gray-800" @click="submitForm">
                 Enregistrer
             </Fwb-button>
+            <Fwb-button class="bg-red-800 ml-6" @click="close">
+                Annuler
+            </Fwb-button>
         </div>
     </div>
 </template>
@@ -41,7 +44,7 @@
             option:String
         })
 
-        const emit = defineEmits(['added','updated'])
+        const emit = defineEmits(['added','updated','closeMe'])
 
         const {axios_post_simple} = useAxios();
         const form = ref({
@@ -76,6 +79,8 @@
                 })
             }
         }
+
+        const close = ()=>emit('closeMe')
 
 
 </script>
