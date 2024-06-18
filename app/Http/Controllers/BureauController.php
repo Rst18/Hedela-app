@@ -17,7 +17,7 @@ class BureauController extends Controller
      */
     public function index()
     {
-        //
+        return Bureau::select('bureaus.*','batiments.name as batiment')->join('batiments','batiment_id','bureaus.batiment_id')->get();
     }
 
     /**
@@ -25,8 +25,11 @@ class BureauController extends Controller
      */
     public function create()
     {
+
         $batiments = Batiment::all();
-        return Inertia::render('Bureau/Index');
+
+        return Inertia::render('Bureau/Index',compact('batiments'));
+
     }
 
     /**
@@ -36,14 +39,14 @@ class BureauController extends Controller
     {
         try {
 
-            $new = Batiment::create($request->validated());
+            $new = Bureau::create($request->validated());
 
             return ['type'=>'success','message'=>'Enregistrement reussi','new'=>$new];
 
         } catch (\Throwable $th) {
             //throw $th;
             
-            return ['type'=>'error','message'=>'Echec d\'Enregistrement'];
+            return ['type'=>'error','message'=>'Echec d\'Enregistrement','errorMessage'=>$th];
         }
     }
 
