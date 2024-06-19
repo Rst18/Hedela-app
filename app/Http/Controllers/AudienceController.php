@@ -6,6 +6,7 @@ use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Audience;
 use Illuminate\Http\Request;
+use App\Events\CreateAudienceEvent;
 use Illuminate\Support\Facades\Auth;
 use App\Models\AccompagnateurAudience;
 use App\Http\Requests\StoreAudienceRequest;
@@ -78,6 +79,8 @@ class AudienceController extends Controller
             }
 
             //Envoie de la notification a l'user_requested
+
+            broadcast( new CreateAudienceEvent('one Audience added'));
 
             return ['type'=>'success','message'=>'Enregistrement reussi','new'=>$audience];
 

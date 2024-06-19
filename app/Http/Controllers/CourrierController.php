@@ -8,6 +8,8 @@ use App\Models\Service;
 use App\Models\Courrier;
 use App\Models\TypeCourrier;
 use Illuminate\Http\Request;
+use App\Events\DispatchEvent;
+use App\Events\CreateCourrierEvent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -90,18 +92,20 @@ class CourrierController extends Controller
      */
     public function store(StoreCourrierRequest $request)
     {
-        try {
+       try {
 
             $fileName = time() . '.' . $request->letter_file->getClientOriginalExtension();
             $filePath = $request->letter_file->storeAs('documents/'.$request->number, $fileName); // Store the file
             
             $data = $request->validated();
+
             $data['letter_file'] = $filePath;
 
            $courrier =  Courrier::create($data);
 
           // $courrier->services()->attach($request->service_id);
            // LANCER UN EVENEMENT 
+           broadcast (new CreateCourrierEvent('One courrier added from '.$request->sender));
 
 
            return ['type'=>'success','message'=>'Enregistrement reussie','new'=>$courrier];
@@ -173,18 +177,35 @@ class CourrierController extends Controller
 
         try {
 
-            $user->courriers()->attach($request->courrier);
-            $user->notify(new DispatchNotification());
-            // change the status of courrier
-            $c = Courrier::find($request->courrier);
+            $courrier =  Courrier::find($request->courrier);
 
-            if ($c->status < 2) {
+            if($courrier != null){
+
+                $user->courriers()->attach($request->courrier);
+
+                if ($courrier->status < 2) {
                 
-                $c->status = 2;
-                $c->save();
-            }
+                    $courrier->update(['status' => 2]);
+                }
+    
+                $user->notify(new DispatchNotification($courrier->number,Auth::user()->name,'Information'));
 
-            return ['type'=>'success','message'=>'Enregistrement reussi'];            
+                broadcast( new DispatchEvent($courrier->number))->toOthers;
+
+                return ['type'=>'success','message'=>'Enregistrement reussi'];  
+
+
+            }
+            return ['type'=>'error','message'=>'Ce courrier n\'existe pas'];  
+
+
+
+            //$user->notify(new DispatchNotification());
+            // change the status of courrier
+
+          
+
+                      
 
         } catch (\Throwable $th) {
 
