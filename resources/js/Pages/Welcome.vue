@@ -3,7 +3,7 @@ import { Head, Link } from '@inertiajs/vue3';
 import WelcomCardPresentation from '@/Components/WelcomCardPresentation.vue'
 import DigitalPresentationSVG from '@/Components/DigitalPresentationSVG.vue'
 import Footer from '@/Components/Footer.vue'
-import {onMounted} from 'vue'
+import {onMounted,ref} from 'vue'
 import AlertNotification from '@/Components/AlertNotification.vue'
 defineProps({
     canLogin: {
@@ -28,10 +28,8 @@ function handleImageError() {
     document.getElementById('docs-card-content')?.classList.add('!flex-row');
     document.getElementById('background')?.classList.add('!hidden');
 }
+const showNotification = ref(true)
 
-onMounted(() => {
-   
-})
 </script>
 
 <template>
@@ -111,6 +109,5 @@ onMounted(() => {
 
     <div>
         <Footer/>
-        <AlertNotification/>
     </div>
 </template>

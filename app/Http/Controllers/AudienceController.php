@@ -10,6 +10,7 @@ use App\Events\CreateAudienceEvent;
 use Illuminate\Support\Facades\Auth;
 use App\Models\AccompagnateurAudience;
 use App\Http\Requests\StoreAudienceRequest;
+use App\Notifications\AudienceNotification;
 use App\Http\Requests\UpdateAudienceRequest;
 
 class AudienceController extends Controller
@@ -79,8 +80,12 @@ class AudienceController extends Controller
             }
 
             //Envoie de la notification a l'user_requested
+            $user_to_not = User::find($request->user_requested);
+            
+            $user_to_not->notify(new AudienceNotification("$request->name vous a envoyer une demande d'audience. Veillez consulter la liste de vos audiences.",'Information'));
 
-            broadcast( new CreateAudienceEvent('one Audience added'));
+
+            broadcast( new CreateAudienceEvent('one Audience added from '.$audience->name));
 
             return ['type'=>'success','message'=>'Enregistrement reussi','new'=>$audience];
 

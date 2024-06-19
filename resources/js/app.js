@@ -31,16 +31,16 @@ createInertiaApp({
     // })
 
 
-    window.Echo.join('presence-channel')
-    .here((users)=>{
-        console.log({users},'conctd')
-    })
-    .joining((user)=>{
-        console.log({user}, 'joined')
-    })
-    .leaving((user)=>{
-        console.log({user}, 'leaved')
-    })
+    // window.Echo.join('presence-channel')
+    // .here((users)=>{
+    //     console.log({users},'conctd')
+    // })
+    // .joining((user)=>{
+    //     console.log({user}, 'joined')
+    // })
+    // .leaving((user)=>{
+    //     console.log({user}, 'leaved')
+    // })
 
     Echo.channel('dispatch-channel').listen('DispatchEvent',(event)=>{
        console.log(event);

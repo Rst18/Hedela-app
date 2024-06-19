@@ -16,7 +16,7 @@
                         <div class="">
                             <div class="">
                                 
-                                <Fwb-button @click="createUser = !createUser">
+                                <Fwb-button class="bg-gray-800 hover:bg-gray-600" @click="createUser = !createUser">
                                     {{ createUser ? 'Liste des utilisateurs':'Nouveau groupe' }}
                                 </Fwb-button>
                             </div>

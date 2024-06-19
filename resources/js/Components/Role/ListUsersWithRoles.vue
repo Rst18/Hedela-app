@@ -56,11 +56,11 @@ import moment from 'moment';
  }
 
  const setRoleToUser = (role, user) =>{
-    axios_post('role/set-role-user/'+user, {role,user}).then(()=>{
+    axios_post('../role/set-role-user/'+user, {role,user}).then(()=>{
     })
  }
  const removeRoleToUser = (role, user) =>{
-    axios_post('role/remove-role-user/'+user, {role,user}).then(()=>{
+    axios_post('../role/remove-role-user/'+user, {role,user}).then(()=>{
         
     })
  }

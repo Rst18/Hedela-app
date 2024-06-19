@@ -1,11 +1,13 @@
 <?php
 
+use App\Models\User;
 use Inertia\Inertia;
 use App\Events\Hello;
 use App\Events\DispatchEvent;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
+use App\Notifications\RealtimeNotification;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -43,6 +45,7 @@ Route::controller(App\Http\Controllers\DocumentController::class)->middleware('a
 });
 
 Route::controller(App\Http\Controllers\ServiceController::class)->middleware('auth')->group(function(){
+    Route::get('service/list','list_service');
     Route::get('service/create','create')->name('service.create');
     Route::get('service/{service}/get-doc','get_doc_service');
     Route::post('service/add','store');
@@ -157,13 +160,14 @@ Route::get('/linkstorage', function () {
 });
 
 Route::get('testEvent',function(){
+
+    $user_one = User::first();
+    $user_one->notify(new RealtimeNotification('Un courrier vient d\'etre dispatcher 😄'));
+            
     
-    broadcast( new Hello(1));
-    broadcast( new DispatchEvent('Rostand'));
+    // broadcast( new Hello(1));
+    // broadcast( new DispatchEvent('Rostand'));
     return 'okok0';
 });
-// Route::post('/broadcasting/auth', function () {
-//     return Auth::user();
-//  });
 
 require __DIR__.'/auth.php';

@@ -16,13 +16,13 @@
                         <div class="">
                             <div class="">
                                 
-                                <Fwb-button @click="createService = !createService">
+                                <Fwb-button class="bg-gray-800 hover:bg-gray-600"@click="createService = !createService">
                                     {{ createService ? 'Liste des service':'Nouveau service' }}
                                 </Fwb-button>
                             </div>
                             <div>
-                                <ListServices :services v-show="!createService" />
-                                <Formulaire action="add" @newAdded="refreshList" :service v-if="createService"/>
+                                <ListServices :services v-if="!createService" />
+                                <Formulaire action="add" @newAdded="createService = false" :service v-if="createService"/>
                             </div>
 
                         </div>

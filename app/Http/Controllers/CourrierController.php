@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreCourrierRequest;
 use App\Notifications\DispatchNotification;
+use App\Notifications\RealtimeNotification;
 use App\Http\Requests\UpdateCourrierRequest;
 
 class CourrierController extends Controller
@@ -107,6 +108,7 @@ class CourrierController extends Controller
            // LANCER UN EVENEMENT 
            broadcast (new CreateCourrierEvent('One courrier added from '.$request->sender));
 
+          
 
            return ['type'=>'success','message'=>'Enregistrement reussie','new'=>$courrier];
 
@@ -188,9 +190,8 @@ class CourrierController extends Controller
                     $courrier->update(['status' => 2]);
                 }
     
-                $user->notify(new DispatchNotification($courrier->number,Auth::user()->name,'Information'));
+                $user->notify(new DispatchNotification($courrier->number,Auth::user()->name,'Information',"venant de ( $courrier->sender ) avec comme objet ($courrier->object). Veillez consulter la liste de vos courriers."));
 
-                broadcast( new DispatchEvent($courrier->number))->toOthers;
 
                 return ['type'=>'success','message'=>'Enregistrement reussi'];  
 
@@ -198,12 +199,6 @@ class CourrierController extends Controller
             }
             return ['type'=>'error','message'=>'Ce courrier n\'existe pas'];  
 
-
-
-            //$user->notify(new DispatchNotification());
-            // change the status of courrier
-
-          
 
                       
 
@@ -315,17 +310,18 @@ class CourrierController extends Controller
     }
 
     public function testMail(){
-        // $data = [
-        //     'name' => 'John Doe',
-        //     'message' => 'This is a test email from Laravel.',
-        // ];
+        $data = [
+            'name' => 'John Doe',
+            'message' => 'This is a test email from Laravel.',
+        ];
     
-        // Mail::send('emails.test', $data, function ($message) {
-        //     $message->to('recipient@example.com')->subject('Laravel Test Email');
-        // });
+        Mail::send('emails.test', $data, function ($message) {
+            $message->to('kaserekamwiraros@gmail.com')
+            ->subject('Laravel Test Email');
+        });
     
-       // return 'Test email sent!';
-       return Auth::user()->notify(new DispatchNotification());
+        return 'Test email sent!';
+       //return Auth::user()->notify(new DispatchNotification());
     }
 
 }

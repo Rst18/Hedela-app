@@ -6,7 +6,7 @@
                 placeholder="Rostand M"
                 label="Demandeur"
             />
-            <div class="text-red-500" v-if="errors.name">
+            <div class="text-red-500 text-xs py-2" v-if="errors.name">
                 {{ errors.name[0]}}
             </div>
         </div>
@@ -16,7 +16,7 @@
                 placeholder="243975476177"
                 label="Telephone"
             />
-            <div class="text-red-500" v-if="errors.phone">
+            <div class="text-red-500 text-xs py-2" v-if="errors.phone">
                 {{ errors.phone[0]}}
             </div>
         </div>
@@ -26,7 +26,7 @@
                 placeholder="Directeur BNN"
                 label="Fonction"
             />
-            <div class="text-red-500" v-if="errors.fonction">
+            <div class="text-red-500 text-xs py-2" v-if="errors.fonction">
                 {{ errors.fonction[0]}}
             </div>
         </div>
@@ -36,7 +36,7 @@
                 placeholder="bnn@ac.cd"
                 label="Adresse mail"
             />
-            <div class="text-red-500" v-if="errors.email">
+            <div class="text-red-500 text-xs py-2" v-if="errors.email">
                 {{ errors.email[0]}}
             </div>
         </div>
@@ -46,7 +46,7 @@
                 placeholder="XXX-XXX-XXX"
                 label="Numero Piece identite"
             />
-            <div class="text-red-500" v-if="errors.piece">
+            <div class="text-red-500 text-xs py-2" v-if="errors.piece">
                 {{ errors.piece[0]}}
             </div>
         </div>
@@ -57,7 +57,7 @@
                 :rows="2"
                 label="Motif de l'audience"
             />
-            <div class="text-red-500" v-if="errors.motif">
+            <div class="text-red-500 text-xs py-2" v-if="errors.motif">
                 {{ errors.motif[0]}}
             </div>
         </div>
@@ -68,7 +68,7 @@
                 label="Proposition Date"
                 type="date"
             />
-            <div class="text-red-500" v-if="errors.date_proposition">
+            <div class="text-red-500 text-xs py-2" v-if="errors.date_proposition">
                 {{ errors.date_proposition[0]}}
             </div>
         </div>
@@ -76,7 +76,7 @@
            <SelectComponent @selectedOption="getSeletedOption" :options="users">
             Choisir l'autorite
            </SelectComponent>
-            <div class="text-red-500" v-if="errors.user_requested">
+            <div class="text-red-500 text-xs py-2" v-if="errors.user_requested">
                 {{ errors.user_requested[0]}}
             </div>
         </div>
@@ -136,12 +136,13 @@ import SelectComponent from '@/Components/SelectComponent.vue'
         const getSeletedOption = (e) => form.value.user_requested = e
 
         const submitForm = ()=>{
+            errors.value = [];
             if (props.option ==='add') {
 
                 form.value.accompag = JSON.stringify(accompagnateurs.value)
 
                 axios_post_simple('../../audience/add',form.value).then(({data})=>{
-
+                    console.log(data)
 
                    if (data.type ==='success') {
 
@@ -152,6 +153,11 @@ import SelectComponent from '@/Components/SelectComponent.vue'
                         })
 
                    }
+                }).catch((error)=>{
+                    console.log(error.response)
+                    if(error.response.status === 422){
+                        errors.value = error.response.data.errors
+                    }
                 })
             }else if(props.option ==='update'){
 

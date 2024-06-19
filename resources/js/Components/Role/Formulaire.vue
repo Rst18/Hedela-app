@@ -19,7 +19,7 @@
             </div>
         </div>
         <div>
-            <Fwb-button @click="submitForm">
+            <Fwb-button class="bg-gray-800 hover:bg-gray-600" @click="submitForm">
                 Enregistrer
             </Fwb-button>
         </div>
@@ -50,7 +50,7 @@ import ToggleInput from '@/Components/ToggleInput.vue'
 
         if (props.action === 'add') {
 
-            axios_post_simple('role/add',form.value).then(({data})=>{
+            axios_post_simple('../role/add',form.value).then(({data})=>{
                 emit('newAdded',data.new)
             }).catch((error)=>{
                 console.log(error.response)

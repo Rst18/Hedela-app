@@ -1,6 +1,6 @@
 <template>
     <div >
-        <div class="p-6 shadow-md rounded-md grid grid-cols-2 gap-4" v-if="!created_courrier">
+        <div class="p-6 shadow-md rounded-md grid grid-cols-1 md:grid-cols-2 gap-4" v-if="!created_courrier">
             <div>
                 <fwb-input
                     v-model="form.number"
