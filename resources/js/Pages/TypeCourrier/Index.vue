@@ -16,12 +16,12 @@
                         <div class="">
                             <div class="">
                                 
-                                <Fwb-button @click="createTypeCourrier = !createTypeCourrier">
+                                <Fwb-button class="bg-gray-800 hover:bg-gray-600" @click="createTypeCourrier = !createTypeCourrier">
                                     {{ createTypeCourrier ? 'Liste des Type de courrier':'Nouveau Type de courrier' }}
                                 </Fwb-button>
                             </div>
                             <div>
-                                <ListTypeCourriers :typeCourriers="typeCourriersData" v-show="!createTypeCourrier" />
+                                <ListTypeCourriers  v-if="!createTypeCourrier" />
                                 <Formulaire action="add" @newAdded="refreshList" :typeCourrier v-if="createTypeCourrier"/>
                             </div>
 

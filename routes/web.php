@@ -56,6 +56,7 @@ Route::controller(App\Http\Controllers\ServiceController::class)->middleware('au
 Route::controller(App\Http\Controllers\TypeCourrierController::class)->middleware('auth')->group(function(){
     Route::get('typecourrier/create','create')->name('typecourrier.create');
     Route::post('typecourrier/add','store');
+    Route::get('typecourrier/list','typecourrier_list');
     Route::post('typecourrier/{typecourrier}/update','update');
 });
 Route::controller(App\Http\Controllers\CourrierController::class)->middleware('auth')->group(function(){

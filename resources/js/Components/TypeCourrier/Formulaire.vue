@@ -22,7 +22,7 @@
         </div>
        
         <div>
-            <Fwb-button @click="submitForm">
+            <Fwb-button class="bg-gray-800 hover:bg-gray-600" @click="submitForm">
                 Enregistrer
             </Fwb-button>
         </div>
@@ -59,14 +59,14 @@ import ToggleInput from '@/Components/ToggleInput.vue'
 
         if (props.action === 'add') {
 
-            axios_post_simple('typecourrier/add',form.value).then(({data})=>{
+            axios_post_simple('../typecourrier/add',form.value).then(({data})=>{
                 emit('newAdded',data.new)
             }).catch((error)=>{
                 console.log(error.response)
             })
 
         }else if(props.action === 'update'){
-            axios_post_simple('document/'+props.role.id+'/update',form.value).then(({data})=>{
+            axios_post_simple('../typecourrier/'+props.role.id+'/update',form.value).then(({data})=>{
                 console.log(data)
                 emit('newAdded',data.new)
             }).catch((error)=>{
