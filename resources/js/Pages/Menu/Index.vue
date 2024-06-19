@@ -11,7 +11,7 @@
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <fwb-tabs v-model="activeTab" variant="underline" class="p-5">
-                    <fwb-tab name="first" title="Creation Bureau">
+                    <fwb-tab name="first" title="Creation Menu">
                         <div class="py-4">
                             <Fwb-button class="bg-gray-800 hover:bg-gray-600" @click="createMenu = !createMenu">
                                 Créer un Menu
@@ -22,7 +22,7 @@
                             <MenuForm  :menu action="add" @newAdded="createMenu = false"  v-if="createMenu"/>
                         </div>
                     </fwb-tab>
-                    <fwb-tab name="second" title="Attribution Bureau ">
+                    <fwb-tab name="second" title="Attribution Menu ">
                         <ListOfUserWithMenu :users :menus/>
                     </fwb-tab>
                 </fwb-tabs>

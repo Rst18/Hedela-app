@@ -155,14 +155,14 @@
         const close = ()=>emit('closeMe')
 
         const validerNote = ()=>{
-            axios_post_simple('note-technique/valider/'+props.note.id).then(({data})=>{
+            axios_post_simple('../note-technique/valider/'+props.note.id).then(({data})=>{
                 if (data.type ==='success') {
                     emit('closeMe')
                 }
             })
         }
         const annuletValiderNote = ()=>{
-            axios_post_simple('note-technique/inValider/'+props.note.id).then(({data})=>{
+            axios_post_simple('../note-technique/inValider/'+props.note.id).then(({data})=>{
                 if (data.type ==='success') {
                     emit('closeMe')
                 }
