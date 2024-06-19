@@ -2,20 +2,32 @@
 import SideBarLayout from '@/Layouts/SideBarLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import CardPresentationTotal from '@/Components/CardPresentationTotal.vue'
-
 import {ref,onMounted} from 'vue'
 import useAxios from '@/ComponentsServices/axios';
+import useDashBord from '@/ComponentsServices/Dashbord.js'
 
+import AlertNotification from '@/Components/AlertNotification.vue'
 
 
 const {axios_get} = useAxios()
+
+const {message_audience} = useDashBord()
+
 const stat_courrier = ref([])
+const showNotification = ref(false)
+const notification_message = ref('')
+
 
 onMounted(() => {
     axios_get('courrier/statistique').then(({data})=>{
-        console.log(data)
         stat_courrier.value = data
     })
+
+    window.Echo.channel('courrier-channel').listen('CreateCourrierEvent',(event)=>{
+        notification_message.value = event.courrier
+        showNotification.value = true
+    })
+
 })
 </script>
 
@@ -77,5 +89,6 @@ onMounted(() => {
                 </div>
             </div>
         </div>
+        <AlertNotification v-if="showNotification" :message="notification_message"/>
     </SideBarLayout>
 </template>

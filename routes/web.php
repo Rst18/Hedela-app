@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Events\Hello;
+use App\Events\DispatchEvent;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -142,6 +144,7 @@ Route::controller(App\Http\Controllers\MenuController::class)->middleware('auth'
     Route::get('menu/create','create')->name('menu.create');
     Route::post('menu/set-menu-user/{user}','addMenu');
     Route::post('menu/remove-menu-user/{user}','removeMenu');
+   
 });
 
 
@@ -152,5 +155,15 @@ Route::get('/linkstorage', function () {
     $linkFolder = $_SERVER['DOCUMENT_ROOT'].'/storage';
     symlink($targetFolder, $linkFolder); 
 });
+
+Route::get('testEvent',function(){
+    
+    broadcast( new Hello(1));
+    broadcast( new DispatchEvent('Rostand'));
+    return 'okok0';
+});
+// Route::post('/broadcasting/auth', function () {
+//     return Auth::user();
+//  });
 
 require __DIR__.'/auth.php';
