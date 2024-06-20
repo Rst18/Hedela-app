@@ -55,34 +55,34 @@ import ToggleInput from '@/Components/ToggleInput.vue'
         if (props.action === 'add') {
 
             axios_post_simple('../menu/add',form.value).then(({data})=>{
+
                 if (data.type ==='success') {
+
                     emit('newAdded',data.new)
-                    
                 }
-                console.log(data);
             }).catch((error)=>{
 
                 if (error.response.status == 422) {
 
                     errors.value = error.response.data.errors
                 }
-                console.log(error.response)
             })
 
         }else if(props.action === 'update'){
+
             axios_post_simple('../menu/'+props.menu.id+'/update',form.value).then(({data})=>{
-                //console.log(data)
-                emit('newAdded',data.new)
+
+                if (data.type ==='success') {
+
+                    emit('newAdded',data.new)
+                }
+
             }).catch((error)=>{
                 if (error.response.status == 422) {
 
                     errors.value = error.response.data.errors
                 }
-                console.log(error.response)
             })
-        }
-        else{
-            
         }
     }
 

@@ -1,22 +1,42 @@
 <template>
-    <form >
-       <div class="mt-3 w-full p-3 font-semibold bg-gray-100 grid grid-cols-12">
+   <div class="flex justify-center items-center" v-if="waitingData">
+        <Animation  />
+    </div>
+   
+    <div v-else >
+        <!-- <div>
+            <fwb-input
+                placeholder=""
+                label="Rechercher un bureau"
+            />
+        </div> -->
+       <div class="mt-3 w-full p-3 font-semibold bg-gray-100 grid grid-cols-12 gap-1">
            <div class="col-span-1">#</div>
            <div class="col-span-2">Batiment</div>
-           <div class="col-span-2">Numero</div>
-           <div class="col-span-3">Nom</div>
-           <div class="col-span-2">Niveau</div>
-           <div class="col-span-2">Date  </div>
+           <div class="col-span-1">Numero</div>
+           <div class="col-span-4">Nom</div>
+           <div class="col-span-1">Niveau</div>
+           <div class="col-span-1">Date </div>
+           <div class="col-span-2">Options</div>
        </div>
        <div v-if="bureau">
-           <div v-for="b of bureau" :key="b.id" class="w-full p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer">
+           <div v-for="b of bureau" :key="b.id" class="w-full p-3 grid grid-cols-12 gap-1 hover:bg-slate-200 hover:cursor-pointer">
                <div class="col-span-1">#</div>
                <div class="col-span-2">{{b.batiment.name }}</div>
-               <div class="col-span-2">{{b.number }}</div>
-               <div class="col-span-3">{{b.name }}</div>
-               <div class="col-span-2">{{b.niveau }}</div>
-               <div class="col-span-2">{{ moment(b.created_at).format('ll') }}</div>
+               <div class="col-span-1">{{b.number }}</div>
+               <div class="col-span-4">{{b.name }}</div>
+               <div class="col-span-1">{{b.niveau }}</div>
+               <div class="col-span-1">{{ moment(b.created_at).format('ll') }}</div>
+               <div class="col-span-2 grid grid-cols-2 gap-1">
+                    <span @click="deleteBureau(b)" class="text-xs font-semibold text-red-600 underline hover:font-bold hover:text-sm">Supprimer</span>
+                    <span @click="updateBureau(b)" class="text-xs font-semibold text-blue-600 underline hover:font-bold hover:text-sm">Modifier</span>
+               </div>
            </div>
+           <div class="flex flex-row w-full px-4 md:w-9/12 justify-center items-center mx-auto">
+                <div v-for="link in links">
+                    <button class="text-grey-darker text-xs md:text-sm px-1  md:px-2 py-1 m-1 border" @click.prevent="fetchBureau(link.url)" v-html="link.label"></button>
+                </div>
+            </div>
        </div>
        <div v-else class="w-full mt-5 p-4 grid place-items-center text-gray-600">
           <span>
@@ -26,25 +46,50 @@
           </span>
           <p class="text-center mt-4">Pas de données a afficher pour le moment, veuillez creer au moins un Bureau !  </p>
       </div>
-   </form>
+   </div>
 </template>
 <script setup>
-    import { FwbInput,FwbButton,FwbRadio,FwbP } from 'flowbite-vue'
+    
+    import { FwbInput } from 'flowbite-vue'
     import useAxios from '@/ComponentsServices/axios.js'
-    // import Check from '../Check.vue';
-    import Swal from 'sweetalert2';
-    const { axios_get,axios_post } = useAxios();
     import { onMounted, ref } from 'vue';
     import moment from 'moment';
-
+    import Animation from '@/Components/Animation.vue';
+    const { axios_get} = useAxios();
 
     const bureau = ref()
+    const waitingData = ref(false)
+    const links = ref()
+    const emit = defineEmits(['update'])
 
-        onMounted(() => {
-            axios_get('../bureau/list').then(({data})=>{
-                console.log(data);
-                bureau.value = data
-            })
+    const deleteBureau = (b)=>{
+        axios_get('../bureau/'+b.id+'/delete').then(({data})=>{
+
+            if (data.type ==='success') {
+                
+                bureau.value = bureau.value.filter((r)=>r.id != b.id )
+            }
+        }).catch((error)=>console.log(error.response))
+    }
+
+    const updateBureau = (b)=>{
+        emit('update',b)
+    }
+
+
+    const fetchBureau = (url)=>{
+        waitingData.value = true
+        axios_get(url).then(({data:pagination})=>{
+            bureau.value = pagination.data           
+            links.value = pagination.links
+            waitingData.value = false
+        }).catch((error)=>{
+            console.log(error.response)
         })
+    }
+
+    onMounted(() => {
+        fetchBureau('../bureau/liste')
+    })
 
 </script>

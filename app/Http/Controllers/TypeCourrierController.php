@@ -93,4 +93,8 @@ class TypeCourrierController extends Controller
             return ['type'=>'error','message'=>'Echec du suppression','errorMessage'=>$th];
         }
     }
+
+    public function typecourrier_list(){
+        return TypeCourrier::paginate(10);
+    }
 }

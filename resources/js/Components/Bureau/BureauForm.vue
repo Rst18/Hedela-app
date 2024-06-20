@@ -1,7 +1,8 @@
 <template>
+    
     <div class="p-8 grid grid-cols-1 shadow-md rounded-md">
         <div>
-           <SelectComponent @selectedOption="getSeletedOption" :options="batiments">
+           <SelectComponent v-model="form.batiment_id" @selectedOption="getSeletedOption" :options="batiments">
             Choisir Batiment
            </SelectComponent>
             <div class="text-red-500 text-xs pb-2" v-if="errors.batiment_id">
@@ -82,10 +83,10 @@
             axios_post_simple('../bureau/add',form.value).then(({data})=>{
 
                 if (data.type === 'success') {
+
                     emit('newAdded',data.new)
                     
                 }
-                console.log(data);
             }).catch((error)=>{
                 if (error.response.status === 422) {
                     errors.value = error.response.data.errors
@@ -94,11 +95,21 @@
             })
 
         }else if(props.action === 'update'){
-            axios_post_simple('../bureau/'+props.batiment.id+'/update',form.value).then(({data})=>{
-                console.log(data)
-                emit('newAdded',data.new)
+
+            axios_post_simple('../bureau/'+props.bureau.id+'/update',form.value).then(({data})=>{
+
+                if (data.type === 'success') {
+
+                    emit('newAdded')
+                    
+                }
+
             }).catch((error)=>{
-                console.log(error.response)
+
+                if (error.response.status === 422) {
+
+                    errors.value = error.response.data.errors
+                }
             })
         }
     }

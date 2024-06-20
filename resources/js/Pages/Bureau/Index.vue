@@ -8,18 +8,19 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Bureau</h2>
         </template>
 
-        <div class="py-12">
+        <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <fwb-tabs v-model="activeTab" variant="underline" class="p-5">
                     <fwb-tab name="first" title="Creation Bureau">
                         <div class="py-4">
-                            <Fwb-button class="bg-gray-800 hover:bg-gray-600" @click="createBureau = !createBureau">
-                                Créer un Bureau
+                            <Fwb-button class="bg-gray-800 hover:bg-gray-600" @click="createBureau == 0 ? createBureau = 1 : createBureau = 0">
+                               {{ createBureau == 0 ? " Créer un Bureau":'Liste des bureaux' }}
                             </Fwb-button>
                         </div>
                         <div>
-                            <ListBureau  v-if="!createBureau" />
-                            <BureauForm :batiments :bureau action="add" @newAdded="createBureau = false"  v-if="createBureau"/>
+                            <ListBureau  v-if="createBureau == 0" @update="getCurrentBureau" />
+                            <BureauForm :batiments :bureau action="add" @newAdded="createBureau = 0"  v-if="createBureau == 1"/>
+                            <BureauForm :batiments :bureau action="update" @newAdded="createBureau = 0"  v-if="createBureau == 2"/>
                         </div>
                     </fwb-tab>
                     <fwb-tab name="second" title="Attribution Bureau ">
@@ -48,8 +49,12 @@
         })
 
         const activeTab = ref('first')
-        const createBureau = ref(false)
+        const createBureau = ref(0)
         const bureau = ref({})
+        const getCurrentBureau = (e)=>{
+            bureau.value = e
+            createBureau.value = 2
+        }
 
 
 </script>

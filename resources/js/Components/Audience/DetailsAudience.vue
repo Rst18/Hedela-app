@@ -56,6 +56,24 @@
                     <span class="col-span-5" > {{ r.date_heure }}</span>
                 </div>
             </div>
+            <div class="pt-6">
+                <span class="py-6 font-semibold text-gray-600 text-md">Accompagnateurs ({{ audienceData.accompagnateurs.length }})</span>
+                <div class="grid grid-cols-12 gap-2 mt-4 bg-slate-100 px-4 py-2">
+                    <span class="col-span-1" >#</span>
+                    <span class="col-span-4" >Name</span>
+                    <span class="col-span-3">Email</span>
+                    <span class="col-span-2">Phone</span>
+                </div>
+                <div  v-for="(a,i) in audienceData.accompagnateurs" :key="a.id" class="py-2 hover:bg-gray-100 hover:cursor-pointer">
+                
+                    <div class="grid grid-cols-12 gap-2 px-4 py-2">
+                        <span class="col-span-1"  >{{ i + 1 }}</span>
+                        <span class="col-span-4"  >{{ a.name }}</span>
+                        <span class="col-span-3" > {{ a.email }}</span>
+                        <span class="col-span-2" > {{ a.phone }}</span>
+                    </div>
+                </div>
+            </div>
         </div>
        
     </div>

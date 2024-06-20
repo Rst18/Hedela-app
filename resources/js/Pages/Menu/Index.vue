@@ -11,18 +11,19 @@
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <fwb-tabs v-model="activeTab" variant="underline" class="p-5">
-                    <fwb-tab name="first" title="Creation Bureau">
+                    <fwb-tab name="first" title="Creation Menu">
                         <div class="py-4">
-                            <Fwb-button class="bg-gray-800 hover:bg-gray-600" @click="createMenu = !createMenu">
-                                Créer un Menu
+                            <Fwb-button class="bg-gray-800 hover:bg-gray-600" @click=" createMenu == 1 ? createMenu = 0 : createMenu = 1">
+                               {{ createMenu == 0 ? ' Créer un Menu' : 'Liste des menus' }}
                             </Fwb-button>
                         </div>
                         <div>
-                            <ListMenu  v-if="!createMenu" />
-                            <MenuForm  :menu action="add" @newAdded="createMenu = false"  v-if="createMenu"/>
+                            <ListMenu  v-if="createMenu == 0" @update="getCurrentMenu" />
+                            <MenuForm  :menu action="add" @newAdded="createMenu = 0 "  v-if="createMenu == 1"/>
+                            <MenuForm  :menu action="update" @newAdded="createMenu = 0 "  v-if="createMenu == 2"/>
                         </div>
                     </fwb-tab>
-                    <fwb-tab name="second" title="Attribution Bureau ">
+                    <fwb-tab name="second" title="Attribution Menu ">
                         <ListOfUserWithMenu :users :menus/>
                     </fwb-tab>
                 </fwb-tabs>
@@ -45,8 +46,13 @@
             menus:Object
         })
         const activeTab = ref('first')
-        const createMenu = ref(false)
+        const createMenu = ref(0)
         const menu = ref({})
+
+        const getCurrentMenu = (e)=>{
+            menu.value = e
+            createMenu.value = 2
+        }
 
 
 </script>

@@ -1,12 +1,15 @@
 <template>
-    <form >
+     <div class="flex justify-center items-center" v-if="waitingData">
+        <Animation  />
+    </div> 
+    <div v-else >
        <div class="mt-3 w-full p-3 font-semibold bg-gray-100 grid grid-cols-12">
            <div class="col-span-1">#</div>
            <div class="col-span-7">Type Courrier</div>
            <div class="col-span-2">Degre urgence  </div>
            <div class="col-span-2">Date </div>
        </div>
-       <div v-if="typeCourriers[0]">
+       <div v-if="typeCourriers">
            <div v-for="tyc of typeCourriers" :key="tyc.name" class="w-full p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer">
                <div class="col-span-1">#</div>
                <div class="col-span-7">{{tyc.name }}</div>
@@ -22,19 +25,34 @@
           </span>
           <p class="text-center mt-4">Pas de données a afficher pour le moment, veuillez creer au moins un type de courrier !  </p>
       </div>
-   </form>
+   </div>
 </template>
 <script setup>
 import { FwbInput,FwbButton,FwbRadio,FwbP } from 'flowbite-vue'
 import useAxios from '@/ComponentsServices/axios.js'
 // import Check from '../Check.vue';
 import Swal from 'sweetalert2';
-
-const { axios_post_simple,axios_post } = useAxios();
 import { onMounted, ref } from 'vue';
 import moment from 'moment';
- const props = defineProps({
-    typeCourriers : Array,
- })
+ 
+const { axios_post_simple,axios_post,axios_get } = useAxios();
+const waitingData = ref(false)
 
+    const typeCourriers = ref()
+    const fetchService = (url)=>{
+        axios_get(url).then(({data:pagination})=>{
+            console.log(pagination);
+            typeCourriers.value = pagination.data           
+            links.value = pagination.links
+            waitingData.value = false
+        }).catch((error)=>{
+            console.log(error.response)
+        })
+    }
+
+
+
+    onMounted(() => {
+        fetchService('../typecourrier/list')
+    })
 </script>

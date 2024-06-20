@@ -1,11 +1,13 @@
 <?php
 
+use App\Models\User;
 use Inertia\Inertia;
 use App\Events\Hello;
 use App\Events\DispatchEvent;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
+use App\Notifications\RealtimeNotification;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -30,6 +32,8 @@ Route::middleware('auth')->group(function () {
 Route::controller(App\Http\Controllers\RoleController::class)->middleware('auth')->group(function(){
     Route::get('role/create','create')->name('role.create');
     Route::get('role-with-users','index')->name('list_role');
+    Route::get('role/list','list_roles');
+    Route::get('role/{role}/delete/','destroy');
     Route::post('role/add','store');
     Route::post('role/{role}/update','update');
     Route::post('role/set-role-user/{user}','addRoles');
@@ -43,6 +47,7 @@ Route::controller(App\Http\Controllers\DocumentController::class)->middleware('a
 });
 
 Route::controller(App\Http\Controllers\ServiceController::class)->middleware('auth')->group(function(){
+    Route::get('service/list','list_service');
     Route::get('service/create','create')->name('service.create');
     Route::get('service/{service}/get-doc','get_doc_service');
     Route::post('service/add','store');
@@ -53,6 +58,7 @@ Route::controller(App\Http\Controllers\ServiceController::class)->middleware('au
 Route::controller(App\Http\Controllers\TypeCourrierController::class)->middleware('auth')->group(function(){
     Route::get('typecourrier/create','create')->name('typecourrier.create');
     Route::post('typecourrier/add','store');
+    Route::get('typecourrier/list','typecourrier_list');
     Route::post('typecourrier/{typecourrier}/update','update');
 });
 Route::controller(App\Http\Controllers\CourrierController::class)->middleware('auth')->group(function(){
@@ -125,13 +131,17 @@ Route::controller(App\Http\Controllers\RendezvousAudienceController::class)->mid
 
 Route::controller(App\Http\Controllers\BatimentController::class)->middleware('auth')->group(function(){
     Route::post('batiment/add','store');
+    Route::post('batiment/{batiment}/update','update');
     Route::get('batiment/list','index');
     Route::get('batiment/create','create')->name('batiment.create');
 });
 
 Route::controller(App\Http\Controllers\BureauController::class)->middleware('auth')->group(function(){
     Route::post('bureau/add','store');
+    Route::post('bureau/{bureau}/update','store');
     Route::get('bureau/list','index');
+    Route::get('bureau/{bureau}/delete','destroy');
+    Route::get('bureau/liste','list_bureau');
     Route::get('bureau/create','create')->name('bureau.create');
     
     Route::post('bureau/set-bureau-user/{user}','addBureau');
@@ -139,7 +149,9 @@ Route::controller(App\Http\Controllers\BureauController::class)->middleware('aut
 });
 Route::controller(App\Http\Controllers\MenuController::class)->middleware('auth')->group(function(){
     Route::post('menu/add','store');
+    Route::post('menu/{menu}/update','update');
     Route::get('menu/list','index');
+    Route::get('menu/{menu}/delete','destroy');
     Route::get('menu/user','get_menu_user');
     Route::get('menu/create','create')->name('menu.create');
     Route::post('menu/set-menu-user/{user}','addMenu');
@@ -157,13 +169,14 @@ Route::get('/linkstorage', function () {
 });
 
 Route::get('testEvent',function(){
+
+    $user_one = User::first();
+    $user_one->notify(new RealtimeNotification('Un courrier vient d\'etre dispatcher 😄'));
+            
     
-    broadcast( new Hello(1));
-    broadcast( new DispatchEvent('Rostand'));
+    // broadcast( new Hello(1));
+    // broadcast( new DispatchEvent('Rostand'));
     return 'okok0';
 });
-// Route::post('/broadcasting/auth', function () {
-//     return Auth::user();
-//  });
 
 require __DIR__.'/auth.php';

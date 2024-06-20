@@ -21,6 +21,11 @@ class RoleController extends Controller
         }])->get();
     }
 
+    public function list_roles()
+    {
+        return Role::paginate(10);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -88,9 +93,10 @@ class RoleController extends Controller
     public function destroy(Role $role)
     {
         try {
+
             $role->delete();
-            
             return ['type'=>'success','message'=>'Suppression reussie'];
+            
         } catch (\Throwable $th) {
             //throw $th;
             

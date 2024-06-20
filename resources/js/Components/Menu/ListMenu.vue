@@ -1,19 +1,33 @@
 <template>
-    <form >
+      <div class="flex justify-center items-center" v-if="waitingData">
+        <Animation  />
+    </div>
+   
+    <div v-else >
        <div class="mt-3 w-full p-3 font-semibold bg-gray-100 grid grid-cols-12">
            <div class="col-span-1">#</div>
            <div class="col-span-4">Name</div>
-           <div class="col-span-4">Path  </div>
+           <div class="col-span-3">Path  </div>
            <div class="col-span-2">Date  </div>
+           <div class="col-span-2">Options  </div>
        </div>
        <div v-if="menus">
            <div v-for="m of menus" :key="m.id" class="w-full p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer">
                <div class="col-span-1">#</div>
                <div class="col-span-4">{{m.name }}</div>
-               <div class="col-span-4">{{m.path }}</div>
+               <div class="col-span-3">{{m.path }}</div>
   
                <div class="col-span-2">{{ moment(m.created_at).format('ll') }}</div>
+               <div class="col-span-2 grid grid-cols-2 gap-1">
+                    <span @click="deleteMenu(m)" class="text-xs font-semibold text-red-600 underline hover:font-bold hover:text-sm">Supprimer</span>
+                    <span @click="updateMenu(m)" class="text-xs font-semibold text-blue-600 underline hover:font-bold hover:text-sm">Modifier</span>
+               </div>
            </div>
+           <div class="flex flex-row w-full px-4 md:w-9/12 justify-center items-center mx-auto">
+                <div v-for="link in links">
+                    <button class="text-grey-darker text-xs md:text-sm px-1  md:px-2 py-1 m-1 border" @click.prevent="fetchMenu(link.url)" v-html="link.label"></button>
+                </div>
+            </div>
        </div>
        <div v-else class="w-full mt-5 p-4 grid place-items-center text-gray-600">
           <span>
@@ -23,24 +37,53 @@
           </span>
           <p class="text-center mt-4">Pas de données a afficher pour le moment, veuillez creer au moins un menu !  </p>
       </div>
-   </form>
+   </div>
 </template>
 <script setup>
-    import { FwbInput,FwbButton,FwbRadio,FwbP } from 'flowbite-vue'
     import useAxios from '@/ComponentsServices/axios.js'
-    // import Check from '../Check.vue';
-    import Swal from 'sweetalert2';
-    const { axios_get,axios_post } = useAxios();
+    import Animation from '@/Components/Animation.vue';
+    const { axios_get } = useAxios();
     import { onMounted, ref } from 'vue';
     import moment from 'moment';
 
 
     const menus = ref()
 
-        onMounted(() => {
-            axios_get('../menu/list').then(({data})=>{
-                menus.value = data
-            })
+    const waitingData = ref(false)
+    const emit = defineEmits(['update'])
+
+    const links = ref()
+    const fetchMenu = (url)=>{
+        waitingData.value = true
+        axios_get(url).then(({data:pagination})=>{
+            console.log(pagination);
+            menus.value = pagination.data           
+            links.value = pagination.links
+            waitingData.value = false
+            
+        }).catch((error)=>{
+            console.log(error.response)
         })
+
+    }
+
+    const deleteMenu = (menu)=>{
+
+        axios_get('../menu/'+menu.id+'/delete').then(({data})=>{
+
+            if (data.type ==='success') {
+                
+                menus.value = menus.value.filter((r)=>r.id != menu.id )
+            }
+        }).catch((error)=>console.log(error.response))
+    }
+
+    const updateMenu = (menu)=>{
+        emit('update',menu)
+    }
+
+    onMounted(() => {
+        fetchMenu('../menu/list')
+    })
 
 </script>
