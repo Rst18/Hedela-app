@@ -145,7 +145,9 @@ Route::controller(App\Http\Controllers\BureauController::class)->middleware('aut
 });
 Route::controller(App\Http\Controllers\MenuController::class)->middleware('auth')->group(function(){
     Route::post('menu/add','store');
+    Route::post('menu/{menu}/update','update');
     Route::get('menu/list','index');
+    Route::get('menu/{menu}/delete','destroy');
     Route::get('menu/user','get_menu_user');
     Route::get('menu/create','create')->name('menu.create');
     Route::post('menu/set-menu-user/{user}','addMenu');

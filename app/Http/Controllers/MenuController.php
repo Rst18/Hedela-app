@@ -17,7 +17,7 @@ class MenuController extends Controller
      */
     public function index()
     {
-        return Menu::all();
+        return Menu::paginate(10);
     }
 
     /**
@@ -73,7 +73,7 @@ class MenuController extends Controller
 
            $menu->update($request->validated());
 
-            return ['type'=>'error','message'=>'Modification reussie'];
+            return ['type'=>'success','message'=>'Modification reussie'];
 
         } catch (\Throwable $th) {
             //throw $th;

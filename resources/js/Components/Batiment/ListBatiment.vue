@@ -20,7 +20,7 @@
            </div>
            <div class="flex flex-row w-full px-4 md:w-9/12 justify-center items-center mx-auto">
                 <div v-for="link in links">
-                    <button class="text-grey-darker text-xs md:text-sm px-1  md:px-2 py-1 m-1 border" @click="fetchBatiment(link.url)" v-html="link.label"></button>
+                    <button class="text-grey-darker text-xs md:text-sm px-1  md:px-2 py-1 m-1 border" @click.prevent="fetchBatiment(link.url)" v-html="link.label"></button>
                 </div>
             </div>
        </div>
@@ -36,8 +36,7 @@
 </template>
 <script setup>
     import useAxios from '@/ComponentsServices/axios.js'
-    const { axios_get,axios_post } = useAxios();
-
+    const { axios_get } = useAxios();
     import Animation from '@/Components/Animation.vue';
     import { onMounted, ref } from 'vue';
     import moment from 'moment';
@@ -47,8 +46,9 @@
 
 
     const waitingData = ref(false)
-
+    const links = ref()
     const fetchBatiment = (url)=>{
+        waitingData.value = true
         axios_get(url).then(({data:pagination})=>{
             batiments.value = pagination.data           
             links.value = pagination.links
