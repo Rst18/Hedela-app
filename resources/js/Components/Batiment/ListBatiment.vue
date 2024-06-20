@@ -36,10 +36,10 @@
 </template>
 <script setup>
     import useAxios from '@/ComponentsServices/axios.js'
-    const { axios_get } = useAxios();
     import Animation from '@/Components/Animation.vue';
     import { onMounted, ref } from 'vue';
     import moment from 'moment';
+    const { axios_get } = useAxios();
 
 
     const batiments = ref()

@@ -19,6 +19,10 @@ class BureauController extends Controller
     {
         return Bureau::with('batiment')->get();
     }
+    public function list_bureau()
+    {
+        return Bureau::with('batiment')->paginate(10);
+    }
 
     /**
      * Show the form for creating a new resource.
