@@ -54,7 +54,7 @@
                 </div>
                 <div  v-for="(a,i) in audienceData.accompagnateurs" :key="a.id" class="py-2 hover:bg-gray-100 hover:cursor-pointer">
                 
-                    <div class="grid grid-cols-12 gap-2 px-4">
+                    <div class="grid grid-cols-12 gap-2 px-4 py-2">
                         <span class="col-span-1"  >{{ i + 1 }}</span>
                         <span class="col-span-3"  >{{ a.name }}</span>
                         <span class="col-span-2" > {{ a.email }}</span>
