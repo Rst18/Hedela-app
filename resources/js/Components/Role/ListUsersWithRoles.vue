@@ -11,7 +11,7 @@
                <div class="col-span-1">#</div>
                <div class="col-span-2">{{u.name }}</div>
                <div class="col-span-6">
-                    <div class="flex gap-2 flex-wrap" v-if="roles[0]">
+                    <div class="flex gap-2 flex-wrap text-xs" v-if="roles[0]">
                         <span v-for="r of roles" :key="r.name" @click.stop="addRoleToUser(r,u)" :class="` ${pickedRoles.includes(r.id+'__'+u.id) ? 'bg-gray-800 text-white' : ''} rounded-lg px-1 bg-gray-100 border border-gray-500 flex items-center gap-2 hover:bg-gray-800 cursor-pointer hover:text-white`">{{r.name }} <Check class='w-4 h-4' v-if="pickedRoles.includes(r.id+'__'+u.id)" /></span>
                     </div>
                </div>

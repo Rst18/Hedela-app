@@ -1,12 +1,12 @@
 <template>
-    <div class="p-4 shadow-md rounded-md">
+    <div class=" mt-2 p-4 shadow-md rounded-md">
         <div>
             <fwb-input
                 v-model="form.name"
                 placeholder="Administateur"
                 label="Entrer le nom du Role ( groupe utilisateur)"
             />
-            <div class="text-red-500" v-if="errors.name">
+            <div class="text-red-500 text-xs py-1" v-if="errors.name">
                 {{ errors.name[0]}}
             </div>
         </div>
@@ -14,7 +14,7 @@
            <ToggleInput @getValue="getToggleValue">
             Solicitable ?
            </ToggleInput>
-            <div class="text-red-500" v-if="errors.solicitable">
+            <div class="text-red-500 text-xs py-1" v-if="errors.solicitable">
                 {{ errors.solicitable[0]}}
             </div>
         </div>
@@ -51,17 +51,27 @@ import ToggleInput from '@/Components/ToggleInput.vue'
         if (props.action === 'add') {
 
             axios_post_simple('../role/add',form.value).then(({data})=>{
-                emit('newAdded',data.new)
+
+                if (data.type ==='success') {
+
+                    emit('newAdded',data.new)
+                }
             }).catch((error)=>{
-                console.log(error.response)
+                if(error.response.status === 422){
+                    errors.value = error.response.data.errors
+                }
             })
 
         }else if(props.action === 'update'){
-            axios_post_simple('role/'+props.role.id+'/update',form.value).then(({data})=>{
-                console.log(data)
-                emit('newAdded',data.new)
+            axios_post_simple('../role/'+props.role.id+'/update',form.value).then(({data})=>{
+
+                if (data.type ==='success') {
+                    emit('newAdded',data.new) 
+                }
             }).catch((error)=>{
-                console.log(error.response)
+                if(error.response.status === 422){
+                    errors.value = error.response.data.errors
+                }
             })
         }
         else{

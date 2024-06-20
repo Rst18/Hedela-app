@@ -32,6 +32,8 @@ Route::middleware('auth')->group(function () {
 Route::controller(App\Http\Controllers\RoleController::class)->middleware('auth')->group(function(){
     Route::get('role/create','create')->name('role.create');
     Route::get('role-with-users','index')->name('list_role');
+    Route::get('role/list','list_roles');
+    Route::get('role/{role}/delete/','destroy');
     Route::post('role/add','store');
     Route::post('role/{role}/update','update');
     Route::post('role/set-role-user/{user}','addRoles');

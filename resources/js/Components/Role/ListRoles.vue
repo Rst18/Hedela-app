@@ -1,20 +1,33 @@
 <template>
-    <form >
+     <div class="flex justify-center items-center" v-if="waitingData">
+        <Animation  />
+    </div>
+    <div v-else >
        <div class="mt-3 w-full p-3 font-semibold bg-gray-100 grid grid-cols-12">
            <div class="col-span-1">#</div>
-           <div class="col-span-7">Role</div>
+           <div class="col-span-5">Role</div>
            <div class="col-span-2">Solicitable ? </div>
            <div class="col-span-2">Date  </div>
+           <div class="col-span-2">Options</div>
        </div>
-       <div v-if="roles[0]">
-           <div v-for="r of roles" :key="r.name" class="w-full p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer">
+       <div v-if="roles">
+           <div  v-for="r of roles" :key="r.name" class="w-full p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer">
                <div class="col-span-1">#</div>
-               <div class="col-span-7">{{r.name }}</div>
+               <div class="col-span-5">{{r.name }}</div>
                <div class="col-span-2 w-fit p-2 rounded-full text-xs font-bold" :class="r.solicitable ? ' text-white  bg-green-300' : ' text-gray-50  bg-gray-500'">
                    {{ r.solicitable ? 'Oui':'Non' }}
                </div>
                <div class="col-span-2">{{ moment(r.created_at).format('ll') }}</div>
+               <div class="col-span-2 grid grid-cols-2 gap-1">
+                    <span @click="deleteRole(r)" class="text-xs font-semibold text-red-600 underline hover:font-bold hover:text-sm">Supprimer</span>
+                    <span @click="updateRole(r)" class="text-xs font-semibold text-blue-600 underline hover:font-bold hover:text-sm">Modifier</span>
+               </div>
            </div>
+           <div class="flex flex-row w-full px-4 md:w-9/12 justify-center items-center mx-auto">
+                <div v-for="link in links">
+                    <button class="text-grey-darker text-xs md:text-sm px-1  md:px-2 py-1 m-1 border" @click="fetchRole(link.url)" v-html="link.label"></button>
+                </div>
+            </div>
        </div>
        <div v-else class="w-full mt-5 p-4 grid place-items-center text-gray-600">
           <span>
@@ -24,19 +37,45 @@
           </span>
           <p class="text-center mt-4">Pas de données a afficher pour le moment, veuillez creer au moins un role !  </p>
       </div>
-   </form>
+   </div>
 </template>
 <script setup>
-import { FwbInput,FwbButton,FwbRadio,FwbP } from 'flowbite-vue'
 import useAxios from '@/ComponentsServices/axios.js'
-// import Check from '../Check.vue';
-import Swal from 'sweetalert2';
-
-const { axios_post_simple,axios_post } = useAxios();
+import Animation from '@/Components/Animation.vue';
 import { onMounted, ref } from 'vue';
 import moment from 'moment';
- const props = defineProps({
-    roles : Array,
- })
+
+    const { axios_get } = useAxios();
+    const roles = ref()
+    const links = ref()
+    const waitingData = ref(false)
+    const emit = defineEmits(['update'])
+
+    const deleteRole = (role)=>{
+
+        axios_get('../role/'+role.id+'/delete').then(({data})=>{
+
+            if (data.type ==='success') {
+                
+                roles.value = roles.value.filter((r)=>r.id != role.id )
+            }
+        }).catch((error)=>console.log(error.response))
+    }
+    const updateRole = (role)=>{
+        emit('update',role)
+    }
+
+    const fetchRole = (url)=>{
+        axios_get(url).then(({data:pagination})=>{
+            roles.value = pagination.data           
+            links.value = pagination.links
+            waitingData.value = false
+        }).catch((error)=>{
+            console.log(error.response)
+        })
+    }
+    onMounted(() => {
+        fetchRole('../role/list')
+    })
 
 </script>

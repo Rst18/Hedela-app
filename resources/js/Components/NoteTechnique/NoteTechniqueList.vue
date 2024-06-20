@@ -22,11 +22,11 @@
                <div class="col-span-1 flex justify-center items-center"  :class="getColorNote(note.status)[0].color"><Check v-if="note.status == 2" class="h-4 w-4 text-white border rounded-full bg-green-600 "/></div>
            </div>
 
-           <div class="flex flex-row w-full px-4 md:w-9/12 justify-center items-center mx-auto">
-             <div v-for="link in links">
-                <button class="text-grey-darker text-xs md:text-sm px-1  md:px-2 py-1 m-1 border" @click="fetchNote(link.url)" v-html="link.label"></button>
+            <div class="flex flex-row w-full px-4 md:w-9/12 justify-center items-center mx-auto">
+                <div v-for="link in links">
+                    <button class="text-grey-darker text-xs md:text-sm px-1  md:px-2 py-1 m-1 border" @click="fetchNote(link.url)" v-html="link.label"></button>
+                </div>
             </div>
-        </div>
        </div>
        <div v-else class="w-full mt-5 p-4 grid place-items-center text-gray-600">
           <span>
