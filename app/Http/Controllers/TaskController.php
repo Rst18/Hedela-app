@@ -215,9 +215,11 @@ class TaskController extends Controller
 
     public function task_list()
     {
+
+      
        
         $tasks = Task::with(['timesheets'=>function($q){
-                $q->join('users','users.id','timesheets.user_id');
+               // $q->join('users','users.id','timesheets.user_id');
             //->with('comments')
                 }])
             ->with('users')
@@ -226,6 +228,7 @@ class TaskController extends Controller
                     $query->join('users','users.id','task_comments.user_id');
                 }])
             ->get();
+           // return $tasks;
        
         return Inertia::render('Task/Tasks',compact('tasks'));
     }
@@ -251,21 +254,7 @@ class TaskController extends Controller
        return Inertia::render('Task/ListRoleUsersTask',compact('roles'));
     }
 
-    public function getMyTasks( $user){
-      
-        return User::where('id',$user)->with(['tasks'=>function($query){
-            $query->with(['timesheets'=>function($q){
-                $q->join('users','users.id','timesheets.user_id')
-                ->with('comments');
-            }])
-            ->with('users')
-            ->with('keepInformed')
-            ->with(['comments'=>function($query){
-                $query->join('users','users.id','task_comments.user_id');
-            }]);
-        }])->first();
-       
-    }
+  
     public function getMyTasksweb(){
 
         return User::where('id',Auth::user()->id)->with(['tasks'=>function($query){
@@ -283,6 +272,9 @@ class TaskController extends Controller
             }]);
         }])->first();
        
+    }
+    public function my_tasks_page(){
+        return Inertia::render('Task/MyTasks');
     }
 
     public function getStatistic(){

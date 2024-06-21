@@ -1,9 +1,8 @@
 <template>
-    <div class="grid grid-cols-12 py-2 shadow-sm rounded-sm px-4 gap-2">
+    <div  v-if="!timesheet"  class="grid grid-cols-12 py-2 shadow-sm rounded-sm px-4 gap-2">
         <button class="bg-gray-800 rounded-md py-1 text-gray-50 text-xs font-semibold  col-span-2" v-if="modification == 1"  @click="modification = false">Retour</button>
         <button class="bg-gray-800 rounded-md py-1 text-gray-50 text-xs font-semibold  col-span-2" v-if="timesheet" @click="timesheet=false">Retour</button>
         <button class="bg-gray-800 rounded-md py-1 text-gray-50 text-xs font-semibold  col-span-2" v-if="modification == 0" @click="hideMe" >Liste Taches</button>
-        <button class="bg-gray-800 rounded-md py-1 text-gray-50 text-xs font-semibold  col-span-2" v-if="modification == 0"  @click="modification = 1">Modifier</button>
        
         <button class="bg-gray-800 rounded-md py-1 text-gray-50 text-xs font-semibold  col-span-2" v-if="taskData.statut < 2" @click="modification=2">Créer Timesheet</button>
     </div>
@@ -45,7 +44,7 @@
                     <span class="py-2 font-bold text-gray-800">Keep Inform</span>
     
                     <div v-for="user in taskData.keep_informed" :key="user.id" class="my-1">
-                        <span class="bg-slate-200 font-semibold text-gray-800 px-2 rounded-full ">{{ user.firstname }} {{ user.lastname }}</span>
+                        <span class="bg-slate-100  text-gray-700 px-2 rounded-full ">{{ user.name }}</span>
                     </div>
                 </div>
     

@@ -15,27 +15,25 @@
            <div class="col-span-1">Statut</div>
            <div class="col-span-1">Priorité</div>
        </div>
-        <div  @click="getTache(tache)" v-for="(tache,index) of taches.taches" :key="tache.id" class="w-full text-sm p-3 grid grid-cols-12 border cursor-pointer hover:bg-slate-100">
+        <div  @click="getTask(task)" v-for="(task,index) of tasks" :key="task.id" class="w-full text-sm p-3 grid grid-cols-12 border-b cursor-pointer hover:bg-slate-100">
             <div class="col-span-1">{{ index + 1 }}</div>
-            <div class="col-span-2">{{tache.nom }}</div>
-            <div class="col-span-7 px-2 text-xm" v-html="tache.description.slice(0,100)+'...'"></div>
-            <div class="col-span-1" :class="searchName(statuts,tache.statut)[0].color" ><span class="border rounded-full px-2 bg-slate-100">{{ searchName(statuts,tache.statut)[0].name }}</span></div>
-            <div class="col-span-1" :class="searchName(statuts,tache.statut)[0].color" ><span class="border rounded-full px-2 bg-slate-100">{{ searchName(priorites,tache.priorite)[0].name }}</span></div>    
+            <div class="col-span-2">{{task.nom }}</div>
+            <div class="col-span-7 px-2 text-xm" v-html="task.description.slice(0,100)+'...'"></div>
+            <div class="col-span-1" :class="searchName(statuts,task.statut)[0].color" ><span class="border rounded-full px-2 bg-slate-100">{{ searchName(statuts,task.statut)[0].name }}</span></div>
+            <div class="col-span-1" :class="searchName(statuts,task.statut)[0].color" ><span class="border rounded-full px-2 bg-slate-100">{{ searchName(priorites,task.priorite)[0].name }}</span></div>    
         </div>
     </div>
 
 
 </template>
 <script setup>
-import { FwbButton } from 'flowbite-vue'
-import useAxios from '@/componentsService/axios.js'   
+import useAxios from '@/ComponentsServices/axios.js'   
 import {onMounted,ref } from 'vue'
-
 import Animation from '@/Components/Animation.vue';
 
     const {axios_get} = useAxios();
-    const taches = ref([])
-    const emit = defineEmits(['tache'])
+    const tasks = ref([])
+    const emit = defineEmits(['task'])
     const waitingData = ref(true)
     const priorites = [
         {
@@ -87,13 +85,13 @@ import Animation from '@/Components/Animation.vue';
     const searchName = (data,id)=>{
        return data.filter((p)=> p.id == id)
     }
-    const getTache = (tache)=>{
-        emit('tache',tache)
+    const getTask = (task)=>{
+        emit('task',task)
     }
 
-    onMounted(() =>  axios_get('user/task').then(({data})=>{ 
+    onMounted(() =>  axios_get('../user/task').then(({data})=>{ 
         waitingData.value = false
-        taches.value = data
+        tasks.value = data.tasks
      }))
         
 

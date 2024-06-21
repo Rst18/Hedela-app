@@ -63,6 +63,7 @@ class TimesheetController extends Controller
      */
     public function update(UpdateTimesheetRequest $request, Timesheet $timesheet)
     {
+       
          try {
 
             if ($timesheet->user_id == Auth::user()->id) {

@@ -47,7 +47,7 @@
             <fwb-button @click="close" class="rounded-lg mt-2 bg-red-700 text-white hover:bg-gray-200 hover:dark:bg-gray-600 border">
               Fermer
             </fwb-button>
-            <fwb-button @click="save" class="rounded-lg mt-2 hover:bg-gray-200 hover:dark:bg-gray-600 border">
+            <fwb-button @click="save" class="rounded-lg mt-2 bg-gray-800 hover:bg-gray-700 hover:dark:bg-gray-600 border">
               Enregistrer
             </fwb-button>
         </div>
@@ -92,7 +92,7 @@
         if (props.option === 'add') {
             
             axios_post_simple('timesheet',form.value).then(({data})=>{
-                console.log(data);
+
                 if (data.type === 'success') {
                     Swal.fire(data.type,data.message,data.type).then(()=>{
                         emit('new',data.new)
@@ -105,13 +105,15 @@
                 if (error.response.status === 422 ) {
                     errors.value = error.response.data.errors
                 }
-                console.log(error.response);
             })
         }else if(props.option ==='update'){
             let id = props.timesheet.id
-            axios_post_simple('timesheet/update/'+id,form.value).then(({data})=>{
+            axios_post_simple(`timesheet/${id}/update`,form.value).then(({data})=>{
+
                 console.log(data);
+
                 if (data.type === 'success') {
+
                     Swal.fire(data.type,data.message,data.type).then(()=>{
                         emit('update')
                     })

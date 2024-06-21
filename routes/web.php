@@ -117,6 +117,7 @@ Route::controller(App\Http\Controllers\TaskController::class)->middleware('auth'
     Route::post('set-task-user','addUserTask');
     Route::post('remove-task-user','removeUserTask');
     Route::get('role-user-task','role_user_tasks')->name('task.attrib_user');
+    Route::get('task/my-tasks','my_tasks_page')->name('task.mes_taches');
     Route::get('user/{user}/task','getMyTasks');
     Route::get('user/task','getMyTasksweb');
     Route::get('statistic/task','getStatistic');
@@ -134,7 +135,7 @@ Route::controller(App\Http\Controllers\TimesheetController::class)->middleware('
     Route::post('timesheet','store');
     Route::get('task/timesheet/{tache}','getMyTimesheetsForTask');
     Route::get('task/timesheet/user/{tache}','getTimesheetsForTask');
-    Route::post('timesheet/update/{timesheet}','update');
+    Route::post('timesheet/{timesheet}/update','update');
 });
 
 

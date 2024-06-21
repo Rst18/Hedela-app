@@ -68,7 +68,7 @@
                         </div>
                     </div>
                     <div class="mt-4">
-                        <!-- <AjoutCommentaireTimesheet @newComment="setNewComment" :timesheet_id="timesheetData.id"/> -->
+                        <AjoutCommentaireTimesheet @newComment="setNewComment" :timesheet_id="timesheetData.id"/>
                     </div>
                 </div>
             </div>
@@ -77,7 +77,7 @@
 
     </div>
     <div v-if="modification">
-        <TimeSheetForm option="update" :timesheet="timesheetData"  :tache="tache" />
+        <TimeSheetForm option="update" :timesheet="timesheetData"  :task="tache" />
     </div>
 
 
@@ -87,7 +87,7 @@
 
 import useAxios from '@/ComponentsServices/axios.js'
 import moment from 'moment';
-// import AjoutCommentaireTimesheet from './AjoutCommentaireTimesheet.vue'
+import AjoutCommentaireTimesheet from './AjoutCommentaireTimesheet.vue'
 import {ref,onMounted} from 'vue'
 // import { format, formatDistance, formatRelative } from 'date-fns'
 // import { fr } from 'date-fns/locale'
@@ -99,28 +99,12 @@ import TimeSheetForm from './TimeSheetForm.vue';
         timesheet:Object,
         tache:Object
     })
+    console.log(props.timesheet);
     const timesheetData = ref()
     const profil = ref('https://ui-avatars.com/api/?name=')
     const ressources = ref([]);
     const modification = ref(false)
     const {axios_post_simple,axios_get  } = useAxios();
-
-        const show_modal =ref(false)
-        const numero_livre = ref()
-        const formatFile = ref()
-        const displayRessource = ref()
-        const userCanDowload = ref()
-        const filePathDwld = ref()
-
-        //components Afficher metadonnee
-        const show_metadonnee = ref(false)
-        const metadonnee = ref()
-
-        //modification metadonnee
-        const result_metadonnee = ref()
-        const show_metadonnee_form = ref(false)
-
-
 
 
     const calculHeure = (date_un,date_deux)=>{

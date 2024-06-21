@@ -10,7 +10,7 @@
            <div class="col-span-1">Statut</div>
            <div class="col-span-1">Priorité</div>
        </div>
-        <div  @click="getTache(tache)" v-for="(tache,index) of tasks" :key="tache.id" class="w-full text-sm p-3 grid grid-cols-12 border cursor-pointer hover:bg-slate-100">
+        <div  @click="getTache(tache)" v-for="(tache,index) of tasks" :key="tache.id" class="w-full text-sm p-3 grid grid-cols-12 border-b cursor-pointer hover:bg-slate-100">
             <div class="col-span-1">{{ index + 1 }}</div>
             <div class="col-span-2">{{tache.nom }}</div>
             <div class="col-span-7 px-2 text-xm" v-html="tache.description.slice(0,100)+'...'"></div>
@@ -85,7 +85,6 @@ import {onMounted,ref } from 'vue'
         emit('task',tache)
     }
 
-  //  onMounted(() =>  axios_get('user/task').then(({data})=>{ taches.value = data }))
         
 
 </script>
