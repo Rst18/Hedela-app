@@ -1,5 +1,5 @@
 <template>
-    <div class="shadow-sm border p-4 m-2">
+    <div class="border p-8 w-max-lg m-2">
         <div class="py-2 ">
             <span class="font-bold text-gray-600 text-xl">{{ option === 'add' ?'Créer une Tache':'Modifier la tache' }}</span>
         </div>
@@ -10,7 +10,7 @@
                     placeholder="Ecrire le nom de la tache"
                     label="Nom"
                 />
-                <div class="text-red-500" v-if="errors.nom">
+                <div class="text-red-500 text-xs py-1" v-if="errors.nom">
                         {{ errors.nom[0]}}
                 </div>
             </div>
@@ -21,8 +21,8 @@
                     label="Date Limite"
                     type="date"
                 />
-                <div class="text-red-500" v-if="errors.titre">
-                        {{ errors.nom[0]}}
+                <div class="text-red-500 text-xs py-1" v-if="errors.date_limite">
+                        {{ errors.date_limite[0]}}
                 </div>
             </div>
             <div class="flex col-2 gap-2 pb-2">
@@ -42,7 +42,7 @@
                 <EditorComponent v-model="form.description"/>
             </div>
         </div>
-        <fwb-button @click="save" class="rounded-lg mt-2 hover:bg-gray-200 hover:dark:bg-gray-600 border">
+        <fwb-button @click="save" class="rounded-lg mt-2 bg-gray-800 hover:bg-gray-700 hover:dark:bg-gray-600 border">
           {{option === 'add' ? 'Enregistrer' :'Modifier'}}
         </fwb-button>
 
@@ -54,7 +54,7 @@
     import useAxios from '@/ComponentsServices/axios.js'
     import { FwbA, FwbButton, FwbTextarea,FwbInput } from 'flowbite-vue'
     import EditorComponent from '@/Components/EditorComponent.vue'
-    import SelectComponent from '@/Components/Task/SelectComponent.vue'
+    import SelectComponent from '@/Components/Tache/SelectComponent.vue'
     import Swal from 'sweetalert2';
 
     const {axios_post_simple} = useAxios();
@@ -64,6 +64,7 @@
         option:String,
         task:Object
     })
+    const errors =ref([]);
     const form = ref({
         nom:props.task.nom,
         description:props.task.description,
@@ -80,17 +81,23 @@
         const save = ()=>{
 
             if (props.option === 'add') {
-                axios_post_simple('task-save',form.value).then(({data})=>{
-                    Swal.fire(data.type,data.message,data.type).then(()=>{
-                        emit('new',data.new)
-                        form.value ={}
-                    })
+                axios_post_simple('../task-save',form.value).then(({data})=>{
+
+                    if (data.type === 'success') {
+                        
+                        Swal.fire(data.type,data.message,data.type).then(()=>{
+                            emit('new',data.new)
+                            form.value ={}
+                        })
+                    }
                 }).catch((error)=>{
-                    console.log(error.response);
+                   if (error.response.status === 422) {
+                        errors.value = error.response.data.errors
+                   }
                 })
             }else if(props.option ==='update'){
                let id = props.task.id
-                axios_post_simple('task-update/'+id,form.value).then(({data})=>{
+                axios_post_simple('task-update/'+props.task.id,form.value).then(({data})=>{
                     console.log(data);
                     Swal.fire(data.type,data.message,data.type).then(()=>{
                       
@@ -102,12 +109,8 @@
             }
         }
 
-  
     
-
-
     
-    const errors =ref([]);
 
     const priorites = [
         {

@@ -106,13 +106,14 @@ Route::controller(App\Http\Controllers\RendezvousAudienceController::class)->mid
 });
 Route::controller(App\Http\Controllers\TaskController::class)->middleware('auth')->group(function(){
     Route::get('task','task_dashbord')->name('task');
-    Route::get('task-create','create')->name('task-create');
+    Route::get('task/dashbord','dashbord');
+    Route::get('task/create','create')->name('task.create');
     Route::get('task-list','task_list')->name('task-list');
-    Route::get('task-attrib-group','task_attrib_group')->name('task-attrib-group');
+    Route::get('task-attrib-group','task_attrib_role')->name('task.attrib_group');
     Route::post('task-save','store');
-    Route::post('task-update/{tache}','update');
-    Route::post('set-tache-group','addGroupTache');
-    Route::post('remove-tache-group','removeUserTache');
+    Route::post('task-update/{task}','update');
+    Route::post('set-task-role','addRoleTask');
+    Route::post('remove-task-role','removeRoleTask');
     Route::post('set-tache-user','addUserTache');
     Route::post('remove-tache-user','removeUserTache');
     Route::get('group-user-tache','group_user_tasks')->name('task-attrib-user');

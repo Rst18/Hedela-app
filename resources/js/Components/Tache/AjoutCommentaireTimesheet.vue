@@ -12,7 +12,7 @@
 </template>
 <script setup>
 
-    import useAxios from '@/componentsService/axios.js'
+    import useAxios from '@/ComponentsServices/axios.js'
     import Button from '@/Components/Button.vue'
     import {ref} from 'vue'
 

@@ -1,11 +1,11 @@
 <template>
     <div class="grid grid-cols-12 py-2 shadow-sm rounded-sm px-4 gap-2">
-        <Button class="bg-gray-100 hover:text-white text-gray-700 font-bold col-span-3" v-if="modification == 1"  @click="modification = false">Retour</Button>
-        <Button class="bg-gray-100 hover:text-white text-gray-700 font-bold  col-span-3" v-if="timesheet" @click="timesheet=false">Retour</Button>
-        <Button class="bg-gray-100 hover:text-white text-gray-700 font-bold col-span-3" v-if="modification == 0" @click="hideMe" >Liste Taches</Button>
-        <Button class="bg-gray-100 hover:text-white text-gray-700 font-bold  col-span-3" v-if="modification == 0"  @click="modification = 1">Modifier</Button>
+        <button class="bg-gray-800 rounded-md py-1 text-gray-50 text-xs font-semibold  col-span-2" v-if="modification == 1"  @click="modification = false">Retour</button>
+        <button class="bg-gray-800 rounded-md py-1 text-gray-50 text-xs font-semibold  col-span-2" v-if="timesheet" @click="timesheet=false">Retour</button>
+        <button class="bg-gray-800 rounded-md py-1 text-gray-50 text-xs font-semibold  col-span-2" v-if="modification == 0" @click="hideMe" >Liste Taches</button>
+        <button class="bg-gray-800 rounded-md py-1 text-gray-50 text-xs font-semibold  col-span-2" v-if="modification == 0"  @click="modification = 1">Modifier</button>
        
-        <Button class="bg-gray-100 hover:text-white text-gray-700 font-bold  col-span-3" v-if="taskData.statut < 2" @click="modification=2">Créer Timesheet</Button>
+        <button class="bg-gray-800 rounded-md py-1 text-gray-50 text-xs font-semibold  col-span-2" v-if="taskData.statut < 2" @click="modification=2">Créer Timesheet</button>
     </div>
 
     <div v-show="modification == 0">
@@ -61,7 +61,7 @@
                     <span class="text-lg font-bold py-2" >Discussions ( {{ taskData.comments.length  }} )</span>
                     <div class="mt-4">
                         <div class="px-4">
-                            <div v-for="comment in taskData.comments" class="shadow-sm p-4 m-2 grid grid-cols-12">
+                            <div v-for="comment in taskData.comments" class="shadow-sm p-2 m-2 grid grid-cols-12">
                                 <div class=" col-span-1">
                                     <img   :src="profil +comment.firstname +'+'+comment.lastname" class="w-8 h-8 rounded-full bg-gray-100">
                                 </div>
@@ -88,7 +88,7 @@
             <div class="col-span-2 text-sm border-l px-2">
                 <span class="font-bold text-gray-700  border-b">Timesheets ( {{ taskData.timesheets.length }} )</span>
                 <div @click="getTimesheet(timesheet)"  v-for="timesheet of taskData.timesheets" :key="timesheet.id" class="w-full flex text-xs p-2 cursor-pointer hover:bg-slate-100">
-                    <div>{{ timesheet.firstname  }}  {{ timesheet.lastname  }}  </div>
+                    <div>{{ timesheet.name  }}   </div>
                     <div class="ml-2">{{   moment(timesheet.date_jourt).format('ll') }}  </div>
                     <!-- <div class="col-span-7 px-2 text-sx" v-html="timesheet.description.slice(0,15)+'...'"></div> -->
                 </div>
@@ -100,7 +100,7 @@
     
             
     <div v-if="modification == 1">
-        <FromCreate option="update" :task="task"/>
+        <FormCreate option="update" :task="task"/>
     </div>
     <div v-if="modification == 2" >
         <TimeSheetForm option="add" :timesheet="timesheetForm" @hide="modification = 0" :task="task"/>
@@ -113,13 +113,12 @@
 
     import useTimesheet from '@/ComponentsServices/TimeSheet.js' 
     import moment from 'moment';
-    import Button from '@/Components/Button.vue'
-    import FromCreate from './FormCreate.vue'
-    import TimeSheetForm from './TimeSheetForm.vue'
+   import AjoutCommentaire from './AjoutCommentaire.vue';
     import {ref} from 'vue'
-    import AjoutCommentaire from './AjoutCommentaire.vue'
-    import DetailsTimesheet from './DetailsTimesheet.vue'
+    import TimeSheetForm from './TimeSheetForm.vue';
+    import FormCreate from '@/Components/Tache/FormCreate.vue'
     import useAxios from '@/ComponentsServices/axios.js'
+    import DetailsTimesheet from './DetailsTimesheet.vue';
     // import { format, formatDistance, formatRelative } from 'date-fns'
     // import { fr } from 'date-fns/locale'
     

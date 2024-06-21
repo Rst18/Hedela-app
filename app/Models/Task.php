@@ -44,4 +44,6 @@ class Task extends Model
     {
         return $this->belongsToMany(User::class, 'task_keep_informed');
     }
+
+    
 }

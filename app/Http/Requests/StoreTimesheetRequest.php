@@ -24,7 +24,7 @@ class StoreTimesheetRequest extends FormRequest
     {
         return [
             
-            'tache_id'=>'exists:taches,id',
+            'task_id'=>'required|exists:tasks,id',
             'description'=>'required|string',
             'date_debut'=>'date',
             'date_jour'=>'required|date',

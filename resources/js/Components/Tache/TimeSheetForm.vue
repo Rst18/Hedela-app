@@ -1,7 +1,7 @@
 <template>
     <div class="p-8 m-2 shadow-md rounded-md border">
         <div class="flex justify-center items-center font-bold text-gray-800 text-xl px-2">
-            {{ tache.nom }}
+            {{ task.nom }}
         </div>
         <div class="text-lg font-semibold py-4 text-gray-700">
            {{ option === 'add' ? ' Créer votre Timesheet' :' Modifier votre Timesheet' }}
@@ -60,31 +60,30 @@
     import useAxios from '@/ComponentsServices/axios.js'
     import { FwbA, FwbButton, FwbTextarea,FwbInput } from 'flowbite-vue'
     import EditorComponent from '@/Components/EditorComponent.vue'
-    import SelectComponent from '@/Components/Task/SelectComponent.vue'
+    import SelectComponent from '@/Components/Tache/SelectComponent.vue'
     import Swal from 'sweetalert2';
     import InputDateTime from '@/Components/InputDateTime.vue'
     const {axios_post_simple} = useAxios();
 
     const props = defineProps({
-        tache:Object,
+        task:Object,
         timesheet:Object,
         option:String
     })
     const emit = defineEmits(['new','hide','update'])
     const form = ref({
 
-        tache_id:props.tache.id,
+        task_id:props.task.id,
         description:props.timesheet.description,
         date_jour:new Date(props.timesheet.date_jour).toLocaleDateString('fr-FR', {
-  day: '2-digit',
-  month: '2-digit',
-  year: 'numeric',
-}),
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+        }),
         date_debut:props.timesheet.date_debut,
         date_fin:props.timesheet.date_fin,
     })
-    console.log(
-)
+    
 
     const getDateDebut = (e)=>form.value.date_debut = e
     const getDateFin = (e)=>form.value.date_fin = e
@@ -93,10 +92,14 @@
         if (props.option === 'add') {
             
             axios_post_simple('timesheet',form.value).then(({data})=>{
-                Swal.fire(data.type,data.message,data.type).then(()=>{
-                    emit('new',data.new)
-                    form.value ={}
-                })
+                console.log(data);
+                if (data.type === 'success') {
+                    Swal.fire(data.type,data.message,data.type).then(()=>{
+                        emit('new',data.new)
+                        form.value ={}
+                    })
+                    
+                }
             }).catch((error)=>{
     
                 if (error.response.status === 422 ) {
@@ -107,11 +110,15 @@
         }else if(props.option ==='update'){
             let id = props.timesheet.id
             axios_post_simple('timesheet/update/'+id,form.value).then(({data})=>{
-                Swal.fire(data.type,data.message,data.type).then(()=>{
-                    emit('update')
-                })
+                console.log(data);
+                if (data.type === 'success') {
+                    Swal.fire(data.type,data.message,data.type).then(()=>{
+                        emit('update')
+                    })
+                    
+                }
             }).catch((error)=>{
-    
+                console.log(error.response);
                 if (error.response.status === 422 ) {
                     errors.value = error.response.data.errors
                 }

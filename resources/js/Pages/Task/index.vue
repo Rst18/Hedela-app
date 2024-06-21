@@ -52,7 +52,7 @@
         const statistic = ref({})
 
         onMounted(() => {
-            axios_get('statistic/task').then(({data})=>{
+            axios_get('../statistic/task').then(({data})=>{
                 statistic.value = data  
             })  
 
