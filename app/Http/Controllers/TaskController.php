@@ -171,14 +171,14 @@ class TaskController extends Controller
       
     }
     public function addUserTask(Request $request){
-       
+      
         try {
 
             $user = User::find($request->user);
 
             if ($user != null) {
-
-                $user->tasks()->attach($request->task,['assigner' => Auth::user()->id]);
+                $user->tasks()->attach($request->task);
+                // $user->tasks()->attach($request->task,['assigner' => Auth::user()->id]);
                 $task = Task::find($request->task);
                // $user->notify(new TaskNotification($task->nom,Auth::user()->username,'Information'));
                // MailSend::sendMailToUser($user->email, Auth::user()->username ."Vous a affecter à une tache ( $tache->nom ), Veillez consulter la liste de vos taches.");
@@ -237,9 +237,9 @@ class TaskController extends Controller
         return Inertia::render('Task/ListGroupTask',compact('tasks','roles'));
     }
 
-    public function group_user_tasks(){
+    public function role_user_tasks(){
 
-        $roles =  Role::whereHas('taches')
+        $roles =  Role::whereHas('tasks')
         ->with('tasks')
         ->with(['users'=>function($query){
             $query->with('tasks');

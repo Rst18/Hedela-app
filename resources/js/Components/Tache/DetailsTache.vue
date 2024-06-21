@@ -37,7 +37,7 @@
                     <span class="py-2 font-bold text-gray-800">Collaborateurs</span>
     
                     <div v-for="user in taskData.users" :key="user.id" class="my-1">
-                        <span class="bg-slate-200 font-semibold text-gray-800 px-2 rounded-full text-xs ">{{ user.firstname }} {{ user.lastname }}</span>
+                        <span class="bg-slate-200 font-semibold text-gray-800 px-2 rounded-full text-xs ">{{ user.name }}</span>
                     </div>
                 </div>
                 <hr>

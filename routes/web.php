@@ -114,9 +114,9 @@ Route::controller(App\Http\Controllers\TaskController::class)->middleware('auth'
     Route::post('task-update/{task}','update');
     Route::post('set-task-role','addRoleTask');
     Route::post('remove-task-role','removeRoleTask');
-    Route::post('set-tache-user','addUserTache');
-    Route::post('remove-tache-user','removeUserTache');
-    Route::get('group-user-tache','group_user_tasks')->name('task-attrib-user');
+    Route::post('set-task-user','addUserTask');
+    Route::post('remove-task-user','removeUserTask');
+    Route::get('role-user-task','role_user_tasks')->name('task.attrib_user');
     Route::get('user/{user}/task','getMyTasks');
     Route::get('user/task','getMyTasksweb');
     Route::get('statistic/task','getStatistic');
