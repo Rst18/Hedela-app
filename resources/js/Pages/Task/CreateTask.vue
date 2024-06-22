@@ -9,7 +9,8 @@
         <div  class="max-w-7xl py-6 mx-auto sm:px-6 lg:px-8">
             <FormCreate
                 option="add"
-                :task="{}"
+                
+                :task="form"
             />
         </div>
     </SideBarLayout>
@@ -21,5 +22,13 @@
     // import { Head } from '@Inertiajs/inertia-vue3';
     
     import FormCreate from '@/Components/Tache/FormCreate.vue'
+
+    const form = {
+        nom:"",
+        description:'',
+        date_limite:'',
+        statut:'',
+        priorite:''
+    }
         
 </script>

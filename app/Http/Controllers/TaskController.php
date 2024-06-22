@@ -261,9 +261,9 @@ class TaskController extends Controller
 
             $query->with(['timesheets' => function($q){
                 $q->join('users','users.id','timesheets.user_id');
-                $q->with(['commentaires'=>function($q){
-                    $q->join('users','users.id','timesheet_commentaires.user_id');
-                }]);
+              //  $q->with(['comments'=>function($q){
+                  //  $q->join('users','users.id','timesheet_commentaires.user_id');
+               // }]);
             }])
             ->with('users')
             ->with('keepInformed')

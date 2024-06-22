@@ -28,12 +28,12 @@
             <div class="flex col-2 gap-2 pb-2">
     
                 <div class="w-[50%]">
-                    <SelectComponent :options="priorites" @selectedValue="getPriorite">
+                    <SelectComponent :defaultSelectedValue ="form.priorite" :options="priorites" @selectedValue="getPriorite">
                         Priorité
                     </SelectComponent>
                 </div>
                 <div class="w-[50%]">
-                    <SelectComponent :options="statuts" @selectedValue="getStatut">
+                    <SelectComponent :defaultSelectedValue ="form.statut" :options="statuts" @selectedValue="getStatut">
                         Statut
                     </SelectComponent>
                 </div>
@@ -55,10 +55,11 @@
     import { FwbA, FwbButton, FwbTextarea,FwbInput } from 'flowbite-vue'
     import EditorComponent from '@/Components/EditorComponent.vue'
     import SelectComponent from '@/Components/Tache/SelectComponent.vue'
+    import InputDateTime from '@/Components/InputDateTime.vue'
     import Swal from 'sweetalert2';
 
     const {axios_post_simple} = useAxios();
-    const emit = defineEmits(['new'])
+    const emit = defineEmits(['new','updated'])
     const props = defineProps({
         
         option:String,
@@ -68,7 +69,7 @@
     const form = ref({
         nom:props.task.nom,
         description:props.task.description,
-        date_limite:props.task.date_limite,
+        date_limite:props.task.date_limite ? split(props.task.date_limite,' ')[0]:props.task.date_limite,
         statut:props.task.statut,
         priorite:props.task.priorite
     })
@@ -98,11 +99,15 @@
             }else if(props.option ==='update'){
                let id = props.task.id
                 axios_post_simple('task-update/'+props.task.id,form.value).then(({data})=>{
-                    console.log(data);
-                    Swal.fire(data.type,data.message,data.type).then(()=>{
-                      
-                       // form.value = {}
-                    })
+
+                 
+                    if (data.type ==='success') {
+                        Swal.fire(data.type,data.message,data.type).then(()=>{
+                            emit('updated')
+                          
+                        })
+                        
+                    }
                 }).catch((error)=>{
                     console.log(error.response);
                 })

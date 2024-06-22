@@ -94,7 +94,7 @@
     </div>
          
     <div v-if="modification == 1">
-        <FormCreate option="update" :task="task"/>
+        <FormCreate @updated="hideMe" option="update" :task="task"/>
     </div>
 </template>
 

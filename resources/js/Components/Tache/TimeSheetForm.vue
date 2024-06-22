@@ -91,8 +91,8 @@
     const save = ()=>{
         if (props.option === 'add') {
             
-            axios_post_simple('timesheet',form.value).then(({data})=>{
-
+            axios_post_simple('../timesheet',form.value).then(({data})=>{
+              //  console.log(data);
                 if (data.type === 'success') {
                     Swal.fire(data.type,data.message,data.type).then(()=>{
                         emit('new',data.new)

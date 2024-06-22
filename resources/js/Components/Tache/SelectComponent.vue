@@ -9,13 +9,23 @@
     </div>
 </template>
 <script setup>
-import {ref} from 'vue'
+import {ref,onMounted} from 'vue'
     const props= defineProps({
-        options:Array
+        options:Array,
+        defaultSelectedValue:''
     })
     const emit =defineEmits(['selectedValue']);
-    const setSelectedValue = ()=>emit('selectedValue',selectedValue.value)
+    const setSelectedValue = ()=>{
+         emit('selectedValue',selectedValue.value)
+    }
     const selectedValue = ref()
+  
+    onMounted(() => {
+
+        if (props.defaultSelectedValue != '') {
+            selectedValue.value = props.options.filter(o => o.id === props.defaultSelectedValue)[0].id 
+        }  
+    })
 
 
 </script>

@@ -9,19 +9,15 @@
             <TasksList v-show="showComponent == 0" @task="getCurentTask"   :tasks="list_tasks"/>
         </div>
         <div v-if="showComponent == 1" class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <DetailsTache @hide="showComponent = 0" :task="taskSelected" />
-            </div>
+            <DetailsTacheAdmin @hide="showComponent = 0" :task="taskSelected" />
+        </div>
     </SideBarLayout>
 </template>
 <script setup>
-    import {  FwbButton, } from 'flowbite-vue'
     import {ref, onMounted} from 'vue'
     import SideBarLayout from '@/Layouts/SideBarLayout.vue';
-    // import { Head } from '@Inertiajs/inertia-vue3';
-    
-    import FormCreate from '@/Components/Tache/FormCreate.vue'
-    import DetailsTache from '@/Components/Tache/DetailsTache.vue'
     import TasksList from '@/Components/Tache/TasksList.vue';
+    import DetailsTacheAdmin from '@/Components/Tache/DetailsTacheAdmin.vue';
         const props = defineProps({
             tasks:Array
         })
