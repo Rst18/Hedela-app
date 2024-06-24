@@ -9,7 +9,7 @@
         <div  class="max-w-7xl py-6 mx-auto sm:px-6 lg:px-8">
             <FormCreate
                 option="add"
-                
+                :roles
                 :task="form"
             />
         </div>
@@ -22,13 +22,15 @@
     // import { Head } from '@Inertiajs/inertia-vue3';
     
     import FormCreate from '@/Components/Tache/FormCreate.vue'
-
+    const props = defineProps({roles:Object})
     const form = {
         nom:"",
         description:'',
-        date_limite:'',
         statut:'',
-        priorite:''
+        priorite:'',
+        date_debut:'',
+        date_fin:'',
+        date_fermeture:'',
     }
         
 </script>

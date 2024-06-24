@@ -66,8 +66,58 @@
                     </SelectComponent>
                 </div>
             </div>
+
             <div>
                 <EditorComponent v-model="form.description"/>
+            </div>
+            <div class="py-2">
+                <span @click="addUserToTaks = !addUserToTaks" class="font-bold text-sm text-green-600 py-2 rounded-full px-2 cursor-pointer hover:border hover:bg-slate-100">Ajouter Utilisateur</span>
+                <div v-show="addUserToTaks">
+                    
+
+
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <div>
+                                <div class="mt-3 w-full p-3 font-semibold bg-gray-100 grid grid-cols-12">
+                                <div class="col-span-1">#</div>
+                                <div class="col-span-6">Groupes d'utilisateurs</div>
+                            </div>
+                                <div @click="seletedRole(r)" v-for="r of roles" :key="r.id" class="w-full p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer">
+                                    <div class="col-span-1">#</div>
+                                    <div class="col-span-6">{{r.name }}</div>
+                                    
+                                </div>  
+                            </div>
+
+                        </div>
+                        <div v-if="currentRole">
+                            <div>
+                                <div class="mt-3 w-full p-3 font-semibold bg-gray-100 grid grid-cols-12">
+                                <div class="col-span-1">#</div>
+                                <div class="col-span-6">Utilisateurs</div>
+                            </div>
+                                <div @click.stop="addUser(user.id,currentRole.id)" v-for="user of currentRole.users" :key="user.id" class="w-full p-3 grid grid-cols-12">
+                                    <div class="col-span-1">#</div>
+                                    <div class="col-span-6 w-fit rounded-lg px-1 bg-gray-100 border border-gray-500 flex items-center gap-2 hover:bg-gray-800 cursor-pointer hover:text-white">{{user.name }}</div>
+                                    
+                                </div>  
+                            </div>
+
+                        </div>     
+
+                    </div>
+
+
+
+
+
+
+
+
+
+                </div>
             </div>
         </div>
         <fwb-button @click="save" class="rounded-lg mt-2 bg-gray-800 hover:bg-gray-700 hover:dark:bg-gray-600 border">
@@ -91,7 +141,8 @@
     const props = defineProps({
         
         option:String,
-        task:Object
+        task:Object,
+        roles:Object
     })
     const errors =ref([]);
     const form = ref({
@@ -110,44 +161,56 @@
     const getDateDebut = (e)=>form.value.date_debut = e
     const getDateFin = (e)=>form.value.date_fin = e
     const getDateFermeture = (e)=>form.value.date_fermeture = e
-    
+    const currentRole = ref()
+    const addUserToTaks = ref(false)
         
-        const save = ()=>{
+    const save = ()=>{
+        form.value.users = users.value
 
-            if (props.option === 'add') {
-                axios_post_simple('../task-save',form.value).then(({data})=>{
+        if (props.option === 'add') {
+            axios_post_simple('../task-save',form.value).then(({data})=>{
+                if (data.type === 'success') {
+                    
+                    Swal.fire(data.type,data.message,data.type).then(()=>{
+                        emit('new',data.new)
+                        form.value = {}
+                        addUserToTaks.value = false
+                    })
+                }
+            }).catch((error)=>{
+                if (error.response.status === 422) {
+                    errors.value = error.response.data.errors
+                }
+            })
+        }else if(props.option ==='update'){
+            let id = props.task.id
+            axios_post_simple('task-update/'+props.task.id,form.value).then(({data})=>{
 
-                    if (data.type === 'success') {
+                
+                if (data.type ==='success') {
+                    Swal.fire(data.type,data.message,data.type).then(()=>{
+                        emit('updated')
                         
-                        Swal.fire(data.type,data.message,data.type).then(()=>{
-                            emit('new',data.new)
-                            form.value ={}
-                        })
-                    }
-                }).catch((error)=>{
-                   if (error.response.status === 422) {
-                        errors.value = error.response.data.errors
-                   }
-                })
-            }else if(props.option ==='update'){
-               let id = props.task.id
-                axios_post_simple('task-update/'+props.task.id,form.value).then(({data})=>{
-
-                 
-                    if (data.type ==='success') {
-                        Swal.fire(data.type,data.message,data.type).then(()=>{
-                            emit('updated')
-                          
-                        })
-                        
-                    }
-                }).catch((error)=>{
-                    console.log(error.response);
-                })
-            }
+                    })
+                    
+                }
+            }).catch((error)=>{
+                console.log(error.response);
+            })
         }
+    }
 
-    
+    const users = ref([])
+
+    const addUser = (user,role)=>{
+
+        users.value.push({ user, role  })
+        console.log(users.value);
+    }
+
+    const seletedRole = (role)=>{
+        currentRole.value = props.roles.filter((r)=> r.id === role.id)[0]
+    }
     
 
     const priorites = [

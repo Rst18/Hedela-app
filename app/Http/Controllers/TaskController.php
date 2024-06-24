@@ -26,7 +26,9 @@ class TaskController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Task/CreateTask');
+        $roles = Role::with('users')->get();
+       
+        return Inertia::render('Task/CreateTask',compact('roles'));
     }
     public function task_dashbord()
     {
@@ -42,13 +44,32 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request)
     {
         try {
-
+           
            // if (Group::test_group(['Admin','AdminBiblio','AdminDevs'])) {
 
                 $task = Task::create($request->validated());
 
                 // set the creator of this task as a keep inform
                 $task->keepInformed()->attach(Auth::user()->id);
+
+                //Add user in DB
+
+                if (count($request->users ) > 0) {
+
+                    for ($i=0; $i <count($request->users) ; $i++) { 
+
+                      
+                         // Check if user already has the assigned role for this task
+                        if (!$task->roles()->wherePivot('role_id', $request->users[$i]['role'])->exists()) {
+
+                            $task->roles()->attach($request->users[$i]['role']);
+                        }
+                        if (!$task->users()->wherePivot('user_id',$request->users[$i]['user'])->exists()) {
+
+                            $task->users()->attach($request->users[$i]['user']);
+                        }
+                    }
+                }
 
                 return ['type'=>'success','message'=>'Enregistrement reussi','new'=>$task];
 
@@ -59,7 +80,7 @@ class TaskController extends Controller
         } catch (\Throwable $th) {
             
             return ['type'=>'error','message'=>'Echec d\'Enregistrement ','errorMessage'=>$th];
-        }
+         }
     }
 
     /**
