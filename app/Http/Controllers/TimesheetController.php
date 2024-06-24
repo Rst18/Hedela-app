@@ -34,6 +34,18 @@ class TimesheetController extends Controller
 
             $timesheet = Timesheet::create($request->validated());
 
+            // if ($request->annexes) {
+
+            //     for ($i=0; $i < count($request->annexes); $i++) { 
+                   
+            //         $fileName = time() . '.' . $request->path->getClientOriginalExtension();
+            //         $filePath = $request->path->storeAs('timesheets/'.$request->timesheet_id.'/Annexes/', $fileName);
+    
+            //         $data['path'] =  $filePath;
+            //         AnnexeTimesheet::create($data);
+            //     }
+            // }
+
             //notification Keep Informed
             return ['type'=>'success',',message'=>'Enregistrement reussi','new'=>$timesheet];
         } catch (\Throwable $th) {

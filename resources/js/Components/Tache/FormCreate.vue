@@ -3,7 +3,7 @@
         <div class="py-2 ">
             <span class="font-bold text-gray-600 text-xl">{{ option === 'add' ?'Créer une Tache':'Modifier la tache' }}</span>
         </div>
-        <div class="grid grid-cols-1 ">
+        <div class="grid grid-cols-1 gap-2">
             <div>
                 <fwb-input
                     v-model="form.nom"
@@ -14,7 +14,7 @@
                         {{ errors.nom[0]}}
                 </div>
             </div>
-            <div>
+            <!-- <div>
                 <fwb-input
                     v-model="form.date_limite"
                     placeholder="Date Limite "
@@ -23,6 +23,34 @@
                 />
                 <div class="text-red-500 text-xs py-1" v-if="errors.date_limite">
                         {{ errors.date_limite[0]}}
+                </div>
+            </div> -->
+            <div class="flex gap-2">
+                <div class="w-[50%]" >
+                    <InputDateTime label="date_debut" :defaultDate="form.date_debut" @inputValue="getDateDebut">
+                        Date et heure de Debut
+                    </InputDateTime>
+                    <div class="text-red-500" v-if="errors.date_debut">
+                            {{ errors.date_debut[0]}}
+                    </div>
+                </div>
+                <div class="w-[50%]">
+                    <InputDateTime label="date_fin" :defaultDate="form.date_fin"  @inputValue="getDateFin">
+                        Date et heure de fin
+                    </InputDateTime>
+                    <div class="text-red-500" v-if="errors.date_fin">
+                        {{ errors.date_fin[0]}}
+                    </div>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <div class="w-[50%]" >
+                    <InputDateTime label="date_debut" :defaultDate="form.date_debut" @inputValue="getDateFermeture">
+                        Date et heure de Fermeture
+                    </InputDateTime>
+                    <div class="text-red-500" v-if="errors.date_debut">
+                            {{ errors.date_debut[0]}}
+                    </div>
                 </div>
             </div>
             <div class="flex col-2 gap-2 pb-2">
@@ -71,12 +99,17 @@
         description:props.task.description,
         date_limite:props.task.date_limite ? split(props.task.date_limite,' ')[0]:props.task.date_limite,
         statut:props.task.statut,
-        priorite:props.task.priorite
+        priorite:props.task.priorite,
+        date_debut:props.task.date_debut,
+        date_fin:props.task.date_fin,
+        date_fermeture:props.task.date_fermeture,
     })
     
     const getPriorite = (e)=>  form.value.priorite = e
     const getStatut = (e)=>  form.value.statut = e
-
+    const getDateDebut = (e)=>form.value.date_debut = e
+    const getDateFin = (e)=>form.value.date_fin = e
+    const getDateFermeture = (e)=>form.value.date_fermeture = e
     
         
         const save = ()=>{

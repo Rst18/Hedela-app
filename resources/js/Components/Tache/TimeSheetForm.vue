@@ -108,7 +108,7 @@
             })
         }else if(props.option ==='update'){
             let id = props.timesheet.id
-            axios_post_simple(`timesheet/${id}/update`,form.value).then(({data})=>{
+            axios_post_simple(`../timesheet/${id}/update`,form.value).then(({data})=>{
 
                 console.log(data);
 

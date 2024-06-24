@@ -28,7 +28,10 @@ class StoreTaskRequest extends FormRequest
             'statut'=>'integer',
             'priorite'=>'integer',
             'statut_resolution'=>'integer',
-            'date_limite'=>'date',
+            // 'date_limite'=>'date',
+            'date_debut'=>'required|date',
+            'date_fin'=>'required|date',
+            'date_fermeture'=>'required|date',
             'user_id'=>'required|exists:users,id'
         ];
     }
