@@ -52,6 +52,11 @@
                             {{ errors.date_debut[0]}}
                     </div>
                 </div>
+                <div class="w-[50%]">
+                    <SelectComponent :defaultSelectedValue ="form.priorite" :options="type_taches" @selectedValue="getPriorite">
+                        Recurence de la tache
+                    </SelectComponent>
+                </div>
             </div>
             <div class="flex col-2 gap-2 pb-2">
     
@@ -71,11 +76,8 @@
                 <EditorComponent v-model="form.description"/>
             </div>
             <div class="py-2">
-                <span @click="addUserToTaks = !addUserToTaks" class="font-bold text-sm text-green-600 py-2 rounded-full px-2 cursor-pointer hover:border hover:bg-slate-100">Ajouter Utilisateur</span>
+                <span @click="addUserToTaks = !addUserToTaks" class="font-bold text-xs text-green-600 py-2 rounded-full px-2 cursor-pointer hover:border hover:bg-slate-100">Ajouter Utilisateur</span>
                 <div v-show="addUserToTaks">
-                    
-
-
 
                     <div class="grid grid-cols-2 gap-4">
                         <div>
@@ -104,18 +106,13 @@
                                     
                                 </div>  
                             </div>
+                            <div class="text-xs">
+                               {{ users.length }} utilisateur(s) ajouté(s)
+                            </div>
 
                         </div>     
 
                     </div>
-
-
-
-
-
-
-
-
 
                 </div>
             </div>
@@ -135,6 +132,7 @@
     import SelectComponent from '@/Components/Tache/SelectComponent.vue'
     import InputDateTime from '@/Components/InputDateTime.vue'
     import Swal from 'sweetalert2';
+    import Check from '../Check.vue';
 
     const {axios_post_simple} = useAxios();
     const emit = defineEmits(['new','updated'])
@@ -183,10 +181,8 @@
                 }
             })
         }else if(props.option ==='update'){
-            let id = props.task.id
-            axios_post_simple('task-update/'+props.task.id,form.value).then(({data})=>{
 
-                
+            axios_post_simple(`task-update/${props.task.id}`,form.value).then(({data})=>{                
                 if (data.type ==='success') {
                     Swal.fire(data.type,data.message,data.type).then(()=>{
                         emit('updated')
@@ -199,13 +195,19 @@
             })
         }
     }
-
+    const check = ref(false)
     const users = ref([])
 
     const addUser = (user,role)=>{
 
-        users.value.push({ user, role  })
-        console.log(users.value);
+        if ( users.value.filter((u)=> u.alias ===  user+"__"+role )[0]) {
+            users.value = users.value.filter(u=> u.user !== user )
+            
+        }else{
+            users.value.push({ user, role,alias:user+"__"+role  })
+            check.value = true
+   
+        }
     }
 
     const seletedRole = (role)=>{
@@ -250,6 +252,21 @@
             id:3,
             name:'Suspendu'
 
+        },
+    ]
+
+    const type_taches = [
+        {
+            id:1,
+            name:'Journalier'
+        },
+        {
+            id:2,
+            name:'Hebdomadaire'
+        },
+        {
+            id:3,
+            name:'Mensuel'
         },
     ]
 </script>

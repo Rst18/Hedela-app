@@ -82,7 +82,7 @@
             </div>
 
             <div class="col-span-2 text-sm border-l px-2">
-                <span class="font-bold text-gray-700  border-b">Timesheets ( {{ taskData.timesheets.length }} )</span>
+                <span class="font-bold text-gray-700  border-b">Rapports ( {{ taskData.timesheets.length }} )</span>
                 <div @click="getTimesheet(timesheet)"  v-for="timesheet of taskData.timesheets" :key="timesheet.id" class="w-full flex text-xs p-2 cursor-pointer hover:bg-slate-100">
                     <div>{{ timesheet.name  }}   </div>
                     <div class="ml-2">{{   moment(timesheet.date_jourt).format('ll') }}  </div>

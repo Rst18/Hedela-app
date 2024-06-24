@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Task extends Model
 {
     use HasFactory;
-    protected $fillable = ['nom','description','statut','statut_resolution','priorite','date_limite','user_id','date_debut', 'date_fin','date_fermeture'];
+    protected $fillable = ['nom','description','statut','statut_resolution','priorite','date_limite','user_id','date_debut', 'date_fin','date_fermeture','recurrence'];
 
     public function roles(): BelongsToMany
     {

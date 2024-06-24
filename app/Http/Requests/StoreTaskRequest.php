@@ -28,6 +28,7 @@ class StoreTaskRequest extends FormRequest
             'statut'=>'integer',
             'priorite'=>'integer',
             'statut_resolution'=>'integer',
+            'recurrence'=>'integer',
             // 'date_limite'=>'date',
             'date_debut'=>'required|date',
             'date_fin'=>'required|date',

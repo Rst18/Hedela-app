@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tasks', function (Blueprint $table) {
+            $table->integer('recurrence')->nullable();
             $table->timestamp('date_debut'); 
             $table->timestamp('date_fin'); 
             $table->timestamp('date_fermeture'); 
