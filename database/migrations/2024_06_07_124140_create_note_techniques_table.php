@@ -19,13 +19,13 @@ return new class extends Migration
             $table->mediumText('analyse');
             $table->mediumText('conclusion');
             $table->mediumText('actions');
-            $table->mediumText('objet');
-            $table->mediumText('destinataire');
-            $table->mediumText('signataire');
-            $table->mediumText('copiea');
+            $table->mediumText('objet')->nullable();
+            $table->mediumText('destinataire')->nullable();
+            $table->mediumText('signataire')->nullable();
+            $table->mediumText('copiea')->nullable();
             $table->integer('type_lettre')->default(1);
             $table->integer('annexes')->default(0);
-            $table->longText('lettre');       
+            $table->longText('lettre')->nullable();       
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();   
             $table->foreignIdFor(Courrier::class)->constrained()->cascadeOnDelete();
             $table->integer('status')->default(1);
