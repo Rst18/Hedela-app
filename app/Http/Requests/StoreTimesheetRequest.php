@@ -29,7 +29,13 @@ class StoreTimesheetRequest extends FormRequest
             'date_debut'=>'date',
             'date_jour'=>'required|date',
             'date_fin'=>'date',
-            'user_id'=>'required|exists:users,id'
+            'user_id'=>'required|exists:users,id',
+            'timesheet_files'=> [
+                'required',
+                //'files', // Rule for uploaded file
+               // 'max:1024', // Maximum file size in kilobytes (adjust as needed)
+                // 'mimeTypes' => ['pdf', 'docx', 'doc','png'], // Allowed MIME types (adjust as needed)
+            ],
         ];
     }
 

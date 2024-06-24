@@ -42,6 +42,14 @@
             <div>
                 <EditorComponent v-model="form.description"/>
             </div>
+            <div>
+                <fwb-file-input multiple  v-model="form.timesheet_files" label="Ajouter annexes" />
+                <div class="text-red-500" v-if="errors.timesheet_files">
+                    {{ errors.timesheet_files[0]}}
+                </div>
+
+              
+            </div>
         </div>
         <div>
             <fwb-button @click="close" class="rounded-lg mt-2 bg-red-700 text-white hover:bg-gray-200 hover:dark:bg-gray-600 border">
@@ -58,12 +66,12 @@
 <script setup>
     import {ref} from 'vue'
     import useAxios from '@/ComponentsServices/axios.js'
-    import { FwbA, FwbButton, FwbTextarea,FwbInput } from 'flowbite-vue'
+    import { FwbA, FwbButton, FwbFileInput,FwbTextarea,FwbInput } from 'flowbite-vue'
     import EditorComponent from '@/Components/EditorComponent.vue'
     import SelectComponent from '@/Components/Tache/SelectComponent.vue'
     import Swal from 'sweetalert2';
     import InputDateTime from '@/Components/InputDateTime.vue'
-    const {axios_post_simple} = useAxios();
+    const {axios_post_simple,axios_post} = useAxios();
 
     const props = defineProps({
         task:Object,
@@ -82,6 +90,7 @@
         }),
         date_debut:props.timesheet.date_debut,
         date_fin:props.timesheet.date_fin,
+        timesheet_files:null
     })
     
 
@@ -91,8 +100,8 @@
     const save = ()=>{
         if (props.option === 'add') {
             
-            axios_post_simple('../timesheet',form.value).then(({data})=>{
-              //  console.log(data);
+            axios_post('../timesheet',form.value).then(({data})=>{
+                console.log(data);
                 if (data.type === 'success') {
                     Swal.fire(data.type,data.message,data.type).then(()=>{
                         emit('new',data.new)
@@ -108,7 +117,7 @@
             })
         }else if(props.option ==='update'){
             let id = props.timesheet.id
-            axios_post_simple(`../timesheet/${id}/update`,form.value).then(({data})=>{
+            axios_post(`../timesheet/${id}/update`,form.value).then(({data})=>{
 
                 console.log(data);
 
@@ -128,6 +137,21 @@
         }
     }
 
+    const getDocument = (e)=>{
+
+       // if(e.target.files[0].size > 5000000){
+
+         //  alert('Le ficher est trop grand')
+        //     e.target.value = ''
+        //     return
+
+        // }else{
+
+            console.log(e.target.files[0]);
+            form.value.timesheet_files = e.target.files[0]
+
+//} 
+    }  
     const close = ()=>emit('hide')
 
 
