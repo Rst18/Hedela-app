@@ -31,7 +31,7 @@
             commentaire:''
         })
         const save = ()=>{
-            axios_post_simple(props.url,form.value).then(({data})=>{
+            axios_post_simple('../'+props.url,form.value).then(({data})=>{
                 emit('new',data.new)
             }).catch((error)=>{
                 console.log(error.response);

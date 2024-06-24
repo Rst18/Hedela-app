@@ -135,4 +135,8 @@ class ServiceController extends Controller
         
         return $service->documents;
     }
+
+    public function list_service(){
+        return Service::paginate(10);
+    }
 }

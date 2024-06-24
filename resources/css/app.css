@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.backgroup_image {
+    position: relative;
+	background: url(../../public//images//bg.webp);
+	min-height: 100vh;
+	background-size: cover;
+	background-position: center;
+    @apply flex items-center
+}
+.backgroup_image_section_question {
+    position: relative;
+	background: url(../../public//images//question.png);
+	min-height: 100%;
+	background-size: cover;
+	background-position: center;
+    @apply flex items-center
+}

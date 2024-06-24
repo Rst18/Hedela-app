@@ -77,20 +77,20 @@
             }
         }
         const setCourrierToUser = (user, courrier) =>{
-            axios_post_simple('courrier/set-courrier-user/'+user, {user,courrier}).then(()=>{
+            axios_post_simple('../courrier/set-courrier-user/'+user, {user,courrier}).then(()=>{
                 emit('userAdded',user)
             })
         }
         const removeCourrierToUser = (user, courrier) =>{
           
-            axios_post_simple('courrier/remove-courrier-user/'+user, {user,courrier}).then(()=>{
+            axios_post_simple('../courrier/remove-courrier-user/'+user, {user,courrier}).then(()=>{
                 emit('userRemoved',user)
             })
         }
 
         const getRoles_with_users = ()=>{
 
-            axios_get('role-with-users').then(({data})=>{
+            axios_get('../role-with-users').then(({data})=>{
                 roles.value = data
                
             })

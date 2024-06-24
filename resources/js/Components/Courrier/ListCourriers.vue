@@ -24,7 +24,7 @@
 
             <div class="flex flex-row w-full px-4 md:w-9/12 justify-center items-center mx-auto">
                 <div v-for="link in links">
-                    <button class="text-grey-darker text-xs md:text-sm px-1  md:px-2 py-1 m-1 border" @click="fetchCourrier(link.url)" v-html="link.label"></button>
+                    <button class="text-grey-darker text-xs md:text-sm px-1  md:px-2 py-1 m-1 border" @click.prevent="fetchCourrier(link.url)" v-html="link.label"></button>
                 </div>
             </div>
         </div>
@@ -34,7 +34,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 16.318A4.486 4.486 0 0 0 12.016 15a4.486 4.486 0 0 0-3.198 1.318M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
                 </svg>
             </span>
-            <p class="text-center mt-4">Pas de données a afficher pour le moment, veuillez creer au moins un document !  </p>
+            <p class="text-center mt-4 bg-blue-200  bg-green-300 bg-teal-200 bg-orange-200 bg-green-300">Pas de données a afficher pour le moment, veuillez creer au moins un document !  </p>
         </div>
         </form>
     </div>
@@ -54,6 +54,10 @@ import Animation from '@/Components/Animation.vue';
     const waitingData = ref(true)
     const { courrier_status,getColorCourrier } = UseCourrier()
 
+    const props = defineProps({
+        type_list:String
+    })
+
     const setCourrier = (courrier)=>{
         emit('selectedCourrier',courrier)
     }
@@ -71,7 +75,14 @@ import Animation from '@/Components/Animation.vue';
    
 
     onMounted(() => {
-        fetchCourrier('courrier/list')
+        if (props.type_list === 'Dispatch') {
+
+            fetchCourrier('../courrier/list-dipatch')
+
+        }else{
+
+            fetchCourrier('../courrier/list')
+        }
     })
 
 </script>

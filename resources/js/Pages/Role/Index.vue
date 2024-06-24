@@ -16,25 +16,20 @@
                         <div class="">
                             <div class="">
                                 
-                                <Fwb-button @click="createUser = !createUser">
-                                    {{ createUser ? 'Liste des utilisateurs':'Nouveau groupe' }}
+                                <Fwb-button class="bg-gray-800 hover:bg-gray-600" @click="createRole = !createRole">
+                                    {{ createRole ? 'Liste des utilisateurs':'Nouveau groupe' }}
                                 </Fwb-button>
                             </div>
                             <div>
-                                <ListRoles :roles v-show="!createUser" />
-                                <Formulaire action="add" @newAdded="refreshList" :role="rolesData" v-if="createUser"/>
+                                <ListRoles  v-if="createRole == 0" @update="getCurentRole" />
+                                <Formulaire action="add" @newAdded="createRole = 0" :role="rolesData" v-if="createRole == 1"/>
+                                <Formulaire action="update" @newAdded="createRole = 0"  :role v-if="createRole == 2"/>
                             </div>
 
                         </div>
                     </fwb-tab>
                     <fwb-tab name="second" title="Affectation utilisateurs Group">
                         <ListUsersWithRoles :roles :users/>
-                    </fwb-tab>
-                    <fwb-tab name="third" title="Third">
-                    Lorem ipsum dolor...
-                    </fwb-tab>
-                    <fwb-tab name="fourth" title="Fourth" disabled>
-                    Lorem ipsum dolor...
                     </fwb-tab>
                 </fwb-tabs>
                 
@@ -60,11 +55,15 @@ import ListUsersWithRoles from '@/Components/Role/ListUsersWithRoles.vue';
     })
     const rolesData = ref([])
     const role = ref({})
-    const createUser = ref(false)
+    const createRole = ref(0)
 
     const refreshList = (e)=>{
         rolesData.value.push(e)
-        createUser.value = false
+        createRole.value = false
+    }
+    const getCurentRole = (e)=>{
+        role.value = e
+        createRole.value = 2
     }
     onMounted(()=>{
         rolesData.value = props.roles
