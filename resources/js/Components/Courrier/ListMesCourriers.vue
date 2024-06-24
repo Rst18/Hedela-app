@@ -36,10 +36,8 @@
    </div>
 </template>
 <script setup>
-import { FwbInput,FwbButton,FwbRadio,FwbP } from 'flowbite-vue'
 import useAxios from '@/ComponentsServices/axios.js'
-import Check from '../Check.vue';
-import Swal from 'sweetalert2';
+import Animation from '@/Components/Animation.vue';
 const { axios_post_simple,axios_post } = useAxios ();
 import { onMounted, ref } from 'vue';
 import moment from 'moment';
@@ -55,7 +53,6 @@ import UseCourrier from '@/ComponentsServices/Courrier.js'
     const waitingData = ref(false)
     const setCourrier = (courrier)=>{
         emit('selectedCourrier',courrier)
-        // console.log(courrier);
     }
 
     const fetchCourrier = (url)=>{

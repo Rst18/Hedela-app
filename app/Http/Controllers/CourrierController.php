@@ -223,7 +223,7 @@ class CourrierController extends Controller
     }
     public function mes_courrier (){
         
-        return Auth::user()->with(['courriers'=>function($q){
+        return User::where('id',Auth::user()->id)->with(['courriers'=>function($q){
             $q->with('annexes')
             ->with(['commentaires'=>function($q){$q->join('users','users.id','commentaire_courriers.user_id');}])
             ->with(['users'=>function($qry){}])
@@ -236,6 +236,7 @@ class CourrierController extends Controller
             
         ->join('services','services.id','service_id')
         ->join('type_courriers','type_courriers.id','type_courrier_id');
+        
          $q->select('courriers.*','services.name as service_name ','type_courriers.name as type_courrier_name');
         }])->first();
     }
@@ -322,6 +323,26 @@ class CourrierController extends Controller
     
         return 'Test email sent!';
        //return Auth::user()->notify(new DispatchNotification());
+    }
+
+    public function list_courrier_to_dispatch(){
+
+        return Courrier::select('courriers.*','services.name as service_name ','type_courriers.name as type_courrier_name')
+        ->with(['commentaires'=>function($q){$q->join('users','users.id','commentaire_courriers.user_id');}])
+        ->with(['users'=>function($qry){}])
+        ->with(['annexes'=>function($qry){}])
+        ->with(['services'=>function($qry){}])
+
+        ->with(['noteTechniques'=>function($qry){
+            $qry->with('commentaires');
+            $qry->select('users.name','note_techniques.*');
+            $qry->join('users','users.id','note_techniques.user_id');
+        }])
+        ->join('services','services.id','service_id')
+        ->join('type_courriers','type_courriers.id','type_courrier_id')
+        ->where('status',1)
+        ->orderBy('created_at','DESC')
+        ->paginate(20);
     }
 
 }

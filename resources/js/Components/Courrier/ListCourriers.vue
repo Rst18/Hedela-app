@@ -54,6 +54,10 @@ import Animation from '@/Components/Animation.vue';
     const waitingData = ref(true)
     const { courrier_status,getColorCourrier } = UseCourrier()
 
+    const props = defineProps({
+        type_list:String
+    })
+
     const setCourrier = (courrier)=>{
         emit('selectedCourrier',courrier)
     }
@@ -71,7 +75,14 @@ import Animation from '@/Components/Animation.vue';
    
 
     onMounted(() => {
-        fetchCourrier('../courrier/list')
+        if (props.type_list === 'Dispatch') {
+
+            fetchCourrier('../courrier/list-dipatch')
+
+        }else{
+
+            fetchCourrier('../courrier/list')
+        }
     })
 
 </script>

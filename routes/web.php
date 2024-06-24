@@ -66,6 +66,7 @@ Route::controller(App\Http\Controllers\CourrierController::class)->middleware('a
     Route::get('courrier/create','create')->name('courrier.create');
     Route::get('courrier-dispatch','dispatch');
     Route::get('courrier/list','index')->name('courrier.list');
+    Route::get('courrier/list-dipatch','list_courrier_to_dispatch');
     Route::get('courrier/list-validation','courrier_where_has_note');
     Route::get('courrier/validation','courrier_where_has_note_page')->name('courrier.listValidation');
     Route::get('courrier/list-protocole','list_courrier_protocol')->name('courrier.listProtocole');
