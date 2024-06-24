@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use App\Models\Service;
 use App\Models\TypeCourrier;
 use Illuminate\Support\Facades\Schema;
@@ -26,6 +27,7 @@ return new class extends Migration
             $table->mediumText('letter_file');
             $table->foreignIdFor(Service::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(TypeCourrier::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
