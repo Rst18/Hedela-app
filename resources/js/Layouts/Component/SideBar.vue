@@ -52,8 +52,7 @@
             </svg>
           </template>
         </SideBarItemDropDown>
-        
-      </ul>
+   </ul>
     </div>
    
   </aside>

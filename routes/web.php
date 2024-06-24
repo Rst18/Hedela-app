@@ -137,6 +137,39 @@ Route::controller(App\Http\Controllers\RendezvousAudienceController::class)->mid
     Route::post('rendezvous/set-rendezvous-user/{user}','addRendezvous');
     Route::post('rendezvous/remove-rendezvous-user/{user}','removeRendezvous');
 });
+Route::controller(App\Http\Controllers\TaskController::class)->middleware('auth')->group(function(){
+    Route::get('task','task_dashbord')->name('task');
+    Route::get('task/dashbord','dashbord');
+    Route::get('task/create','create')->name('task.create');
+    Route::get('task-list','task_list')->name('task-list');
+    Route::get('task-attrib-group','task_attrib_role')->name('task.attrib_group');
+    Route::post('task-save','store');
+    Route::post('task-update/{task}','update');
+    Route::post('set-task-role','addRoleTask');
+    Route::post('remove-task-role','removeRoleTask');
+    Route::post('set-task-user','addUserTask');
+    Route::post('remove-task-user','removeUserTask');
+    Route::get('role-user-task','role_user_tasks')->name('task.attrib_user');
+    Route::get('task/my-tasks','my_tasks_page')->name('task.mes_taches');
+    Route::get('user/{user}/task','getMyTasks');
+    Route::get('user/task','getMyTasksweb');
+    Route::get('statistic/task','getStatistic');
+});
+
+Route::controller(App\Http\Controllers\TaskCommentController::class)->middleware('auth')->group(function(){
+  
+    Route::post('taks/comment/add','store');
+    Route::post('task/update/comment/{taskComment}','update');
+});
+
+
+Route::controller(App\Http\Controllers\TimesheetController::class)->middleware('auth')->group(function(){
+  
+    Route::post('timesheet','store');
+    Route::get('task/timesheet/{tache}','getMyTimesheetsForTask');
+    Route::get('task/timesheet/user/{tache}','getTimesheetsForTask');
+    Route::post('timesheet/{timesheet}/update','update');
+});
 
 Route::controller(App\Http\Controllers\BatimentController::class)->middleware('auth')->group(function(){
     Route::post('batiment/add','store');

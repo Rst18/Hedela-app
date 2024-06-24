@@ -30,9 +30,24 @@ class TimesheetController extends Controller
      */
     public function store(StoreTimesheetRequest $request)
     {
+        return $request;
+        // $request->letter_file->getClientOriginalExtension();
         try {
+            
 
             $timesheet = Timesheet::create($request->validated());
+
+            // if ($request->annexes) {
+
+            //     for ($i=0; $i < count($request->annexes); $i++) { 
+                   
+            //         $fileName = time() . '.' . $request->path->getClientOriginalExtension();
+            //         $filePath = $request->path->storeAs('timesheets/'.$request->timesheet_id.'/Annexes/', $fileName);
+    
+            //         $data['path'] =  $filePath;
+            //         AnnexeTimesheet::create($data);
+            //     }
+            // }
 
             //notification Keep Informed
             return ['type'=>'success',',message'=>'Enregistrement reussi','new'=>$timesheet];
@@ -63,6 +78,7 @@ class TimesheetController extends Controller
      */
     public function update(UpdateTimesheetRequest $request, Timesheet $timesheet)
     {
+       
          try {
 
             if ($timesheet->user_id == Auth::user()->id) {

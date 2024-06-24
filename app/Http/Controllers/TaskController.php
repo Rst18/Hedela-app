@@ -6,6 +6,7 @@ use App\Models\Role;
 use App\Models\Task;
 use App\Models\User;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
@@ -25,13 +26,15 @@ class TaskController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Task/index');
+        $roles = Role::with('users')->get();
+       
+        return Inertia::render('Task/CreateTask',compact('roles'));
     }
     public function task_dashbord()
     {
        // if (Role::test_group(['Admin','AdminBiblio','AdminDevs'])) {
             
-            return Inertia::render('Task/index');
+            return Inertia::render('Task/Index');
        // } 
         return abort(403);
     }
@@ -41,13 +44,32 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request)
     {
         try {
-
+           
            // if (Group::test_group(['Admin','AdminBiblio','AdminDevs'])) {
 
                 $task = Task::create($request->validated());
 
                 // set the creator of this task as a keep inform
-               // $tache->keepInformed()->attach(Auth::user()->id);
+                $task->keepInformed()->attach(Auth::user()->id);
+
+                //Add user in DB
+
+                if (count($request->users ) > 0) {
+
+                    for ($i=0; $i <count($request->users) ; $i++) { 
+
+                      
+                         // Check if user already has the assigned role for this task
+                        if (!$task->roles()->wherePivot('role_id', $request->users[$i]['role'])->exists()) {
+
+                            $task->roles()->attach($request->users[$i]['role']);
+                        }
+                        if (!$task->users()->wherePivot('user_id',$request->users[$i]['user'])->exists()) {
+
+                            $task->users()->attach($request->users[$i]['user']);
+                        }
+                    }
+                }
 
                 return ['type'=>'success','message'=>'Enregistrement reussi','new'=>$task];
 
@@ -58,7 +80,7 @@ class TaskController extends Controller
         } catch (\Throwable $th) {
             
             return ['type'=>'error','message'=>'Echec d\'Enregistrement ','errorMessage'=>$th];
-        }
+         }
     }
 
     /**
@@ -81,6 +103,7 @@ class TaskController extends Controller
      * Update the specified resource in storage.
      */
     public function update(UpdateTaskRequest $request, Task $task)
+
     {
         try {
             
@@ -129,8 +152,8 @@ class TaskController extends Controller
 
 
     
-    public function addRoleTache(Request $request){
-
+    public function addRoleTask(Request $request){
+       
         try {
                    
             $role = Role::find($request->role);
@@ -149,7 +172,7 @@ class TaskController extends Controller
         }
       
     }
-    public function removeRoleTache(Request $request){
+    public function removeRoleTask(Request $request){
       
         try {
 
@@ -157,7 +180,7 @@ class TaskController extends Controller
 
             if ($role != null) {
 
-                $role->taches()->detach($request->task);
+                $role->tasks()->detach($request->task);
 
                 return response()->json(data:[],status:200);
             }
@@ -169,14 +192,14 @@ class TaskController extends Controller
       
     }
     public function addUserTask(Request $request){
-       
+      
         try {
 
             $user = User::find($request->user);
 
             if ($user != null) {
-
-                $user->tasks()->attach($request->task,['assigner' => Auth::user()->id]);
+                $user->tasks()->attach($request->task);
+                // $user->tasks()->attach($request->task,['assigner' => Auth::user()->id]);
                 $task = Task::find($request->task);
                // $user->notify(new TaskNotification($task->nom,Auth::user()->username,'Information'));
                // MailSend::sendMailToUser($user->email, Auth::user()->username ."Vous a affecter à une tache ( $tache->nom ), Veillez consulter la liste de vos taches.");
@@ -211,33 +234,36 @@ class TaskController extends Controller
       
     }
 
-    public function tache_list()
+    public function task_list()
     {
+
+      
        
-        $taches = Tasks::join('users','users.id','tasks.user_id')->with(['timesheets'=>function($q){
-            $q->join('users','users.id','timesheets.user_id')
-            ->with('commentaires');
-        }])
-          ->with('users')
-          ->with('keepInformed')
-           ->with(['commentaires'=>function($query){
-                $query->join('users','users.id','tache_commentaires.user_id');
-            }])
-        ->get();
+        $tasks = Task::with(['timesheets'=>function($q){
+               // $q->join('users','users.id','timesheets.user_id');
+            //->with('comments')
+                }])
+            ->with('users')
+            ->with('keepInformed')
+            ->with(['comments'=>function($query){
+                    $query->join('users','users.id','task_comments.user_id');
+                }])
+            ->get();
+           // return $tasks;
        
-        return Inertia::render('Task/ListTask',compact('tasks'));
+        return Inertia::render('Task/Tasks',compact('tasks'));
     }
 
     public function task_attrib_role()
     {
         $roles = Role::with('tasks')->get();
         $tasks =  Task::all();
-        return Inertia::render('Tache/ListGroupTask',compact('tasks','roles'));
+        return Inertia::render('Task/ListGroupTask',compact('tasks','roles'));
     }
 
-    public function group_user_tasks(){
+    public function role_user_tasks(){
 
-        $roles =  Role::whereHas('taches')
+        $roles =  Role::whereHas('tasks')
         ->with('tasks')
         ->with(['users'=>function($query){
             $query->with('tasks');
@@ -249,38 +275,27 @@ class TaskController extends Controller
        return Inertia::render('Task/ListRoleUsersTask',compact('roles'));
     }
 
-    public function getMyTasks( $user){
-      
-        return User::where('id',$user)->with(['tasks'=>function($query){
-            $query->with(['timesheets'=>function($q){
-                $q->join('users','users.id','timesheets.user_id')
-                ->with('commentaires');
-            }])
-            ->with('users')
-            ->with('keepInformed')
-            ->with(['commentaires'=>function($query){
-                $query->join('users','users.id','tache_commentaires.user_id');
-            }]);
-        }])->first();
-       
-    }
+  
     public function getMyTasksweb(){
 
         return User::where('id',Auth::user()->id)->with(['tasks'=>function($query){
 
             $query->with(['timesheets' => function($q){
                 $q->join('users','users.id','timesheets.user_id');
-                $q->with(['commentaires'=>function($q){
-                    $q->join('users','users.id','timesheet_commentaires.user_id');
-                }]);
+              //  $q->with(['comments'=>function($q){
+                  //  $q->join('users','users.id','timesheet_commentaires.user_id');
+               // }]);
             }])
             ->with('users')
             ->with('keepInformed')
-            ->with(['commentaires'=>function($query){
-                $query->join('users','users.id','tache_commentaires.user_id');
+            ->with(['comments'=>function($query){
+                $query->join('users','users.id','task_comments.user_id');
             }]);
         }])->first();
        
+    }
+    public function my_tasks_page(){
+        return Inertia::render('Task/MyTasks');
     }
 
     public function getStatistic(){

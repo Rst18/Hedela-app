@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateAnnexeCourrierRequest extends FormRequest
+class StoreAnnexeTimesheetRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,7 +29,7 @@ class UpdateAnnexeCourrierRequest extends FormRequest
                 'max:1024', // Maximum file size in kilobytes (adjust as needed)
                 // 'mimeTypes' => ['pdf', 'docx', 'doc','png'], // Allowed MIME types (adjust as needed)
             ],
-            'courrier_id'=>'required|exists:courriers,id'
+            'timesheet_id'=>'required|exists:timesheets,id'
         ];
     }
 }

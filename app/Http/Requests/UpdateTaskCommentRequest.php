@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreTimesheetRequest extends FormRequest
+class UpdateTaskCommentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,24 +23,15 @@ class StoreTimesheetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            
             'task_id'=>'required|exists:tasks,id',
-            'description'=>'required|string',
-            'date_debut'=>'date',
-            'date_jour'=>'required|date',
-            'date_fin'=>'date',
+            'commentaire'=>'required|string',
             'user_id'=>'required|exists:users,id',
-            'timesheet_files'=> [
-                'required',
-                //'files', // Rule for uploaded file
-               // 'max:1024', // Maximum file size in kilobytes (adjust as needed)
-                // 'mimeTypes' => ['pdf', 'docx', 'doc','png'], // Allowed MIME types (adjust as needed)
-            ],
+            'parentId'=>'integer'
         ];
     }
 
     public function PrepareForValidation(){
-        
+            
         $this->mergeIfMissing([
             
             'user_id'=>Auth::user()->id
