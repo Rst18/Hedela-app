@@ -5,7 +5,7 @@
 
     <SideBarLayout>
         <template #header>
-            <h2 class="font-semibold text-xl  text-gray-800 leading-tight">Liste des mes audiencesm Acceptees</h2>
+            <h2 class="font-semibold text-xl  text-gray-800 leading-tight">Liste des mes audiences Acceptees</h2>
         </template>
 
         <div class="py-14 max-w-7xl mx-auto sm:px-6 lg:px-8">

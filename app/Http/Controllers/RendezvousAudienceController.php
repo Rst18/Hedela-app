@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
 use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Audience;
 use Illuminate\Http\Request;
 use App\Models\RendezvousAudience;
+use App\Notifications\TaskNotification;
+use App\Notifications\RendezvousNotification;
 use App\Http\Requests\StoreRendezvousAudienceRequest;
 use App\Http\Requests\UpdateRendezvousAudienceRequest;
 
@@ -40,6 +43,8 @@ class RendezvousAudienceController extends Controller
            // changer le statut de l'audience
 
             Audience::find($request->audience_id)->update(['status'=>2]);
+
+
 
            //envoi la notification au user qui a enregistrer l'audience et au mail du demandeur
 
@@ -111,6 +116,24 @@ class RendezvousAudienceController extends Controller
         try {
 
             $user->rendezvouss()->attach($request->rendezvous);
+
+            //notification 
+            $user->notify(new RendezvousNotification("Vous avez été ajouter comme couverture à un rendezvous.",'Information'));
+
+            //creer une tache couverture
+
+            $task = Task::where('nom','Couverture')->first();
+
+            if ($task != null) {
+
+                if (!$task->users()->wherePivot('user_id', $user->id)->exists()) {
+
+                    $user->tasks()->attach($task->id);
+                }
+
+                $user->notify(new TaskNotification("Vous avez été affecter à une tache de couverture à un rendezvous.",'Information'));
+
+            }
 
             return ['type'=>'success','message'=>'Enregistrement reussi'];            
 
