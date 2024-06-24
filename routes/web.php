@@ -82,6 +82,14 @@ Route::controller(App\Http\Controllers\CourrierController::class)->middleware('a
     Route::get('courrier/statistique','statistique_courrier');
     Route::get('testmail','testMail');
 });
+Route::controller(App\Http\Controllers\CourrierSortantController::class)->middleware('auth')->group(function(){
+    Route::get('courrier-sortant/create','create')->name('courrier_sortant.create');
+    Route::get('courrier-sortant/new','newNumber');
+    Route::get('courrier-sortant/list','index');
+    Route::get('courrier-sortant','list_page')->name('courrier_sortant.list');
+    Route::post('courrier-sortant/add','store');
+    Route::post('courrier-sortant/{courrierSortant}/update','update');
+});
 Route::controller(App\Http\Controllers\CommentaireCourrierController::class)->middleware('auth')->group(function(){
     Route::post('commentaire-courrier/add','store');
 });
