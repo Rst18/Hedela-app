@@ -9,7 +9,11 @@
         </template>
 
         <div class="py-2 max-w-7xl mx-auto sm:px-6 lg:px-8">
-          <ListCourriers v-if="!showDetail" @selectedCourrier="getSelectedCourrier"/>
+            <ListCourriers 
+                type_list="Dispatch"
+                v-if="!showDetail"
+                @selectedCourrier="getSelectedCourrier"
+            />
            <DetailsCourrier v-else :courrier="courrierData" @closeMe="showDetail = !showDetail" />
         </div>
 

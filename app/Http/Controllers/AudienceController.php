@@ -82,10 +82,10 @@ class AudienceController extends Controller
             //Envoie de la notification a l'user_requested
             $user_to_not = User::find($request->user_requested);
             
-            $user_to_not->notify(new AudienceNotification("$request->name vous a envoyer une demande d'audience. Veillez consulter la liste de vos audiences.",'Information'));
+           // $user_to_not->notify(new AudienceNotification("$request->name vous a envoyer une demande d'audience. Veillez consulter la liste de vos audiences.",'Information'));
 
 
-            broadcast( new CreateAudienceEvent('one Audience added from '.$audience->name));
+            //broadcast( new CreateAudienceEvent('one Audience added from '.$audience->name));
 
             return ['type'=>'success','message'=>'Enregistrement reussi','new'=>$audience];
 
