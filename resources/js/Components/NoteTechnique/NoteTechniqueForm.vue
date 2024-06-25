@@ -44,8 +44,9 @@
                 {{ errors.actions[0]}}
             </div>
         </div>
+        <span   @click="ajouter_lettre = !ajouter_lettre" class="text-xs text-green-500 cursor-pointer font-semibold ">Ajouter un lettre</span>
     </div>
-    <div class="grid grid-cols-3 gap-2 p-4">
+    <div v-show="ajouter_lettre" class="grid grid-cols-3 gap-2 p-4">
         <div :class="errors.objet ?'border-red-600' :''">
             <fwb-input
                 v-model="form.objet"
@@ -113,11 +114,11 @@
 
         
     </div>
-    <div class="p-4" :class="errors.lettre ?'border-red-600' :''">
+    <div  v-show="ajouter_lettre" class="p-4" :class="errors.lettre ?'border-red-600' :''">
         <EditorComponent v-model="form.lettre"/>
     </div>
     <div class="mt-4">
-        <Fwb-button @click="submitForm">
+        <Fwb-button class="bg-gray-800 hover:bg-gray-600" @click="submitForm">
             Enregistrer
         </Fwb-button>
     </div>
@@ -144,7 +145,7 @@ import SuccesToast from '@/Components/SuccesToast.vue'
     const {axios_post_simple} = useAxios()
     const errors = ref([])
     const success = ref(false)
-    
+    const ajouter_lettre = ref(false)
 
     const form = ref({
         faits:props.note.faits,

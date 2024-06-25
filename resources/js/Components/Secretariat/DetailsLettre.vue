@@ -8,10 +8,7 @@
             <span class="font-semibold text-gray-400">Copie a :</span>
             <p>{{ note.copiea }}</p>
         </div>
-        <div class="py-2">
-            <span class="font-semibold text-gray-400">Signataire : </span>
-            <p>{{ note.signataire }}</p>
-        </div>
+       
         <div class="py-2">
             <span class="font-semibold text-gray-400">Objet : </span>
             <p>{{ note.objet }}</p>
@@ -20,6 +17,10 @@
         <div class="py-2">
             <span class="font-semibold text-gray-400">Lettre : </span>
             <p v-html="note.lettre"></p>
+        </div>
+        <div class="py-2">
+            <span class="font-semibold text-gray-400">Signataire : </span>
+            <p>{{ note.signataire }}</p>
         </div>
         
 

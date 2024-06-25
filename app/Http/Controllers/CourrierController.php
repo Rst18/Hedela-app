@@ -106,8 +106,9 @@ class CourrierController extends Controller
            $courrier =  Courrier::create($data);
 
           // $courrier->services()->attach($request->service_id);
+          
            // LANCER UN EVENEMENT 
-           broadcast (new CreateCourrierEvent('One courrier added from '.$request->sender));
+          // broadcast (new CreateCourrierEvent('One courrier added from '.$request->sender));
 
           
 
