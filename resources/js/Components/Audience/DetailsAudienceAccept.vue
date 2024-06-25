@@ -100,7 +100,7 @@
         }
         const refreshRendezvousList = (e)=>{
             audienceData.value.rendezvous.push(e)
-            create_rendezvous.value = false
+            showComponent.value = 0
         }
 
         const get_rendezvous = (e)=>{

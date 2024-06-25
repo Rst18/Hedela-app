@@ -8,7 +8,9 @@ use Inertia\Inertia;
 use App\Models\Audience;
 use Illuminate\Http\Request;
 use App\Models\RendezvousAudience;
+use Illuminate\Support\Facades\Mail;
 use App\Notifications\TaskNotification;
+use App\Mail\RendezvousMailNotification;
 use App\Notifications\RendezvousNotification;
 use App\Http\Requests\StoreRendezvousAudienceRequest;
 use App\Http\Requests\UpdateRendezvousAudienceRequest;
@@ -42,11 +44,17 @@ class RendezvousAudienceController extends Controller
 
            // changer le statut de l'audience
 
-            Audience::find($request->audience_id)->update(['status'=>2]);
+            $audience = Audience::find($request->audience_id);
+
+            $audience->update(['status'=>2]);
 
 
 
            //envoi la notification au user qui a enregistrer l'audience et au mail du demandeur
+
+           //notification du mail demandant le rendez vous
+             
+           Mail::to($audience->email)->send(New RendezvousMailNotification('Bonjour !, votre rendez vous a été fixer comme suit : Date : '.$request->date_heure .'  Lieu :'.$request->lieu));
 
            return ['type'=>'success','message'=>"Enregistrement reussi",'new'=>$rendezvous];
 
@@ -115,10 +123,16 @@ class RendezvousAudienceController extends Controller
     
         try {
 
+
+
             $user->rendezvouss()->attach($request->rendezvous);
 
+
+
+            
+
             //notification 
-            $user->notify(new RendezvousNotification("Vous avez été ajouter comme couverture à un rendezvous.",'Information'));
+            $user->notify(new RendezvousNotification("Vous avez été ajouter comme couverture à un rendez-vous.",'Information'));
 
             //creer une tache couverture
 
@@ -131,7 +145,7 @@ class RendezvousAudienceController extends Controller
                     $user->tasks()->attach($task->id);
                 }
 
-                $user->notify(new TaskNotification("Vous avez été affecter à une tache de couverture à un rendezvous.",'Information'));
+                $user->notify(new TaskNotification("Vous avez été affecter à une tache de couverture à un rendez-vous.",'Information'));
 
             }
 

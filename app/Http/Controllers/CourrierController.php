@@ -13,6 +13,7 @@ use App\Events\CreateCourrierEvent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\RendezvousMailNotification;
 use App\Http\Requests\StoreCourrierRequest;
 use App\Notifications\DispatchNotification;
 use App\Notifications\RealtimeNotification;
@@ -310,18 +311,12 @@ class CourrierController extends Controller
         return Inertia::render('Courrier/ValidationNoteTechnique');
     }
 
-    public function testMail(){
-        $data = [
-            'name' => 'John Doe',
-            'message' => 'This is a test email from Laravel.',
-        ];
+    public function sendMail(){
+      
+        Mail::to('kaserekamwiraros@gmail.com')->send(New RendezvousMailNotification('Bonjour !'));
+        //  Mail::to('kaserekamwiraros@gmail.com')->send(New RendezvousMailNotification('Bonjour !'));
     
-        Mail::send('emails.test', $data, function ($message) {
-            $message->to('kaserekamwiraros@gmail.com')
-            ->subject('Laravel Test Email');
-        });
-    
-        return 'Test email sent!';
+       
        //return Auth::user()->notify(new DispatchNotification());
     }
 
