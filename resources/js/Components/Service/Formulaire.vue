@@ -64,9 +64,12 @@ import ToggleInput from '@/Components/ToggleInput.vue'
             })
 
         }else if(props.action === 'update'){
-            axios_post_simple('../service/'+props.service.id+'/update',form.value).then(({data})=>{
+            axios_post_simple(`../service/${props.service.id}/update`,form.value).then(({data})=>{
                 console.log(data)
-                emit('newAdded',data.new)
+                if (data.type === 'success') {
+                    emit('newAdded')
+                    
+                }
             }).catch((error)=>{
                 if(error.response.status === 422){
                     errors.value = error.response.data.errors

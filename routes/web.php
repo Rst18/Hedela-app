@@ -50,6 +50,7 @@ Route::controller(App\Http\Controllers\ServiceController::class)->middleware('au
     Route::get('service/list','list_service');
     Route::get('service/create','create')->name('service.create');
     Route::get('service/{service}/get-doc','get_doc_service');
+    Route::get('service/{service}/delete','destroy');
     Route::post('service/add','store');
     Route::post('service/{service}/update','update');
     Route::post('service/set-document-service/{service}','addDocument');
