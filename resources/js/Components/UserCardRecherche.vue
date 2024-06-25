@@ -33,7 +33,7 @@ import {ref} from 'vue'
 
         let user_id = props.user.id
         axios_post_simple('../rendezvous/set-rendezvous-user/'+user_id,form.value).then(({data})=>{
-          
+          console.log(data);
             if (data.type==='success') {
 
                 emit('userAdded',props.user)

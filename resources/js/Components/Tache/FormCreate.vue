@@ -182,7 +182,8 @@
             })
         }else if(props.option ==='update'){
 
-            axios_post_simple(`task-update/${props.task.id}`,form.value).then(({data})=>{                
+            axios_post_simple(`task-update/${props.task.id}`,form.value).then(({data})=>{     
+                console.log(data);           
                 if (data.type ==='success') {
                     Swal.fire(data.type,data.message,data.type).then(()=>{
                         emit('updated')
@@ -191,6 +192,10 @@
                     
                 }
             }).catch((error)=>{
+                if (error.respons.status === 422) {
+                    
+                    errors.value = error.response.data.errors
+                }
                 console.log(error.response);
             })
         }

@@ -44,6 +44,7 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request)
     {
         try {
+       
            
            // if (Group::test_group(['Admin','AdminBiblio','AdminDevs'])) {
 
@@ -54,8 +55,8 @@ class TaskController extends Controller
 
                 //Add user in DB
 
-                if (count($request->users ) > 0) {
-
+                if ($request->users ) {
+                    
                     for ($i=0; $i <count($request->users) ; $i++) { 
 
                       
