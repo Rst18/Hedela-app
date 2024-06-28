@@ -5,7 +5,7 @@
 
     <SideBarLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight"> Mes Courriers à traiter</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Validation des notes techniques</h2>
         </template>
 
         <div class="py-12">

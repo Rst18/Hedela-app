@@ -1,5 +1,5 @@
 <template>
-    <div class="grid grid-cols-1 gap-4 py-6 lg:px-10 shadow">
+    <div class="grid grid-cols-1 gap-4 py-6 px-4 lg:px-10 shadow">
         <span class="col-span-1 text-xl font-semibold text-gray-600">{{ option ==='add' ? "Créer un Rendez vous":'Modifier Rendez vous' }}</span>
         <div>
             <fwb-input
@@ -69,12 +69,10 @@
                 })
             }else if(props.option ==='update'){
 
-                let id = props.rendezvous.id;
-
-                axios_post_simple('../../rendezvous/update/'+id,form.value).then(({data})=>{
-                   
+                axios_post_simple(`../../rendezvous/update/${ props.rendezvous.id}`,form.value).then(({data})=>{
+                 
                     if (data.type ==='success') {
-                        emit('updated',data.new)
+                        emit('updated')
                     }
                 })
             }

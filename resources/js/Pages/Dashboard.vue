@@ -14,12 +14,16 @@ const {axios_get} = useAxios()
 const {presenceEvent,courrierEvent,audienceEvent} = useDashBord()
 
 const stat_courrier = ref([])
+const stat_audience = ref([])
 const showNotification = ref(false)
 const notification_message = ref('')
 const users_connected = ref([])
 const getStat_courrier = ()=>{
     axios_get('courrier/statistique').then(({data})=>{
         stat_courrier.value = data
+    })
+    axios_get('audience/statistique').then(({data})=>{
+        stat_audience.value = data
     })
 }
 
@@ -88,12 +92,12 @@ onMounted(() => {
                     />
                     <CardPresentationTotal
                         :total="stat_courrier.total_non_dispatch"
-                        title="Courriers Dispatches"
+                        title="Courriers non Dispatchés"
                         _className="border-y-gray-700 "
                     />
                     <CardPresentationTotal
                         :total="stat_courrier.total_dispatch"
-                        title="Courriers Dispatches"
+                        title="Courriers Dispatchés"
                         _className="border-y-gray-700 "
                     />
                     <CardPresentationTotal
@@ -105,7 +109,7 @@ onMounted(() => {
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg grid grid-cols-2 md:grid-cols-4 gap-4 px-4 py-1">
                     <span class="col-span-2 md:col-span-4 text-xl font-semibold text-gray-700 py-1">Statiques Audiences</span>
                     <CardPresentationTotal
-                        :total="0"
+                        :total="stat_audience.total_audiences"
                         title="Total Audience"
                         _className="border-y-gray-700 "
                     />
@@ -115,7 +119,7 @@ onMounted(() => {
                         _className="border-y-gray-700 "
                     />
                     <CardPresentationTotal
-                        :total="0"
+                        :total="stat_audience.total_audience_accept"
                         title="Audiences Acceptees"
                         _className="border-y-gray-700 "
                     />
@@ -125,11 +129,7 @@ onMounted(() => {
                         title="Audiences en attente rendez vous"
                         _className="border-y-gray-700 "
                     />
-                    <CardPresentationTotal
-                        :total="0"
-                        title="Courriers en cours traitement"
-                        _className="border-y-gray-700 "
-                    />
+                   
                 </div>
             </div>
         </div>

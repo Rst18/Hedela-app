@@ -41,10 +41,10 @@
     import {  FwbButton, } from 'flowbite-vue'
     import {ref, onMounted} from 'vue'
     import SideBarLayout from '@/Layouts/SideBarLayout.vue';
-    import { Head } from '@inertiajs/inertia-vue3';
-    import FormCreate from '@/Components/Task/FormCreate.vue'
-    import DetailsTache from '@/Components/Task/DetailsTache.vue'
-    import TasksList from '@/Components/Task/TasksList.vue';
+    // import { Head } from '@inertiajs/inertia-vue3';
+    import FormCreate from '@/Components/Tache/FormCreate.vue'
+    import DetailsTache from '@/Components/Tache/DetailsTache.vue'
+    import TasksList from '@/Components/Tache/TasksList.vue';
         const props = defineProps({
             tasks:Array
         })

@@ -50,6 +50,7 @@ Route::controller(App\Http\Controllers\ServiceController::class)->middleware('au
     Route::get('service/list','list_service');
     Route::get('service/create','create')->name('service.create');
     Route::get('service/{service}/get-doc','get_doc_service');
+    Route::get('service/{service}/delete','destroy');
     Route::post('service/add','store');
     Route::post('service/{service}/update','update');
     Route::post('service/set-document-service/{service}','addDocument');
@@ -112,6 +113,10 @@ Route::controller(App\Http\Controllers\AnnexeCourrierController::class)->middlew
 
     Route::post('annexe-courrier/add','store');
 });
+Route::controller(App\Http\Controllers\AnnexeNoteTechniqueController::class)->middleware('auth')->group(function(){
+
+    Route::post('annexe-note/add','store');
+});
 Route::controller(App\Http\Controllers\AudienceController::class)->middleware('auth')->group(function(){
 
     Route::get('audience/create','create')->name('audience.create');
@@ -126,14 +131,17 @@ Route::controller(App\Http\Controllers\AudienceController::class)->middleware('a
     Route::post('audience/{audience}/accept','accept');
     Route::post('audience/{audience}/refuse','refuse');
     Route::post('audience/close/{audience}','close');
+    
+    Route::get('audience/statistique','statistique_audience');
 
 });
 Route::controller(App\Http\Controllers\RendezvousAudienceController::class)->middleware('auth')->group(function(){
     Route::post('rendezvous/add','store');
-    Route::get('rendezvous/create','mes_rendezvous')->name('rendezvous.mesRendezvous');
+    Route::get('rendezvous/create','create')->name('rendezvous.mesRendezvous');
     Route::get('rendezvous/create-protocole','create_for_the_boss')->name('rendezvous.rendezvous_du_boss');
     Route::post('rendezvous/update/{rendezvousAudience}','update');
-
+    Route::get('rendezvous/list','mes_rendezvous');
+    Route::get('rendezvous/list-protocole','mes_rendezvous_page_protocole')->name('rendezvous.rendez_vous_aujourdhui');
     Route::post('rendezvous/set-rendezvous-user/{user}','addRendezvous');
     Route::post('rendezvous/remove-rendezvous-user/{user}','removeRendezvous');
 });
@@ -141,7 +149,7 @@ Route::controller(App\Http\Controllers\TaskController::class)->middleware('auth'
     Route::get('task','task_dashbord')->name('task');
     Route::get('task/dashbord','dashbord');
     Route::get('task/create','create')->name('task.create');
-    Route::get('task-list','task_list')->name('task-list');
+    Route::get('task-list','task_list')->name('task.list');
     Route::get('task-attrib-group','task_attrib_role')->name('task.attrib_group');
     Route::post('task-save','store');
     Route::post('task-update/{task}','update');
@@ -210,14 +218,20 @@ Route::get('/linkstorage', function () {
     symlink($targetFolder, $linkFolder); 
 });
 
+Route::get('/notifications', function(){
+    return Auth::user()->unreadNotifications  ;
+})->middleware('auth');
+
 Route::get('testEvent',function(){
 
-    $user_one = User::first();
-    $user_one->notify(new RealtimeNotification('Un courrier vient d\'etre dispatcher 😄'));
+    
+
+    // $user_one = User::first();
+    // $user_one->notify(new RealtimeNotification('Un courrier vient d\'etre dispatcher 😄'));
             
     
-    // broadcast( new Hello(1));
-    // broadcast( new DispatchEvent('Rostand'));
+    //  broadcast( new Hello(1));
+     broadcast( new DispatchEvent('Rostand'));
     return 'okok0';
 });
 

@@ -82,17 +82,17 @@ class AudienceController extends Controller
             //Envoie de la notification a l'user_requested
             $user_to_not = User::find($request->user_requested);
             
-           // $user_to_not->notify(new AudienceNotification("$request->name vous a envoyer une demande d'audience. Veillez consulter la liste de vos audiences.",'Information'));
+            $user_to_not->notify(new AudienceNotification($request->name." vous a envoyer une demande d'audience. Veillez consulter la liste de vos audiences.",'Information'));
 
 
             //broadcast( new CreateAudienceEvent('one Audience added from '.$audience->name));
 
             return ['type'=>'success','message'=>'Enregistrement reussi','new'=>$audience];
 
-        } catch (\Throwable $th) {
-            //throw $th;
-            return ['type'=>'error','message'=>'Echec d\'Enregisrement','errorMessage'=>$th];
-        }
+         } catch (\Throwable $th) {
+        //     //throw $th;
+             return ['type'=>'error','message'=>'Echec d\'Enregisrement','errorMessage'=>$th];
+         }
     }
 
     /**
@@ -240,5 +240,37 @@ class AudienceController extends Controller
 
     public function accepted_audiences_boss(){
         
+    }
+
+    public function statistique_audience (){
+
+        // total courrier 
+        $total_audience = Audience::count();
+
+        //total courrier dispatch 
+
+        $total_audience_aujourdhui = Audience::where('status',2)->count();
+
+        //courrier non dispatch
+
+        $total_audience_accept = Audience::where('status',2)->count();
+
+        //courrier en cours de traitement
+
+        $total_audience_refuse = Audience::where('status',3)->count();
+
+        // courrier cloture
+
+        $total_cloture = Audience::where('status',4)->count();
+
+        return [
+
+            'total_audiences'=>$total_audience,
+            'total_audience_aujourdhui'=>$total_audience_aujourdhui,
+            'total_audience_accept'=>$total_audience_accept,
+            'total_cloture'=>$total_cloture,
+            'total_audience_refuse'=>$total_audience_refuse,
+        ];
+
     }
 }

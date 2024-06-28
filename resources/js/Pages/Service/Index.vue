@@ -16,25 +16,20 @@
                         <div class="">
                             <div class="">
                                 
-                                <Fwb-button class="bg-gray-800 hover:bg-gray-600"@click="createService = !createService">
+                                <Fwb-button class="bg-gray-800 hover:bg-gray-600"@click="createService == 0 ? createService = 1 :createService=0">
                                     {{ createService ? 'Liste des service':'Nouveau service' }}
                                 </Fwb-button>
                             </div>
                             <div>
-                                <ListServices :services v-if="!createService" />
-                                <Formulaire action="add" @newAdded="createService = false" :service v-if="createService"/>
+                                <ListServices @update="getCurrentService" :services v-if="createService == 0" />
+                                <Formulaire action="add" @newAdded="createService = 0" :service v-if="createService == 1"/>
+                                <Formulaire action="update" @newAdded="createService = 0" :service v-if="createService == 2"/>
                             </div>
 
                         </div>
                     </fwb-tab>
                     <fwb-tab name="second" title="Affectation des documents aux services">
                         <ListServicesWithDocuments :services :documents/>
-                    </fwb-tab>
-                    <fwb-tab name="third" title="Third">
-                    Lorem ipsum dolor...
-                    </fwb-tab>
-                    <fwb-tab name="fourth" title="Fourth" disabled>
-                    Lorem ipsum dolor...
                     </fwb-tab>
                 </fwb-tabs>
                 
@@ -60,11 +55,16 @@ import ListServicesWithDocuments from '@/Components/Service/ListServicesWithDocu
     })
     const servicesData = ref([])
     const service = ref({})
-    const createService = ref(false)
+    const createService = ref(0)
 
     const refreshList = (e)=>{
         servicesData.value.push(e)
-        createService.value = false
+        createService.value = 0
+    }
+
+    const getCurrentService = (e)=>{
+       service.value = e 
+       createService.value = 2
     }
     onMounted(()=>{
         servicesData.value = props.roles

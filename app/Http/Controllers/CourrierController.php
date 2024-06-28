@@ -34,6 +34,7 @@ class CourrierController extends Controller
 
         ->with(['noteTechniques'=>function($qry){
             $qry->with('commentaires');
+            $qry->with('annexes');
             $qry->select('users.name as user_name','note_techniques.*');
             $qry->join('users','users.id','note_techniques.user_id');
         }])
@@ -53,6 +54,7 @@ class CourrierController extends Controller
 
         ->with(['noteTechniques'=>function($qry){
             $qry->with('commentaires');
+            $qry->with('annexes');
             $qry->select('users.name as user_name','note_techniques.*');
             $qry->join('users','users.id','note_techniques.user_id');
         }])
@@ -106,8 +108,9 @@ class CourrierController extends Controller
            $courrier =  Courrier::create($data);
 
           // $courrier->services()->attach($request->service_id);
+          
            // LANCER UN EVENEMENT 
-           broadcast (new CreateCourrierEvent('One courrier added from '.$request->sender));
+          // broadcast (new CreateCourrierEvent('One courrier added from '.$request->sender));
 
           
 
@@ -231,6 +234,7 @@ class CourrierController extends Controller
             ->with(['annexes'=>function($qry){}])
             ->with(['noteTechniques'=>function($qry){
                 $qry->with('commentaires');
+                $qry->with('annexes');
                 $qry->select('users.name as user_name','note_techniques.*');
                 $qry->join('users','users.id','note_techniques.user_id');
             }])
@@ -330,6 +334,7 @@ class CourrierController extends Controller
 
         ->with(['noteTechniques'=>function($qry){
             $qry->with('commentaires');
+            $qry->with('annexes');
             $qry->select('users.name','note_techniques.*');
             $qry->join('users','users.id','note_techniques.user_id');
         }])

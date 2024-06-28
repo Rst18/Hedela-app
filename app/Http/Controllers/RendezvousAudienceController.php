@@ -30,7 +30,7 @@ class RendezvousAudienceController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Audience/ListAudienceRendezvous');
     }
 
     /**
@@ -175,8 +175,16 @@ class RendezvousAudienceController extends Controller
 
     public function mes_rendezvous(){
 
-        return Inertia::render('Audience/ListAudienceRendezvous');
-        
+        return Audience::select('audiences.*','users.name as autorite')->whereHas('rendezvous')
+        ->with('accompagnateurs')
+        ->with(['rendezvous'=>function($query){
+            $query ->whereDate('created_at',now());
+        }])->join('users','audiences.user_requested','users.id')
+        ->paginate(10);        
+    }
+    public function mes_rendezvous_page_protocole(){
+
+      return  Inertia::render('Audience/ListRendezvousProtocole');     
     }
     public function create_for_the_boss(){
 

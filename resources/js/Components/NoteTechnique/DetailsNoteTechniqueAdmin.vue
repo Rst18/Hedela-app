@@ -83,9 +83,11 @@
                     <span class="font-bold bg-gray-100 text-gray-800 px-2">
                         Annexes :
                     </span>
-                    <p class="text-sm px-4 py-2">
-                        {{ currentNote.annexes }}
-                    </p>
+                    <span> {{ currentNote.annexe }}</span>
+                   
+                    <div>
+                        <a v-for="annexe in currentNote.annexes" :href="'../download/'+ annexe.path.replaceAll('/','++')" target="_blank" class="font-bold text-sm text-blue-300 ml-4">{{ annexe.name }}</a> 
+                    </div>
                 </div>
             </div>
             <div class="">

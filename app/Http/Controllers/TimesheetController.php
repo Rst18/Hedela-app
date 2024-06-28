@@ -30,7 +30,7 @@ class TimesheetController extends Controller
      */
     public function store(StoreTimesheetRequest $request)
     {
-        return $request;
+        //return $request;
         // $request->letter_file->getClientOriginalExtension();
         try {
             

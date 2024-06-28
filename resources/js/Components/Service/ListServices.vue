@@ -7,12 +7,17 @@
            <div class="col-span-1">#</div>
            <div class="col-span-7">Service</div>
            <div class="col-span-2">Date  </div>
+           <div class="col-span-2">Options</div>
        </div>
        <div v-if="services">
-           <div v-for="r of services" :key="r.name" class="w-full p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer">
-               <div class="col-span-1">#</div>
-               <div class="col-span-7">{{r.name }}</div>
-               <div class="col-span-2">{{ moment(r.created_at).format('ll') }}</div>
+           <div v-for="(s,index) of services" :key="s.name" class="w-full p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer">
+               <div class="col-span-1">{{ index + 1 }}</div>
+               <div class="col-span-7">{{s.name }}</div>
+               <div class="col-span-2">{{ moment(s.created_at).format('ll') }}</div>
+               <div class="col-span-2 grid grid-cols-2 gap-1">
+                    <span @click="deleteService(s)" class="text-xs font-semibold text-red-600 underline hover:font-bold hover:text-sm">Supprimer</span>
+                    <span @click="updateService(s)" class="text-xs font-semibold text-blue-600 underline hover:font-bold hover:text-sm">Modifier</span>
+               </div>
            </div>
            <div class="flex flex-row w-full px-4 md:w-9/12 justify-center items-center mx-auto">
                 <div v-for="link in links">
@@ -36,12 +41,13 @@ import Animation from '@/Components/Animation.vue';
 import { onMounted, ref } from 'vue';
 import moment from 'moment';
 
-
+const emit = defineEmits(['update'])
 const { axios_post_simple,axios_post,axios_get } = useAxios();
 
     const services = ref()
 
     const waitingData = ref(false)
+    const links = ref([])
 
     const fetchService = (url)=>{
         axios_get(url).then(({data:pagination})=>{
@@ -52,6 +58,20 @@ const { axios_post_simple,axios_post,axios_get } = useAxios();
             console.log(error.response)
         })
     }
+    const deleteService = (s)=>{
+        axios_get('../service/'+s.id+'/delete').then(({data})=>{
+
+            if (data.type ==='success') {
+                
+                services.value = services.value.filter((serv)=>serv.id != s.id )
+            }
+        }).catch((error)=>console.log(error.response))
+    }
+
+    const updateService = (b)=>{
+        emit('update',b)
+    }
+
 
    
 
