@@ -127,14 +127,17 @@ Route::controller(App\Http\Controllers\AudienceController::class)->middleware('a
     Route::post('audience/{audience}/accept','accept');
     Route::post('audience/{audience}/refuse','refuse');
     Route::post('audience/close/{audience}','close');
+    
+    Route::get('audience/statistique','statistique_audience');
 
 });
 Route::controller(App\Http\Controllers\RendezvousAudienceController::class)->middleware('auth')->group(function(){
     Route::post('rendezvous/add','store');
-    Route::get('rendezvous/create','mes_rendezvous')->name('rendezvous.mesRendezvous');
+    Route::get('rendezvous/create','create')->name('rendezvous.mesRendezvous');
     Route::get('rendezvous/create-protocole','create_for_the_boss')->name('rendezvous.rendezvous_du_boss');
     Route::post('rendezvous/update/{rendezvousAudience}','update');
-
+    Route::get('rendezvous/list','mes_rendezvous');
+    Route::get('rendezvous/list-protocole','mes_rendezvous_page_protocole')->name('rendezvous.rendez_vous_aujourdhui');
     Route::post('rendezvous/set-rendezvous-user/{user}','addRendezvous');
     Route::post('rendezvous/remove-rendezvous-user/{user}','removeRendezvous');
 });
@@ -210,6 +213,7 @@ Route::get('/linkstorage', function () {
     $linkFolder = $_SERVER['DOCUMENT_ROOT'].'/storage';
     symlink($targetFolder, $linkFolder); 
 });
+
 Route::get('/notifications', function(){
     return Auth::user()->unreadNotifications  ;
 })->middleware('auth');
