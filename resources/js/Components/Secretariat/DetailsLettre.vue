@@ -22,6 +22,12 @@
             <span class="font-semibold text-gray-400">Signataire : </span>
             <p>{{ note.signataire }}</p>
         </div>
+        <div v-if="note.annexes" class="py-2">
+            <span class="font-semibold text-gray-400">Annexes</span>
+            <div>
+                <a v-for="annexe in note.annexes" :href="'../download/'+ annexe.path.replaceAll('/','++')" target="_blank" class="font-bold text-sm text-blue-300 ml-4">{{ annexe.name }}</a> 
+            </div>
+        </div>
         
 
     </div>

@@ -106,7 +106,7 @@
             <div v-if="currentService[0].documents.length > 0">
                 <span class="text-gray-700 font-semibold text-xl py-2 px-2  text-center">Ajouter les Annexes de du courrier</span>
                 <div v-if="currentService[0].documents" class="p-8 ">
-                    <UploadAnnexes v-for="doc in currentService[0].documents" :key="doc.id"  url="annexe-courrier/add" :model_id="created_courrier.id" :name="doc.name"/>
+                    <UploadAnnexes v-for="doc in currentService[0].documents" :key="doc.id"  url="../annexe-courrier/add" :model_id="created_courrier.id" :name="doc.name"/>
                 </div>
             </div>
             <div v-else class="w-full mt-5 p-4 grid place-items-center text-gray-600">

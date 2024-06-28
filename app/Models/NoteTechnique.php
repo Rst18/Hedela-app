@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Courrier;
+use App\Models\AnnexeNoteTechnique;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\CommentaireNoteTechnique;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -24,7 +25,7 @@ class NoteTechnique extends Model
         'signataire',
         'copiea',
         'type_lettre',
-        'annexes',
+        'annexe',
         'lettre',
         'user_id',
         'courrier_id'
@@ -48,5 +49,15 @@ class NoteTechnique extends Model
     public function commentaires(): HasMany
     {
         return $this->hasMany(CommentaireNoteTechnique::class);
+    }
+
+    /**
+     * Get all of the annexes for the NoteTechnique
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function annexes(): HasMany
+    {
+        return $this->hasMany(AnnexeNoteTechnique::class);
     }
 }
