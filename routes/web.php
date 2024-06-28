@@ -142,7 +142,7 @@ Route::controller(App\Http\Controllers\TaskController::class)->middleware('auth'
     Route::get('task','task_dashbord')->name('task');
     Route::get('task/dashbord','dashbord');
     Route::get('task/create','create')->name('task.create');
-    Route::get('task-list','task_list')->name('task-list');
+    Route::get('task-list','task_list')->name('task.list');
     Route::get('task-attrib-group','task_attrib_role')->name('task.attrib_group');
     Route::post('task-save','store');
     Route::post('task-update/{task}','update');
@@ -210,15 +210,20 @@ Route::get('/linkstorage', function () {
     $linkFolder = $_SERVER['DOCUMENT_ROOT'].'/storage';
     symlink($targetFolder, $linkFolder); 
 });
+Route::get('/notifications', function(){
+    return Auth::user()->unreadNotifications  ;
+})->middleware('auth');
 
 Route::get('testEvent',function(){
 
-    $user_one = User::first();
-    $user_one->notify(new RealtimeNotification('Un courrier vient d\'etre dispatcher 😄'));
+    
+
+    // $user_one = User::first();
+    // $user_one->notify(new RealtimeNotification('Un courrier vient d\'etre dispatcher 😄'));
             
     
-    // broadcast( new Hello(1));
-    // broadcast( new DispatchEvent('Rostand'));
+    //  broadcast( new Hello(1));
+     broadcast( new DispatchEvent('Rostand'));
     return 'okok0';
 });
 

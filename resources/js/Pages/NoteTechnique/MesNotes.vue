@@ -1,7 +1,7 @@
 
 
 <template>
-    <Head title="NOte technique"/>
+    <Head title="Notes techniques"/>
 
     <SideBarLayout>
         <template #header>

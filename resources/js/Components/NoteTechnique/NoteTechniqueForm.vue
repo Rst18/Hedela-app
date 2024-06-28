@@ -182,7 +182,7 @@ import SuccesToast from '@/Components/SuccesToast.vue'
             
         }else if(props.action ==='update'){
             // let id =
-            axios_post_simple('note-technique/update/'+props.note.id,form.value).then(({data})=>{
+            axios_post_simple('../note-technique/update/'+props.note.id,form.value).then(({data})=>{
                 console.log(data);
                 if (data.type ==='success') {
                     success.value = true
