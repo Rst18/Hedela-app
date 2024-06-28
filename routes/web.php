@@ -113,6 +113,10 @@ Route::controller(App\Http\Controllers\AnnexeCourrierController::class)->middlew
 
     Route::post('annexe-courrier/add','store');
 });
+Route::controller(App\Http\Controllers\AnnexeNoteTechniqueController::class)->middleware('auth')->group(function(){
+
+    Route::post('annexe-note/add','store');
+});
 Route::controller(App\Http\Controllers\AudienceController::class)->middleware('auth')->group(function(){
 
     Route::get('audience/create','create')->name('audience.create');

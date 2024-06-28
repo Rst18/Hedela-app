@@ -44,6 +44,18 @@
                 {{ errors.actions[0]}}
             </div>
         </div>
+        <div :class="errors.annexes ?'border-red-600' :''">
+            <fwb-input
+                v-model="form.annexes"
+                placeholder="annexes"
+                label="Annexes"
+                type="number"
+            />
+            <div class="text-red-500 text-xs" v-if="errors.annexes">
+                {{ errors.annexes[0]}}
+            </div>
+        </div>
+        <div></div>
         <span   @click="ajouter_lettre = !ajouter_lettre" class="text-xs text-green-500 cursor-pointer font-semibold ">Ajouter un lettre</span>
     </div>
     <div v-show="ajouter_lettre" class="grid grid-cols-3 gap-2 p-4">
@@ -91,17 +103,7 @@
                 {{ errors.copiea[0]}}
             </div>
         </div>
-        <div :class="errors.annexes ?'border-red-600' :''">
-            <fwb-input
-                v-model="form.annexes"
-                placeholder="annexes"
-                :rows="2"
-                label="Annexes"
-            />
-            <div class="text-red-500 text-xs" v-if="errors.annexes">
-                {{ errors.annexes[0]}}
-            </div>
-        </div>
+       
         <div :class="errors.type_lettre ?'border-red-600' :''">
            <SelectComponent @selectedOption="getSeletedOption" :options="typeLettre">
             Choisir le type de lettre
@@ -117,12 +119,18 @@
     <div  v-show="ajouter_lettre" class="p-4" :class="errors.lettre ?'border-red-600' :''">
         <EditorComponent v-model="form.lettre"/>
     </div>
+    <div v-if="addAnnexes" class="p-6">
+        <span class="text-gray-700 font-semibold text-xl py-2 px-2  text-center">Ajouter les Annexes </span>
+        <div class="p-8 ">
+            <UploadAnnexes v-for="number in form.annexes" url="../annexe-note/add" :model_id="newNote.id" :name="'Annexe '+number" />
+        </div>
+    </div>
     <div class="mt-4">
         <Fwb-button class="bg-gray-800 hover:bg-gray-600" @click="submitForm">
             Enregistrer
         </Fwb-button>
     </div>
-    <SuccesToast message="Note Technique Enregistré" v-if="success"/>
+    <!-- <SuccesToast message="Note Technique Enregistré" v-if="success"/> -->
 </template>
 
 <script setup>
@@ -132,6 +140,8 @@ import {ref,onMounted} from 'vue'
 import EditorComponent from '@/Components/EditorComponent.vue'
 import useAxios from '@/ComponentsServices/axios.js';
 import SelectComponent from '../SelectComponent.vue';
+
+import UploadAnnexes from '@/Components/UploadAnnexes.vue'
 import SuccesToast from '@/Components/SuccesToast.vue'
 
     const props = defineProps({
@@ -157,23 +167,30 @@ import SuccesToast from '@/Components/SuccesToast.vue'
         signataire:props.note.signataire,
         copiea:props.note.copiea,
         type_lettre:props.note.type_lettre,
-        annexes:props.note.annexes,
+        annexe:2,
         lettre:props.note.lettre,
         courrier_id:props.courrier ? props.courrier.id : props.note.courrier_id
     })
+
+    const newNote  = ref();
+    const addAnnexes  = ref(false);
 
     const submitForm = ()=>{
         errors.value = []
         if (props.action ==='add') {
 
             axios_post_simple('note-technique/add',form.value).then(({data})=>{
-              console.log(data);
+             
                 if (data.type ==='success') {
-                    success.value = true
-                    emit('added',data.new)
+                    //success.value = true
+                    newNote.value = data.new
+
+                    addAnnexes.value = true
+                   // emit('added',data.new)
                 }
 
             }).catch((error)=>{
+
                 if (error.response.status === 422) {
                     errors.value = error.response.data.errors
                 }

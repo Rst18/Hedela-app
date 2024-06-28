@@ -33,7 +33,7 @@ class StoreNoteTechniqueRequest extends FormRequest
             'signataire'=>'string',
             'copiea'=>'string',
             'type_lettre'=>'integer',
-            'annexes'=>'integer',
+            'annexe'=>'integer',
             'lettre'=>'string',
             'user_id'=>'required|exists:users,id',
             'courrier_id'=>'required|exists:courriers,id'
