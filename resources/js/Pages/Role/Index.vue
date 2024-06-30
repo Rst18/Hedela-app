@@ -51,7 +51,7 @@ import ListUsersWithRoles from '@/Components/Role/ListUsersWithRoles.vue';
     const activeTab = ref('first')
     const props = defineProps({
         roles:Object,
-        users:Object
+        users:Object,
     })
     const rolesData = ref([])
     const role = ref({})

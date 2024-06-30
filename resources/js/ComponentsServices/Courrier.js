@@ -20,12 +20,12 @@ export default function UseCourrier(){
         {
             id:2,
             name:'Dispatch',
-            color:'bg-teal-200'
+            color:'bg-orange-400'
         },
         {
             id:3,
             name:'Note Technique',
-            color:'bg-blue-200'
+            color:'bg-blue-500'
         },
         {
             id:4,

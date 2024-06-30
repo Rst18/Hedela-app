@@ -14,9 +14,9 @@
     import NotiticationItem from './NotificationItem.vue'
     const {axios_get} = useAxios()
     const notifications = ref()
-
+    const baseUrl =  import.meta.env.VITE_APP_URL
     onMounted(() => {
-        axios_get('notifications').then(({data})=>notifications.value = data) 
+        axios_get(`${baseUrl}/notifications`).then(({data})=>notifications.value = data) 
     });
 
     

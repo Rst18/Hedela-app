@@ -206,6 +206,9 @@ Route::controller(App\Http\Controllers\MenuController::class)->middleware('auth'
     Route::get('menu/create','create')->name('menu.create');
     Route::post('menu/set-menu-user/{user}','addMenu');
     Route::post('menu/remove-menu-user/{user}','removeMenu');
+
+    Route::post('menu/set-menu-role/{role}','addMenuToRole');
+    Route::post('menu/remove-menu-role/{role}','removeMenuToRole');
    
 });
 

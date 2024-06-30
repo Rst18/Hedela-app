@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Menu;
+use App\Models\Role;
 use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -27,7 +28,8 @@ class MenuController extends Controller
     {
         $users = User::with('menus')->get();
         $menus = Menu::all();
-        return Inertia::render('Menu/Index',compact('users','menus'));
+        $roles = Role::with('menus')->get();
+        return Inertia::render('Menu/Index',compact('users','menus','roles'));
     }
 
     /**
@@ -115,7 +117,7 @@ class MenuController extends Controller
         }
         
     }
-    public function removeBureau(Request $request, User $user){  
+    public function removeMenu(Request $request, User $user){  
 
         try {
 
@@ -128,8 +130,35 @@ class MenuController extends Controller
             return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
         }
     }
+     public function addMenuToRole(Request $request, Role $role){  
+
+        try {
+
+            $role->menus()->attach($request->menu);
+
+            return ['type'=>'success','message'=>'Enregistrement reussi'];            
+
+        } catch (\Throwable $th) {
+
+            return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
+        }
+        
+    }
+    public function removeMenuToRole(Request $request, Role $role){  
+
+        try {
+
+            $role->menus()->detach($request->menu);
+
+            return ['type'=>'success','message'=>'Enregistrement reussi'];            
+
+        } catch (\Throwable $th) {
+
+            return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
+        }
+    }
 
     public function get_menu_user(){
-       return  Auth::user()->menus;
+       return  Auth::user()->roles;
     }
 }
