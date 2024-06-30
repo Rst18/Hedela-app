@@ -52,7 +52,13 @@ class CourrierController extends Controller
         ->with(['users'=>function($qry){}])
         ->with(['annexes'=>function($qry){}])
         ->with(['services'=>function($qry){}])
-
+        ->withCount('noteTechniques')
+        ->withCount(['noteTechniques as valide' => function ($query) {
+            $query->where('status', 2);
+        }])
+        ->withCount(['noteTechniques as noValide' => function ($query) {
+            $query->where('status', 3);
+        }])
         ->with(['noteTechniques'=>function($qry){
             $qry->with('commentaires');
             $qry->with('annexes');
@@ -172,6 +178,31 @@ class CourrierController extends Controller
             //throw $th;
             return ['type'=>'error','message'=>'Suppression reussie','errorMessage'=>$th];
         }
+    }
+
+    public function courrier_dispatches(){
+
+        return Courrier::select('courriers.*','services.name as service_name ','type_courriers.name as type_courrier_name')
+        ->with(['commentaires'=>function($q){$q->join('users','users.id','commentaire_courriers.user_id');}])
+        ->with(['users'=>function($qry){}])
+        ->with(['annexes'=>function($qry){}])
+        ->with(['services'=>function($qry){}])
+
+        ->with(['noteTechniques'=>function($qry){
+            $qry->with('commentaires');
+            $qry->with('annexes');
+            $qry->select('users.name as user_name','note_techniques.*');
+            $qry->join('users','users.id','note_techniques.user_id');
+        }])
+        ->join('services','services.id','service_id')
+        ->join('type_courriers','type_courriers.id','type_courrier_id')
+        ->where('courriers.status',2)
+        ->orderBy('created_at','DESC')
+        ->paginate(20);
+    }
+
+    public function courrier_dispatches_page(){
+        return Inertia::render('Courrier/ReDispatch');
     }
 
 
