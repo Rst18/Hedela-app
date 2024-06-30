@@ -167,6 +167,8 @@
 
         onMounted(() => {
             currentNote.value = props.note
+
+            console.log(currentNote.value);
         });
 
 

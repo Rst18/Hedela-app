@@ -13,7 +13,7 @@
             <div class="col-span-1">Statut</div>
         </div>
         <div v-if="courrierData">
-            <div v-for="(courrier,index) in courrierData" :key="courrier.id" @click="setCourrier(courrier)" class="w-full mb-1 p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer" >
+            <div v-for="(courrier,index) in courrierData" :key="courrier.id" @click="setCourrier(courrier)" class="text-sm w-full mb-1 p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer" >
                 <div class="col-span-1 " >{{ index + 1 }}</div>
                 <div class="col-span-2">{{courrier.type_courrier_name}}</div>
                 <div class="col-span-2">{{courrier.sender}}</div>
@@ -79,7 +79,10 @@ import Animation from '@/Components/Animation.vue';
 
             fetchCourrier('../courrier/list-dipatch')
 
-        }else{
+        }else if(props.type_list === 'ReDispatch'){
+            fetchCourrier('../courrier/dispatches')
+        }
+        else{
 
             fetchCourrier('../courrier/list')
         }

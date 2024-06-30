@@ -9,6 +9,7 @@ use App\Models\Courrier;
 use App\Models\TypeCourrier;
 use Illuminate\Http\Request;
 use App\Events\DispatchEvent;
+use App\Mail\ReponseCourrier;
 use App\Events\CreateCourrierEvent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -51,7 +52,13 @@ class CourrierController extends Controller
         ->with(['users'=>function($qry){}])
         ->with(['annexes'=>function($qry){}])
         ->with(['services'=>function($qry){}])
-
+        ->withCount('noteTechniques')
+        ->withCount(['noteTechniques as valide' => function ($query) {
+            $query->where('status', 2);
+        }])
+        ->withCount(['noteTechniques as noValide' => function ($query) {
+            $query->where('status', 3);
+        }])
         ->with(['noteTechniques'=>function($qry){
             $qry->with('commentaires');
             $qry->with('annexes');
@@ -173,6 +180,31 @@ class CourrierController extends Controller
         }
     }
 
+    public function courrier_dispatches(){
+
+        return Courrier::select('courriers.*','services.name as service_name ','type_courriers.name as type_courrier_name')
+        ->with(['commentaires'=>function($q){$q->join('users','users.id','commentaire_courriers.user_id');}])
+        ->with(['users'=>function($qry){}])
+        ->with(['annexes'=>function($qry){}])
+        ->with(['services'=>function($qry){}])
+
+        ->with(['noteTechniques'=>function($qry){
+            $qry->with('commentaires');
+            $qry->with('annexes');
+            $qry->select('users.name as user_name','note_techniques.*');
+            $qry->join('users','users.id','note_techniques.user_id');
+        }])
+        ->join('services','services.id','service_id')
+        ->join('type_courriers','type_courriers.id','type_courrier_id')
+        ->where('courriers.status',2)
+        ->orderBy('created_at','DESC')
+        ->paginate(20);
+    }
+
+    public function courrier_dispatches_page(){
+        return Inertia::render('Courrier/ReDispatch');
+    }
+
 
     
     /**
@@ -242,7 +274,8 @@ class CourrierController extends Controller
         ->join('services','services.id','service_id')
         ->join('type_courriers','type_courriers.id','type_courrier_id');
         
-         $q->select('courriers.*','services.name as service_name ','type_courriers.name as type_courrier_name');
+         $q->select('courriers.*','services.name as service_name ','type_courriers.name as type_courrier_name')
+         ->orderBy('created_at','DESC');
         }])->first();
     }
     public function mes_courrier_page(){
@@ -277,6 +310,24 @@ class CourrierController extends Controller
             //throw $th;
             return ['type'=>'error','message'=>"Echec d'enregistrement",'errorMessage'=>$th];
         }
+    }
+    public function response_courrier(Request $request,Courrier $courrier){
+
+
+        try {
+
+            $fileName = time() . '.' . $request->response_file->getClientOriginalExtension();
+            $filePath = $request->response_file->storeAs('documents/'.$courrier->number.'/Response/', $fileName); 
+            // Store the file
+            Mail::to($courrier->email)->send(New ReponseCourrier('Bonjour !',$fileName));
+
+            return ['type'=>'success','message'=>'La reponse a ete bien envoyee'];
+            
+        } catch (\Throwable $th) {
+            //throw $th;
+            return ['type'=>'error','message'=>'Echec','errorMessage'=>$th];
+        }
+
     }
 
     public function statistique_courrier (){

@@ -49,6 +49,11 @@ export default function UseCourrier(){
         },
         {
             id:3,
+            name:'Refuser',
+            color:'bg-green-600'
+        },
+        {
+            id:4,
             name:'Imprimmer',
             color:'bg-green-600'
         },

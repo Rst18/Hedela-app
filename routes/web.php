@@ -65,13 +65,15 @@ Route::controller(App\Http\Controllers\TypeCourrierController::class)->middlewar
 Route::controller(App\Http\Controllers\CourrierController::class)->middleware('auth')->group(function(){
     Route::get('download/{id}','downloadFile');
     Route::get('courrier/create','create')->name('courrier.create');
-    Route::get('courrier-dispatch','dispatch');
+    // Route::get('courrier-dispatch','dispatch');
     Route::get('courrier/list','index')->name('courrier.list');
     Route::get('courrier/list-dipatch','list_courrier_to_dispatch');
     Route::get('courrier/list-validation','courrier_where_has_note');
     Route::get('courrier/validation','courrier_where_has_note_page')->name('courrier.listValidation');
     Route::get('courrier/list-protocole','list_courrier_protocol')->name('courrier.listProtocole');
     Route::get('courrier/dispatch','dispatch')->name('courrier.dispatch');
+    Route::get('courrier/dispatches-page','courrier_dispatches_page')->name('courrier.dispatches');
+    Route::get('courrier/dispatches','courrier_dispatches');
     Route::post('courrier/add','store');
     Route::post('courrier/{courrier}/update','update');
     Route::post('courrier/set-courrier-user/{user}','addCourrier');
@@ -81,6 +83,8 @@ Route::controller(App\Http\Controllers\CourrierController::class)->middleware('a
     Route::post('courrier/cloture/{courrier}','clotureCourrier');
     Route::get('courrier/new-number','new_number');
     Route::get('courrier/statistique','statistique_courrier');
+    Route::get('courrier/statistique','statistique_courrier');
+    Route::post('courrier/response/{courrier}','response_courrier');
     Route::get('testmail','sendMail');
 });
 Route::controller(App\Http\Controllers\CourrierSortantController::class)->middleware('auth')->group(function(){
@@ -149,7 +153,8 @@ Route::controller(App\Http\Controllers\TaskController::class)->middleware('auth'
     Route::get('task','task_dashbord')->name('task');
     Route::get('task/dashbord','dashbord');
     Route::get('task/create','create')->name('task.create');
-    Route::get('task-list','task_list')->name('task.list');
+    Route::get('task/list-all','task_list')->name('task.all');
+    Route::get('task-list','task_list_created_by')->name('task.list');
     Route::get('task-attrib-group','task_attrib_role')->name('task.attrib_group');
     Route::post('task-save','store');
     Route::post('task-update/{task}','update');

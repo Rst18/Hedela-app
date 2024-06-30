@@ -6,20 +6,27 @@
        <form >
        <div class="mt-3 w-full p-3 font-semibold bg-gray-100 grid grid-cols-12">
            <div class="col-span-1">#</div>
-           <div class="col-span-2">Type</div>
+           <div class="col-span-1">Type</div>
            <div class="col-span-2">Sender</div>
            <div class="col-span-5">Objet</div>
            <div class="col-span-1">Date  </div>
-           <div class="col-span-1">Statut</div>
+           <div class="col-span-2">Statut</div>
        </div>
        <div v-if="courrierData">
-           <div v-for="(courrier,index) in courrierData" :key="courrier.id" @click="setCourrier(courrier)" class="w-full mb-1 p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer" >
+           <div v-for="(courrier,index) in courrierData" :key="courrier.id" @click="setCourrier(courrier)" class="text-sm w-full mb-1 p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer" >
                <div class="col-span-1 " >{{ index + 1 }}</div>
-               <div class="col-span-2">{{courrier.type_courrier_name}}</div>
+               <div class="col-span-1">{{courrier.type_courrier_name}}</div>
                <div class="col-span-2">{{courrier.sender}}</div>
                <div class="col-span-5">{{courrier.objet}}</div>
                <div class="col-span-1 text-xs">{{ moment(courrier.created_at).format('ll') }}</div>
-               <div class="col-span-1 flex justify-center items-center":class="getColorCourrier(courrier.status)[0].color"><Check v-if="courrier.status == 4" class="h-4 w-4 text-white border rounded-full bg-green-600 "/></div>
+               <div class="col-span-2 text-xs grid grid-cols-12 gap-2 p-1":class="getColorCourrier(courrier.status)[0].color"><Check v-if="courrier.status == 4" class="h-4 w-4 text-white border rounded-full bg-green-600 "/>
+                <span class=" col-span-4 text-white border rounded-full w-fit h-fit p-1">Note {{ courrier.note_techniques_count }}</span>
+                <div class="col-span-8 grid grid-cols-2 gap-2">
+                    <span class="text-white border rounded-full w-fit h-fit p-1 ">V. {{ courrier.valide }}</span>
+                    <span class="text-white border rounded-full  w-fit h-fit p-1">NV. {{ courrier.noValide }}</span>
+
+                </div>
+            </div>
            </div>
 
            <div class="flex flex-row w-full px-4 md:w-9/12 justify-center items-center mx-auto">
