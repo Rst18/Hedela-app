@@ -159,6 +159,18 @@ class MenuController extends Controller
     }
 
     public function get_menu_user(){
-       return  Auth::user()->roles;
+
+        $menus = [];
+
+        $user = User::where('id',Auth::user()->id)->with(['roles'=>function($q){
+            $q->with('menus');
+        }])->first();
+
+        
+
+        foreach ($user->roles as $key => $role) {
+            array_push($menus, $role->menus);
+        }
+      
     }
 }

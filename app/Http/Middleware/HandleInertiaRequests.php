@@ -2,8 +2,11 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Http\Request;
+use App\Models\Menu;
+use App\Models\User;
 use Inertia\Middleware;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -36,7 +39,11 @@ class HandleInertiaRequests extends Middleware
                 'unreadNotification'=>$request->user() ? $request->user()->unreadNotifications()->count(): $request->user(),
             ],
             'menu'=>[
-                'pages'=>$request->user() ? $request->user()->menus : $request->user()
+                'pages'=>$request->user() ? 
+
+                Menu::get_user_menu()
+                
+                : $request->user()
             ]
         ];
     }
