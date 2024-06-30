@@ -36,9 +36,7 @@
       </form>
       <ul class="space-y-2">
 
-
-
-        <SideBarItemDropDown v-for="menu in $page.props.menu.pages" :key="menu.id" :path="menu.path"  :name="menu.name">
+        <SideBarItemDropDown  v-for="menu in $page.props.menu.pages[0]" :key="menu.id" :path="menu.path"  :name="menu.name">
           <template #icon>
             <svg
               aria-hidden="true"

@@ -62,6 +62,7 @@ class AudienceController extends Controller
     {
       
         try {
+            
             $acaccompagnateurs = json_decode($request->accompag);
 
             $audience = Audience::create($request->validated());

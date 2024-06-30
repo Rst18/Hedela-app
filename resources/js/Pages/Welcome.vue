@@ -2,7 +2,8 @@
 import { Head, Link } from '@inertiajs/vue3';
 import WelcomCardPresentation from '@/Components/WelcomCardPresentation.vue'
 import DigitalPresentationSVG from '@/Components/DigitalPresentationSVG.vue'
-import Footer from '@/Components/Footer.vue'
+import Footer from '@/Components/Footer/FooterSection.vue'
+import ServiceSection from '@/Components/Services/ServiceSection.vue'
 import {onMounted,ref} from 'vue'
 import AlertNotification from '@/Components/AlertNotification.vue'
 defineProps({
@@ -73,37 +74,18 @@ const showNotification = ref(true)
            
         </div>
     </div>
-    <div class="grid grid-cols-1 lg:grid-cols-2 pb-24 px-4 lg:px-28  place-items-center  ">
-        <span class="text-4xl lg:text-6xl font-bold text-gray-900 py-8 lg:col-span-2 lg:text-center  ">Gestion des audiences</span>
+    <div class="grid grid-cols-1 lg:grid-cols-1 pb-24 px-4 lg:px-28  place-items-center  ">
+        <span class="text-4xl lg:text-6xl font-bold text-gray-700 py-8 lg:col-span-1 lg:text-center  ">Gestion des audiences</span>
         
-        <div class="">
-            <p class="text-4xl px-2 text-black">
+        <div class="mb-2">
+            <p class="text-md lg:text-4xl px-2 text-gray-500">
                  <span >Optimisez votre organisation et gagnez en efficacité grâce à </span>
            <span class="font-semibold text-yellow-500">Hedela-app</span> , la solution complète de gestion des audiences pour les entreprises et les cabinets.
             </p>
            
         </div>
-
-        <div class="">   
-            <WelcomCardPresentation title="Gain de temps, d'efficacité et Réduction des coûts opérationnels">
-                Optimisez vos processus et réduisez le temps consacré à la gestion manuelle des audiences,
-                Diminuez les dépenses liées aux erreurs de planification et aux manques de communication
-            </WelcomCardPresentation>  
-            <WelcomCardPresentation title="Planification simplifiée des audiences">
-                Créez, modifiez et planifiez des audiences en toute simplicité, 
-                en tenant compte des disponibilités des parties prenantes.
-                Organisez des réunions internes et des rencontres avec des clients de manière structurée et efficace.
-            </WelcomCardPresentation>  
-          
-            <WelcomCardPresentation title="Notifications automatiques">
-                Recevez des rappels par e-mail et SMS pour les audiences à venir,
-                 garantissant ainsi que vous ne manquerez jamais un rendez-vous.
-            </WelcomCardPresentation>  
-            <WelcomCardPresentation title="Suivi des progrès en temps réel">
-                 Suivez l'avancement de chaque audience et consultez les notes et les documents associés à tout moment.
-            </WelcomCardPresentation>  
-              
-        </div>
+        <ServiceSection/>
+       
         
     </div>
 

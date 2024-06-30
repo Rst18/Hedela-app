@@ -42,6 +42,6 @@ createInertiaApp({
     //     console.log({user}, 'leaved')
     // })
 
-    Echo.channel('dispatch-channel').listen('DispatchEvent',(event)=>{
-       console.log(event);
-    })
+    // Echo.channel('dispatch-channel').listen('DispatchEvent',(event)=>{
+    //    console.log(event);
+    // })

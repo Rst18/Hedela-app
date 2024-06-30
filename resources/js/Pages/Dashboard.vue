@@ -40,6 +40,11 @@ onMounted(() => {
         showNotification.value = true
         //console.log( stat_courrier.value.total_courrier); 
     })
+    
+    Echo.channel('dispatch-channel')
+        .listen('DispatchEvent',(event)=>{
+       console.log(event);
+    })
 
 
     // window.Echo.private('App.Models.User.1')

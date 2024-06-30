@@ -18,7 +18,7 @@
                   <div class="col-span-2">{{courrier.type_courrier_name}}</div>
                   <div class="col-span-2">{{courrier.sender}}</div>
                   <div class="col-span-5">{{courrier.objet}}</div>
-                  <div class="col-span-1">{{ moment(courrier.created_at).format('ll') }}</div>
+                  <div class="col-span-1 text-xs">{{ moment(courrier.created_at).format('ll') }}</div>
                   <div class="col-span-1" :class="getColorCourrier(courrier.status)[0].color" ></div>
               </div>
    

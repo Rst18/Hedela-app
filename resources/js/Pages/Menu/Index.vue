@@ -23,8 +23,11 @@
                             <MenuForm  :menu action="update" @newAdded="createMenu = 0 "  v-if="createMenu == 2"/>
                         </div>
                     </fwb-tab>
-                    <fwb-tab name="second" title="Attribution Menu ">
+                    <fwb-tab name="second" title="Attribution Menu aux utilisateurs">
                         <ListOfUserWithMenu :users :menus/>
+                    </fwb-tab>
+                    <fwb-tab name="thrid" title="Attribution Menu aux groupes ">
+                        <ListRolesWithMenus :roles :menus/>
                     </fwb-tab>
                 </fwb-tabs>
                
@@ -40,10 +43,11 @@
     import {ref,onMounted} from 'vue'
     import { FwbTab, FwbTabs,FwbButton } from 'flowbite-vue'
     import ListOfUserWithMenu from '@/Components/Menu/ListOfUserWithMenu.vue'
-
+    import ListRolesWithMenus from '@/Components/Menu/ListRolesWithMenus.vue';
         const props = defineProps({
             users:Object,
-            menus:Object
+            menus:Object,
+            roles:Object
         })
         const activeTab = ref('first')
         const createMenu = ref(0)
