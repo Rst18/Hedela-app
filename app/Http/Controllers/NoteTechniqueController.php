@@ -164,6 +164,7 @@ class NoteTechniqueController extends Controller
     public function my_technical_notes(){
 
         return NoteTechnique::where('user_id',Auth::user()->id)
+                                ->with('annexes')
                                 ->with('courrier')
         ->paginate(10);
     }

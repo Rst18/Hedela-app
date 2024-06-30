@@ -32,21 +32,29 @@
 
     </div>
     <div class="py-2">
-            <Fwb-button @click="exportHTML">
-                Imprimer
-            </Fwb-button>
-        </div>
+        <Fwb-button @click="exportHTML">
+            Imprimer
+        </Fwb-button>
+        <Fwb-button @click="showResponseForm">
+            Repondre
+        </Fwb-button>
+    </div>
+    <div v-if="showResponse">
+        <ReponseLettreForm @hideMe="showResponse = false" :model_id="note.courrier_id"/>
+    </div>
 </template>
 <script setup>
-
+    import {ref} from 'vue'
     import useAxios from '@/ComponentsServices/axios.js'
-
+    import ReponseLettreForm from './ReponseLettreForm.vue'
     import { FwbInput,FwbButton,FwbRadio,FwbP } from 'flowbite-vue'
 
         const {axios_post_simple} = useAxios()
         const props = defineProps({
             note:Object
         })
+
+        const showResponse = ref(false)
         const printLettre = ()=>{
 
             axios_post_simple('note-technique/imprimmer/'+note.id).then(({data})=>{
@@ -75,5 +83,10 @@
             fileDownload.download = 'document.doc';
             fileDownload.click();
             document.body.removeChild(fileDownload);
+        }
+
+        const showResponseForm = ()=>{
+            showResponse.value = true
+
         }
 </script>
