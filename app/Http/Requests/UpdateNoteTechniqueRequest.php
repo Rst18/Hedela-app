@@ -34,7 +34,7 @@ class UpdateNoteTechniqueRequest extends FormRequest
             'signataire'=>'required',
             'copiea'=>'required',
             'type_lettre'=>'required',
-            'annexes'=>'required',
+            'annexe'=>'required',
             'lettre'=>'required',
             'user_id'=>'required|exists:users,id',
             'courrier_id'=>'required|exists:courriers,id'

@@ -1,6 +1,6 @@
 <template>
     <div >
-        <div class="p-4 shadow-md rounded-md grid grid-cols-2 gap-4" v-if="!created_courrier">
+        <div class="p-6 shadow-md rounded-md grid grid-cols-1 md:grid-cols-2 gap-4" v-if="!created_courrier">
             <div>
                 <fwb-input
                     v-model="form.number"
@@ -102,20 +102,21 @@
             </div>
         </div>
         <div v-if="created_courrier" class="p-6">
-            <div v-if="currentService[0].documents">
+
+            <div v-if="currentService[0].documents.length > 0">
                 <span class="text-gray-700 font-semibold text-xl py-2 px-2  text-center">Ajouter les Annexes de du courrier</span>
-                <div v-if="currentService" class="p-8 ">
-                    <UploadAnnexes v-for="doc in currentService[0].documents" :key="doc.id"  url="annexe-courrier/add" :model_id="created_courrier.id" :name="doc.name"/>
+                <div v-if="currentService[0].documents" class="p-8 ">
+                    <UploadAnnexes v-for="doc in currentService[0].documents" :key="doc.id"  url="../annexe-courrier/add" :model_id="created_courrier.id" :name="doc.name"/>
                 </div>
             </div>
-
             <div v-else class="w-full mt-5 p-4 grid place-items-center text-gray-600">
                 <span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-20 h-20">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.182 16.318A4.486 4.486 0 0 0 12.016 15a4.486 4.486 0 0 0-3.198 1.318M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
                     </svg>
                 </span>
-                <p class="text-center mt-4">Pas de fichiers annexes, l'enregistrment du courrier est finit!  </p>
+                <p class="text-center mt-4 text-gray-950">Pas de fichiers annexes, l'enregistrment du courrier est finit!  </p>
+                <!-- <button class="px-2 text-xs my-6 py-1 border cursor-pointer" @click="created_courrier = ''"> Terminer</button> -->
             </div>
         </div>
         
@@ -163,16 +164,20 @@ import Swal from 'sweetalert2';
 
         if (props.action === 'add') {
 
-            axios_post('courrier/add',form.value).then(({data})=>{
-                Swal.fire(data.type,data.message,data.type)
+            axios_post('../courrier/add',form.value).then(({data})=>{
 
+                if (data.type === 'success') {
 
-                console.log(data)
-                created_courrier.value = data.new
-                emit('newAdded',data.new)
+                    Swal.fire(data.type,data.message,data.type).then(()=>{
 
+                        created_courrier.value = data.new
+                        emit('newAdded',data.new)
+                        form.value = {}
+                    })
+                    
+                }
             }).catch((error)=>{
-
+                console.log(error.response)
                 if (error.response.status === 422) {
 
                     errors.value = error.response.data.erros
@@ -181,10 +186,9 @@ import Swal from 'sweetalert2';
                 }
             })
 
-        }else if(props.action === 'update'){
+        }else if(props.action === '../update'){
             let id = +props.courrier.id
-            axios_post_simple('courrier/'+id+'/update',form.value).then(({data})=>{
-                console.log(data)
+            axios_post_simple('../courrier/'+id+'/update',form.value).then(({data})=>{
                 emit('newAdded',data.new)
             }).catch((error)=>{
                 console.log(error.response)
@@ -199,7 +203,6 @@ import Swal from 'sweetalert2';
         currentService.value = props.services.filter((service)=>service.id === e)
         form.value.annexes = currentService.value[0].documents.length
         form.value.service_id = e
-        console.log(currentService.value)
     }
 
     const getTypeCourrier = (e)=>{
@@ -224,7 +227,7 @@ import Swal from 'sweetalert2';
 
     onMounted(() => {
 
-      axios_get('courrier/new-number').then(({data})=>{
+      axios_get('../courrier/new-number').then(({data})=>{
 
         if (props.action === 'add') {
 

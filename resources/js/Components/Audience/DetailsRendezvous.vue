@@ -7,7 +7,10 @@
 
                 option="update"
                 :audience_id 
-                :rendezvous />
+                :rendezvous 
+                @updated="close"
+            />
+                
 
         </div>
         <div class="col-span-1 text-xs border-l px-2">

@@ -23,7 +23,12 @@ class UpdateAnnexeCourrierRequest extends FormRequest
     {
         return [
             'name'=>'required',
-            'path'=>'required',
+            'path' => [
+                'required',
+                'file', // Rule for uploaded file
+                'max:1024', // Maximum file size in kilobytes (adjust as needed)
+                // 'mimeTypes' => ['pdf', 'docx', 'doc','png'], // Allowed MIME types (adjust as needed)
+            ],
             'courrier_id'=>'required|exists:courriers,id'
         ];
     }

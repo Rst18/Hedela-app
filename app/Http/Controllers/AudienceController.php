@@ -5,7 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Audience;
+use Illuminate\Http\Request;
+use App\Events\CreateAudienceEvent;
+use Illuminate\Support\Facades\Auth;
+use App\Models\AccompagnateurAudience;
 use App\Http\Requests\StoreAudienceRequest;
+use App\Notifications\AudienceNotification;
 use App\Http\Requests\UpdateAudienceRequest;
 
 class AudienceController extends Controller
@@ -21,7 +26,24 @@ class AudienceController extends Controller
                 $qry->with('roles');
             }]);
         }])
-        ->join('users','users.id','audiences.user_requested')->paginate(10);
+        ->with('accompagnateurs')
+        ->join('users','users.id','audiences.user_requested')
+        ->orderBy('created_at','DESC')
+        ->paginate(10);
+    }
+    public function myList()
+    {
+        return Audience::select('audiences.*','users.name as autorite')
+        ->with(['rendezvous'=>function($q){
+            $q->with(['users'=>function($qry){
+                $qry->with('roles');
+            }]);
+        }])
+        ->with('accompagnateurs')
+        ->join('users','users.id','audiences.user_requested')
+        ->where('user_requested',Auth::user()->id)
+        ->orderBy('created_at','DESC')
+        ->paginate(10);
     }
 
     /**
@@ -38,18 +60,40 @@ class AudienceController extends Controller
      */
     public function store(StoreAudienceRequest $request)
     {
+      
         try {
+            
+            $acaccompagnateurs = json_decode($request->accompag);
 
             $audience = Audience::create($request->validated());
 
+            if ( count($acaccompagnateurs) > 0) {
+
+                for ($i=0; $i <count($acaccompagnateurs) ; $i++) {
+                     
+                    AccompagnateurAudience::create([
+                        'name'=>$acaccompagnateurs[$i]->name,
+                        'email'=>$acaccompagnateurs[$i]->email,
+                        'phone'=>$acaccompagnateurs[$i]->phone,
+                        'audience_id'=>$audience->id
+                    ]);
+                }
+            }
+
             //Envoie de la notification a l'user_requested
+            $user_to_not = User::find($request->user_requested);
+            
+            $user_to_not->notify(new AudienceNotification($request->name." vous a envoyer une demande d'audience. Veillez consulter la liste de vos audiences.",'Information'));
+
+
+            //broadcast( new CreateAudienceEvent('one Audience added from '.$audience->name));
 
             return ['type'=>'success','message'=>'Enregistrement reussi','new'=>$audience];
 
-        } catch (\Throwable $th) {
-            //throw $th;
-            return ['type'=>'error','message'=>'Echec d\'Enregisrement','errorMessage'=>$th];
-        }
+         } catch (\Throwable $th) {
+        //     //throw $th;
+             return ['type'=>'error','message'=>'Echec d\'Enregisrement','errorMessage'=>$th];
+         }
     }
 
     /**
@@ -111,5 +155,123 @@ class AudienceController extends Controller
             
             return ['type'=>'error','message'=>'Echec d\'Enregistrement','errorMessage'=>$th];
         }
+    }
+
+    public function list_protocole(){
+        return Inertia::render('Audience/ListAudienceProtocole');
+    }
+    public function mes_audiences(){
+        
+        return Inertia::render('Audience/MesAudiences');
+    }
+    public function list_admin(){
+        $users  = User::all();
+        return Inertia::render('Audience/ListAudienceAdmin',compact('users'));
+    }
+
+    public function transfert(Request $request,Audience $audience){
+
+        try {
+
+            $user = User::find($request->user_id);
+           
+            if ($user != null) {
+                
+                $audience->update([
+                    'user_requested'=> $user->id,
+                    'audience_from'=>Auth::user()->id
+                ]);
+
+                return ['type'=>'success','message'=>'Audience Transferee'];
+
+            }
+            return ['type'=>'error','message'=>'Aucune information trouvee pour cet utilisateur'];
+
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            return ['type'=>'error','message'=>'Echec de transfert','errorMessage'=>$th];
+        }
+    }
+    public function accept(Audience $audience){
+
+        try {  
+            
+            $audience->update([
+                'status'=>2
+            ]);
+
+            return ['type'=>'success','message'=>'Audience Transferee'];
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            return ['type'=>'error','message'=>'Echec de transfert','errorMessage'=>$th];
+        }
+    }
+    public function refuse(Audience $audience){
+
+        try {  
+
+            $audience->update([
+                'status'=>1
+            ]);
+
+            return ['type'=>'success','message'=>'Audience Transferee'];
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            return ['type'=>'error','message'=>'Echec de transfert','errorMessage'=>$th];
+        }
+    }
+
+    public function my_accepted_audiences(){
+        return Audience::select('audiences.*','users.name as autorite')
+        ->with(['rendezvous'=>function($q){
+            $q->with(['users'=>function($qry){
+                $qry->with('roles');
+            }]);
+        }])
+        ->with('accompagnateurs')
+        ->join('users','users.id','audiences.user_requested')
+        ->where('user_requested',Auth::user()->id)
+        ->where('status',2)
+        ->orderBy('created_at','DESC')
+        ->paginate(10);
+    }
+
+    public function accepted_audiences_boss(){
+        
+    }
+
+    public function statistique_audience (){
+
+        // total courrier 
+        $total_audience = Audience::count();
+
+        //total courrier dispatch 
+
+        $total_audience_aujourdhui = Audience::where('status',2)->count();
+
+        //courrier non dispatch
+
+        $total_audience_accept = Audience::where('status',2)->count();
+
+        //courrier en cours de traitement
+
+        $total_audience_refuse = Audience::where('status',3)->count();
+
+        // courrier cloture
+
+        $total_cloture = Audience::where('status',4)->count();
+
+        return [
+
+            'total_audiences'=>$total_audience,
+            'total_audience_aujourdhui'=>$total_audience_aujourdhui,
+            'total_audience_accept'=>$total_audience_accept,
+            'total_cloture'=>$total_cloture,
+            'total_audience_refuse'=>$total_audience_refuse,
+        ];
+
     }
 }

@@ -3,7 +3,9 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Menu;
 use App\Models\Task;
+use App\Models\Bureau;
 use App\Models\Courrier;
 use App\Models\Timesheet;
 use App\Models\RendezvousAudience;
@@ -11,6 +13,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Broadcasting\PrivateChannel;
 
 class User extends Authenticatable
 {
@@ -92,6 +95,25 @@ class User extends Authenticatable
         return $this->hasMany(Timesheet::class);
     }
 
+    /**
+     * The bureaux that belong to the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function bureaux(): BelongsToMany
+    {
+        return $this->belongsToMany(Bureau::class);
+    }
+
+    /**
+     * The menus that belong to the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function menus(): BelongsToMany
+    {
+        return $this->belongsToMany(Menu::class);
+    }
 
     
 }

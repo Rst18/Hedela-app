@@ -2,8 +2,7 @@
     <div class="relative">
         <div class="grid grid-cols-12 py-1 px-6">
             <button v-if="showComponent == 1"  @click="close" class="border w-fit p-1 col-span-2 px-2 bg-slate-100 text-xs text-slate-800 rounded-full ">Liste des courriers</button>
-            <button v-if="showComponent == 1"  @click="showComponent = 4" class="border w-fit p-1 px-2 col-span-2 bg-slate-100 text-xs text-slate-800 rounded-full ">Créer Une note technique</button>
-            <button v-if="showComponent > 2"  @click="showComponent = 1" class="border w-fit p-1 px-2 col-span-2 bg-slate-100 text-xs text-slate-800 rounded-full ">Details Courrier</button>
+            <button v-if="showComponent > 2"  @click="showComponent = 1" class="border w-fit p-1 px-2 col-span-2 bg-slate-100 text-xs text-slate-800 rounded-full ">Retour</button>
         </div>
 
         <div class="grid grid-cols-12 px-6 gap-2" v-show="showComponent == 1">
@@ -44,22 +43,22 @@
                         <div class="shadow p-2">
                             <div class="grid grid-cols-1">
                                 <span class="px-2 font-semibold text-slate-500">Lettre </span>
-                                <a :href="'download/'+ courrierData.letter_file.replaceAll('/','++')" target="_blank" class="font-bold text-sm text-blue-300 ml-4">Imprimer la lettre</a>
+                                <a :href="'../download/'+ courrierData.letter_file.replaceAll('/','++')" target="_blank" class="font-bold text-sm text-blue-300 ml-4">Imprimer la lettre</a>
                             </div>
                             <div class="grid grid-cols-1">
                                 <div>
                                     <span class="px-2 font-semibold text-slate-500">Annexes ({{ courrierData.annexes.length }})</span>
-                                    <span class="text-xs font-semibold text-gray-400 underline cursor-pointer" v-if="total_annexes > courrierData.annexes.length" @click="addAnnexes = !addAnnexes">{{ addAnnexes ? 'Ajouter Annexes':'Annuler' }}</span>
+                                    <!-- <span class="text-xs font-semibold text-gray-400 underline cursor-pointer" v-if="total_annexes > courrierData.annexes.length" @click="addAnnexes = !addAnnexes">{{ addAnnexes ? 'Ajouter Annexes':'Annuler' }}</span> -->
                                 </div>
                                 <div>
-                                    <a v-for="annexe in courrierData.annexes" :href="'download/'+ annexe.path.replaceAll('/','++')" target="_blank" class="font-bold text-sm text-blue-700 ml-4"> {{ annexe.name }}</a>
+                                    <a v-for="annexe in courrierData.annexes" :href="'../download/'+ annexe.path.replaceAll('/','++')" target="_blank" class="font-bold text-sm text-blue-700 ml-4"> {{ annexe.name }}</a>
                                     <UploadAnnexes v-if="addAnnexes" v-for="doc in annexes_missed" :key="doc.id"  url="annexe-courrier/add" :model_id="courrierData.id" :name="doc.name"/>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="p-4 shadow-sm border ">
-                        <span class="text-lg font-bold py-2" >Discussions ( {{ courrierData.commentaires ? courrierData.commentaires.length : 0  }} )</span>
+                        <span class="text-md font-bold py-2" >Discussions ( {{ courrierData.commentaires ? courrierData.commentaires.length : 0  }} )</span>
                         <div class="mt-4">
                             <div class="px-4">
                                 <div v-for="commentaire in courrierData.commentaires" class="shadow-sm p-4 m-2 grid grid-cols-12">
@@ -96,22 +95,10 @@
                         <span >{{ user.name }}</span>
                     </div>
                 </div>
-                <div>
-                    <span class="font-semibold text-gray-500">
-                        Notes Techniques ({{ courrier.note_techniques.length }})
-                    </span>
-                    <div class="py-2">
-                        <div @click="getCurrentNote(note)" v-for="note in courrier.note_techniques" :key="note.id" class="text-xs hover:cursor-pointer hover:bg-slate-100 p-1">
-                           <span> {{ note.name }}</span>
-                           <span class="ml-2"> {{ moment(note.created_at).format('ll') }}</span>
-                        </div>
-                    </div>
-                </div>
+               
     
             </div>
         </div>
-        <NoteTechniqueForm :courrier v-if="showComponent == 4" action="add" :note="newNote"/>
-         <DetailsNoteTechnique @closeMe="showComponent = 1" :note="currentNote"  v-if="showComponent == 2 "/>
          <DispatchCourrier @userAdded="addUser" @userRemoved="removeUser" :courrier v-if="showComponent == 3"/>
     </div>
 </template>
@@ -140,7 +127,7 @@ import UploadAnnexes from '@/Components/UploadAnnexes.vue'
     const total_annexes = ref()
     const addAnnexes = ref(false)
     const setNewComment = (e)=>{
-        courrierData.commentaires.push(e)
+        courrierData.value.commentaires.push(e)
     }
 
     const getCurrentNote = (note)=>{
@@ -158,16 +145,13 @@ import UploadAnnexes from '@/Components/UploadAnnexes.vue'
 
     onMounted(() => {
 
-        axios_get('service/'+props.courrier.service_id+'/get-doc').then(({data})=>{
+        axios_get('../service/'+props.courrier.service_id+'/get-doc').then(({data})=>{
 
             total_annexes.value = data.length
             annexes_missed.value = data.filter((obj) => !props.courrier.annexes.some((otherObj) => otherObj.name === obj.name));
-            console.log(annexes_missed.value);
 
         })  
     })
-
-
     const close = ()=> emit('closeMe')
     
 </script>

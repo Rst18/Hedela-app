@@ -26,6 +26,8 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->integer('status')->default(1);
+            $table->integer('audience_from')->nullable();
+            $table->boolean('interne')->default(true);
             $table->timestamps();
         });
     }

@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
 use App\Models\User;
+use Inertia\Inertia;
 use App\Models\Audience;
 use Illuminate\Http\Request;
 use App\Models\RendezvousAudience;
+use Illuminate\Support\Facades\Mail;
+use App\Notifications\TaskNotification;
+use App\Mail\RendezvousMailNotification;
+use App\Notifications\RendezvousNotification;
 use App\Http\Requests\StoreRendezvousAudienceRequest;
 use App\Http\Requests\UpdateRendezvousAudienceRequest;
 
@@ -24,7 +30,7 @@ class RendezvousAudienceController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Audience/ListAudienceRendezvous');
     }
 
     /**
@@ -38,9 +44,17 @@ class RendezvousAudienceController extends Controller
 
            // changer le statut de l'audience
 
-            Audience::find($request->audience_id)->update(['status'=>2]);
+            $audience = Audience::find($request->audience_id);
+
+            $audience->update(['status'=>2]);
+
+
 
            //envoi la notification au user qui a enregistrer l'audience et au mail du demandeur
+
+           //notification du mail demandant le rendez vous
+             
+           Mail::to($audience->email)->send(New RendezvousMailNotification('Bonjour !, votre rendez vous a été fixer comme suit : Date : '.$request->date_heure .'  Lieu :'.$request->lieu));
 
            return ['type'=>'success','message'=>"Enregistrement reussi",'new'=>$rendezvous];
 
@@ -105,11 +119,35 @@ class RendezvousAudienceController extends Controller
      * ATTRIBUTION DES Renezvous AUX UTILISATEURS
      */
 
-     public function addRendezvous(Request $request, User $user){  
+    public function addRendezvous(Request $request, User $user){  
     
         try {
 
+
+
             $user->rendezvouss()->attach($request->rendezvous);
+
+
+
+            
+
+            //notification 
+            $user->notify(new RendezvousNotification("Vous avez été ajouter comme couverture à un rendez-vous.",'Information'));
+
+            //creer une tache couverture
+
+            $task = Task::where('nom','Couverture')->first();
+
+            if ($task != null) {
+
+                if (!$task->users()->wherePivot('user_id', $user->id)->exists()) {
+
+                    $user->tasks()->attach($task->id);
+                }
+
+                $user->notify(new TaskNotification("Vous avez été affecter à une tache de couverture à un rendez-vous.",'Information'));
+
+            }
 
             return ['type'=>'success','message'=>'Enregistrement reussi'];            
 
@@ -133,5 +171,24 @@ class RendezvousAudienceController extends Controller
 
             return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
         }
+    }
+
+    public function mes_rendezvous(){
+
+        return Audience::select('audiences.*','users.name as autorite')->whereHas('rendezvous')
+        ->with('accompagnateurs')
+        ->with(['rendezvous'=>function($query){
+            $query ->whereDate('created_at',now());
+        }])->join('users','audiences.user_requested','users.id')
+        ->paginate(10);        
+    }
+    public function mes_rendezvous_page_protocole(){
+
+      return  Inertia::render('Audience/ListRendezvousProtocole');     
+    }
+    public function create_for_the_boss(){
+
+        return Inertia::render('Audience/ListAudienceRendezvousBoss');
+        
     }
 }

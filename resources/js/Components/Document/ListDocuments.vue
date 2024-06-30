@@ -1,5 +1,5 @@
 <template>
-    <form >
+    <div >
        <div class="mt-3 w-full p-3 font-semibold bg-gray-100 grid grid-cols-12">
            <div class="col-span-1">#</div>
            <div class="col-span-7">Document</div>
@@ -21,19 +21,18 @@
           </span>
           <p class="text-center mt-4">Pas de données a afficher pour le moment, veuillez creer au moins un document !  </p>
       </div>
-   </form>
+   </div>
 </template>
 <script setup>
-import { FwbInput,FwbButton,FwbRadio,FwbP } from 'flowbite-vue'
 import useAxios from '@/ComponentsServices/axios.js'
-// import Check from '../Check.vue';
-import Swal from 'sweetalert2';
-
-const { axios_post_simple,axios_post } = useAxios();
 import { onMounted, ref } from 'vue';
 import moment from 'moment';
- const props = defineProps({
-    documents : Array,
- })
+
+
+    const { axios_get } = useAxios();
+
+    const props = defineProps({
+        documents : Array,
+    })
 
 </script>
