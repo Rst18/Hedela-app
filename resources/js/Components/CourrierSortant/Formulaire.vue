@@ -29,6 +29,12 @@
                     {{ errors.letter_file[0]}}
                 </div>
             </div>
+            <div>
+                <fwb-file-input v-model="form.accuse_reception_file" label="Ajouter Accusee de reception" />
+                <div class="text-red-500" v-if="errors.accuse_reception_file">
+                    {{ errors.accuse_reception_file[0]}}
+                </div>
+            </div>
             
         
             <div class="mt-4">
@@ -63,6 +69,7 @@ import Swal from 'sweetalert2';
         number:props.courrier_sortant.number,
         requested:props.courrier_sortant.requested,
         letter_file:null,
+        accuse_reception_file:null,
     })
 
     const created_courrier = ref()
