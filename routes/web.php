@@ -24,6 +24,8 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/create', [ProfileController::class, 'create_user'])->name('profile.create_user');
+    Route::post('/profile/create', [ProfileController::class, 'create_user_account'])->name('profile.create');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
@@ -33,6 +35,7 @@ Route::controller(App\Http\Controllers\RoleController::class)->middleware('auth'
     Route::get('role/create','create')->name('role.create');
     Route::get('role-with-users','index')->name('list_role');
     Route::get('role/list','list_roles');
+    Route::get('role/list-simple','list');
     Route::get('role/{role}/delete/','destroy');
     Route::post('role/add','store');
     Route::post('role/{role}/update','update');
@@ -85,6 +88,8 @@ Route::controller(App\Http\Controllers\CourrierController::class)->middleware('a
     Route::get('courrier/statistique','statistique_courrier');
     Route::get('courrier/statistique','statistique_courrier');
     Route::post('courrier/response/{courrier}','response_courrier');
+    Route::post('courrier/search','search');
+    Route::get('courrier/search-page','search_page');
     Route::get('testmail','sendMail');
 });
 Route::controller(App\Http\Controllers\CourrierSortantController::class)->middleware('auth')->group(function(){

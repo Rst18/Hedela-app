@@ -25,6 +25,11 @@ class RoleController extends Controller
     {
         return Role::paginate(10);
     }
+    
+    public function list()
+    {
+        return Role::get();
+    }
 
     /**
      * Show the form for creating a new resource.

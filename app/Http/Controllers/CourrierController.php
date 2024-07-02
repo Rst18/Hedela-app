@@ -396,4 +396,33 @@ class CourrierController extends Controller
         ->paginate(20);
     }
 
+
+    /**
+     * Recherche
+     */
+
+    public function search(Request $request){
+        return Courrier::select('courriers.*','services.name as service_name ','type_courriers.name as type_courrier_name')
+        ->with(['commentaires'=>function($q){$q->join('users','users.id','commentaire_courriers.user_id');}])
+        ->with(['users'=>function($qry){}])
+        ->with(['annexes'=>function($qry){}])
+        ->with(['services'=>function($qry){}])
+
+        ->with(['noteTechniques'=>function($qry){
+            $qry->with('commentaires');
+            $qry->with('annexes');
+            $qry->select('users.name as user_name','note_techniques.*');
+            $qry->join('users','users.id','note_techniques.user_id');
+        }])
+        ->join('services','services.id','service_id')
+        ->join('type_courriers','type_courriers.id','type_courrier_id')
+        ->orderBy('created_at','DESC')
+        ->where('courriers.number',$request->texte)
+        ->get();
+
+        // ->paginate(20);
+    }
+    public function search_page(){
+        return Inertia::render('Recherche/Index');
+    }
 }
