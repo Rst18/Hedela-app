@@ -45,6 +45,8 @@ Route::controller(App\Http\Controllers\RoleController::class)->middleware('auth'
 });
 Route::controller(App\Http\Controllers\DocumentController::class)->middleware('auth')->group(function(){
     Route::get('document/create','create')->name('document.create');
+    Route::get('document/list','index');
+    Route::get('document/destroy/{document}','destroy');
     Route::post('document/add','store');
     Route::post('document/{document}/update','update');
 });
