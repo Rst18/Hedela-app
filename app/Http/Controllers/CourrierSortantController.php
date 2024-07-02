@@ -91,10 +91,14 @@ class CourrierSortantController extends Controller
 
             $fileName = time() . '.' . $request->letter_file->getClientOriginalExtension();
             $filePath = $request->letter_file->storeAs('documents/CourrierSortant/'.$courrierSortant->number, $fileName); // Store the file
+
+            $fileName_accuse_reception_file = time() . '.' . $request->letter_file->getClientOriginalExtension();
+            $filePath_accuse_reception_file = $request->letter_file->storeAs('documents/CourrierSortant/'.$courrierSortant->number, $fileName_accuse_reception_file); // Store the file
             
             $data = $request->validated();
 
             $data['letter_file'] = $filePath;
+            $data['accuse_reception_file'] = $filePath_accuse_reception_file;
 
              $courrierSortant->update($data);
 
