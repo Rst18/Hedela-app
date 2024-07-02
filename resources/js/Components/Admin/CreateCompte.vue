@@ -7,31 +7,33 @@ import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import Registerillustration from '@/Components/Registerillustration.vue';
 import useAxios from '@/ComponentsServices/axios.js'
+import {ref,onMounted } from 'vue'
+import SelectComponent from '@/Components/SelectComponent.vue'
 const form = useForm({
     name: '',
     email: '',
     password: '12345678',
     password_confirmation: '12345678',
+    role:''
 });
 const {axios_get} = useAxios()
 const roles = ref()
+const getSeletedOption = (e) => form.role = e
 const submit = () => {
-    form.post(route('register'), {
-        onFinish: () => form.reset('password', 'password_confirmation'),
+    form.post(route('profile.create'), {
+        onFinish: () => form.reset('password', 'password_confirmation','email','name'),
     });
 };
 onMounted(() => {
-    axios_get('roles/list').then((data)=>{
+    axios_get('../role/list-simple').then(({data})=>{
         roles.value = data
     })
 })
 </script>
 
 <template>
-        <div class="grid grid-cols-1 lg:grid-cols-8">
-            <div class="col-span-4">
-               <Registerillustration/>
-            </div>
+        <div class="grid grid-cols-1 lg:grid-cols-8 p-6">
+            
             <div class="col-span-4 grid grid-cols-1 py-6 ">
                 <form @submit.prevent="submit">
                     <div>
@@ -64,6 +66,12 @@ onMounted(() => {
         
                         <InputError class="mt-2" :message="form.errors.email" />
                     </div>
+                    <div class="mt-4">
+                        <SelectComponent @selectedOption="getSeletedOption" :options="roles">
+                            Choisir le groupe
+                        </SelectComponent>
+                        <InputError class="mt-2" :message="form.errors.role" />
+                    </div>
         
                     <div class="mt-4">
                         <InputLabel for="password" value="Password" />
@@ -79,6 +87,7 @@ onMounted(() => {
         
                         <InputError class="mt-2" :message="form.errors.password" />
                     </div>
+                    
         
                     <div class="mt-4">
                         <InputLabel for="password_confirmation" value="Confirm Password" />
@@ -96,18 +105,15 @@ onMounted(() => {
                     </div>
         
                     <div class="flex items-center justify-end mt-4">
-                        <Link
-                            :href="route('login')"
-                            class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                        >
-                            Déjà Inscrit?
-                        </Link>
-        
+                      
                         <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                             Inscription
                         </PrimaryButton>
                     </div>
                 </form>
+            </div>
+            <div class="col-span-4">
+               <Registerillustration/>
             </div>
         </div>
 </template>

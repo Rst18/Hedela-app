@@ -380,7 +380,7 @@
                     <span class="sr-only">Open user menu</span>
                     <img
                         class="w-8 h-8 rounded-full"
-                        src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gough.png"
+                        :src="profil+$page.props.auth.user.name"
                         alt="user photo"
                     />
                 </button>
@@ -441,5 +441,8 @@
 
 import NavLink from '@/Components/NavLink.vue';
 import Notification from '@/Components/Notification/Notification.vue'
+import {ref} from 'vue'
+
+const profil = ref('https://ui-avatars.com/api/?name=')
 </script>
 
