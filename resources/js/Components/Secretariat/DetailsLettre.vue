@@ -31,12 +31,12 @@
         
 
     </div>
-    <div class="py-2">
+    <div class="py-2 grid grid-cols-2 gap-2">
         <Fwb-button @click="exportHTML">
             Imprimer
         </Fwb-button>
         <Fwb-button @click="showResponseForm">
-            Repondre
+            Classer
         </Fwb-button>
     </div>
     <div v-if="showResponse">

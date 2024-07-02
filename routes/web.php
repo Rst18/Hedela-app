@@ -85,6 +85,8 @@ Route::controller(App\Http\Controllers\CourrierController::class)->middleware('a
     Route::get('courrier/statistique','statistique_courrier');
     Route::get('courrier/statistique','statistique_courrier');
     Route::post('courrier/response/{courrier}','response_courrier');
+    Route::post('courrier/search','search');
+    Route::get('courrier/search-page','search_page');
     Route::get('testmail','sendMail');
 });
 Route::controller(App\Http\Controllers\CourrierSortantController::class)->middleware('auth')->group(function(){
