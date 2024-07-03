@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
+use App\Models\Courrier;
+use App\Models\NoteTechnique;
 use App\Models\CourrierSortant;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreCourrierSortantRequest;
@@ -42,15 +44,25 @@ class CourrierSortantController extends Controller
     public function store(StoreCourrierSortantRequest $request)
     {
         try {
-
+            
+            $data = $request->validated();
             $fileName = time() . '.' . $request->letter_file->getClientOriginalExtension();
             $filePath = $request->letter_file->storeAs('documents/CourrierSortant/'.$request->number, $fileName); // Store the file
             
-            $data = $request->validated();
 
             $data['letter_file'] = $filePath;
 
            $courrier =  CourrierSortant::create($data);
+
+           if ($request->note_id !='') {
+
+                NoteTechnique::find($request->note_id)->update(['status'=>4]);
+           }
+           
+           if ($request->courrier_id !='') {
+
+                Courrier::find($request->courrier_id)->update(['status'=>4]);
+           }
 
           // $courrier->services()->attach($request->service_id);
            // LANCER UN EVENEMENT 

@@ -55,13 +55,11 @@ import UseCourrier from '@/ComponentsServices/Courrier.js'
 
     const setNote = (note)=>{
         emit('selectedNote',note)
-        // console.log(courrier);
     }
 
     const fetchNote = (url)=>{
         axios_get('../../'+url).then(({data})=>{
-            noteTechniques.value = data.data           
-            console.log(data.data);
+            noteTechniques.value = data.data  
             links.value = data.links
         }).catch((error)=>{
            console.log(error)
