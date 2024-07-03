@@ -26,6 +26,12 @@ class StoreCourrierSortantRequest extends FormRequest
             'number'=>'required|string',
             'requested'=>'required|string',
             'letter_file' => [
+                'required',
+                'file', // Rule for uploaded file
+                //'max:10024', // Maximum file size in kilobytes (adjust as needed)
+                //'mimeTypes' => ['pdf', 'docx', 'doc'], // Allowed MIME types (adjust as needed)
+            ],
+            'accuse_reception_file' => [
                 
                 'file', // Rule for uploaded file
                 //'max:10024', // Maximum file size in kilobytes (adjust as needed)

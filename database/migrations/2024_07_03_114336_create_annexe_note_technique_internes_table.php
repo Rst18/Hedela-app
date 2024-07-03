@@ -1,7 +1,6 @@
 <?php
 
-use App\Models\User;
-use App\Models\Courrier;
+use App\Models\NoteTechniqueInterne;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -13,12 +12,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('courrier_sortants', function (Blueprint $table) {
+        Schema::create('annexe_note_technique_internes', function (Blueprint $table) {
             $table->id();
-            $table->string('number', 100);
-            $table->string('requested', 100);
-            $table->mediumText('letter_file');
-            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+            $table->string('name', 100);
+            $table->mediumText('path');   
+            $table->foreignIdFor(NoteTechniqueInterne::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('courrier_sortants');
+        Schema::dropIfExists('annexe_note_technique_internes');
     }
 };

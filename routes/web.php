@@ -45,6 +45,8 @@ Route::controller(App\Http\Controllers\RoleController::class)->middleware('auth'
 });
 Route::controller(App\Http\Controllers\DocumentController::class)->middleware('auth')->group(function(){
     Route::get('document/create','create')->name('document.create');
+    Route::get('document/list','index');
+    Route::get('document/destroy/{document}','destroy');
     Route::post('document/add','store');
     Route::post('document/{document}/update','update');
 });
@@ -114,6 +116,22 @@ Route::controller(App\Http\Controllers\NoteTechniqueController::class)->middlewa
     Route::get('note-technique/secretariat','noteTechniqueForSecretaria');
     Route::get('note-technique/sec','noteTechniqueForSecretaria_page')->name('note_technique.secretariat');
 });
+Route::controller(App\Http\Controllers\NoteTechniqueInterneController::class)->middleware('auth')->group(function(){
+
+    Route::post('note-technique-interne/add','store');
+    Route::get('note-technique-interne/create','create');
+    Route::post('note-technique-interne/update/{noteTechnique}','update');
+    Route::post('note-technique-interne/valider/{noteTechnique}','valider');
+    Route::post('note-technique-interne/inValider/{noteTechnique}','inValider');
+    Route::get('note-technique-interne/list','my_technical_notes');
+    Route::get('note-technique-interne/myList','my_technical_notes_page')->name('note_technique_interne.mes_Notes');
+    Route::get('note-technique-interne/secretariat','noteTechniqueForSecretaria');
+    Route::get('note-technique-interne/sec','noteTechniqueForSecretaria_page')->name('note_technique_interne.secretariat');
+});
+Route::controller(App\Http\Controllers\CommentaireNoteInterneController::class)->middleware('auth')->group(function(){
+
+    Route::post('commentaire-note-interne/add','store');
+});
 Route::controller(App\Http\Controllers\CommentaireNoteTechniqueController::class)->middleware('auth')->group(function(){
 
     Route::post('commentaire-note-technique/add','store');
@@ -125,6 +143,10 @@ Route::controller(App\Http\Controllers\AnnexeCourrierController::class)->middlew
 Route::controller(App\Http\Controllers\AnnexeNoteTechniqueController::class)->middleware('auth')->group(function(){
 
     Route::post('annexe-note/add','store');
+});
+Route::controller(App\Http\Controllers\AnnexeNoteTechniqueInterneController::class)->middleware('auth')->group(function(){
+
+    Route::post('annexe-note-interne/add','store');
 });
 Route::controller(App\Http\Controllers\AudienceController::class)->middleware('auth')->group(function(){
 

@@ -31,28 +31,34 @@
         
 
     </div>
-    <div class="py-2 grid grid-cols-2 gap-2">
-        <Fwb-button @click="exportHTML">
+    <div class="py-2 max-w-md grid grid-cols-3 gap-2">
+        <Fwb-button class="bg-red-600" @click="hideMe">
+            Fermer
+        </Fwb-button>
+        <Fwb-button class="bg-gray-700" @click="exportHTML">
             Imprimer
         </Fwb-button>
         <Fwb-button @click="showResponseForm">
             Classer
         </Fwb-button>
+        
     </div>
     <div v-if="showResponse">
-        <ReponseLettreForm @hideMe="showResponse = false" :model_id="note.courrier_id"/>
+        <Formulaire action="add" :note/>
     </div>
 </template>
 <script setup>
     import {ref} from 'vue'
     import useAxios from '@/ComponentsServices/axios.js'
     import ReponseLettreForm from './ReponseLettreForm.vue'
+    import Formulaire from '@/Components/CourrierSortant/Formulaire.vue'
     import { FwbInput,FwbButton,FwbRadio,FwbP } from 'flowbite-vue'
 
         const {axios_post_simple} = useAxios()
         const props = defineProps({
             note:Object
         })
+        const emit = defineEmits(['close'])
 
         const showResponse = ref(false)
         const printLettre = ()=>{
@@ -89,4 +95,6 @@
             showResponse.value = true
 
         }
+
+        const hideMe = ()=>emit('close')
 </script>

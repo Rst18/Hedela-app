@@ -16,15 +16,21 @@
                         <div class="">
                             <div class="">
                                 
-                                <Fwb-button @click="createDocument = !createDocument">
+                                <Fwb-button class="bg-gray-800" @click="createDocument = !createDocument">
                                     {{ createDocument ? 'Liste des document':'Nouveau Document' }}
                                 </Fwb-button>
                             </div>
-                            <div>
-                                <ListDocuments :documents v-show="!createDocument" />
-                                <Formulaire action="add" @newAdded="refreshList" :document="documenstData" v-if="createDocument"/>
-                            </div>
+                            <div v-if="!updateDoc">
 
+                                <ListDocuments @update="updateDocument" :documents v-if="!createDocument" />
+
+                                <Formulaire action="add" @newAdded="refreshList" :document="documenstData" v-if="createDocument"/>
+
+                            </div>
+                            <div v-else="updateDoc">
+                                <Formulaire action="update" @hideMe="hideForm" :document />
+                            </div>
+                            
                         </div>
                     </fwb-tab>
                     <fwb-tab name="second" title="...">
@@ -51,14 +57,25 @@ import { FwbTab, FwbTabs,FwbButton } from 'flowbite-vue'
     const props = defineProps({
         documents:Object
     })
+
     const documenstData = ref([])
     const document = ref({})
     const createDocument = ref(false)
+    const updateDoc = ref(false)
 
     const refreshList = (e)=>{
         documenstData.value.push(e)
         createDocument.value = false
     }
+    const updateDocument = (e)=>{
+        document.value = e
+        updateDoc.value = true
+    }
+    const hideForm = ()=>{
+        createDocument.value = false 
+        updateDoc.value = false 
+    }
+
     onMounted(()=>{
         documenstData.value = props.documents
     })

@@ -13,7 +13,8 @@ class DocumentController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
+    {   
+        return Document::paginate(10);
         
     }
 
@@ -35,7 +36,7 @@ class DocumentController extends Controller
 
             $document = Document::create($request->validated());
 
-            return ['type'=>'succes','message'=>'Enregistrement reussi','new'=>$document];
+            return ['type'=>'success','message'=>'Enregistrement reussi','new'=>$document];
 
         } catch (\Throwable $th) {
             //throw $th;
@@ -68,7 +69,7 @@ class DocumentController extends Controller
 
             $document->update($request->validated());
 
-            return ['type'=>'succes','message'=>'Modification reussie'];
+            return ['type'=>'success','message'=>'Modification reussie'];
 
         } catch (\Throwable $th) {
             //throw $th;
@@ -85,7 +86,7 @@ class DocumentController extends Controller
 
             $document->delete();
 
-            return ['type'=>'succes','message'=>'Suppression reussie'];
+            return ['type'=>'success','message'=>'Suppression reussie'];
 
         } catch (\Throwable $th) {
             //throw $th;
