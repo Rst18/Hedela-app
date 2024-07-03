@@ -38,7 +38,7 @@ class NoteTechniqueInterneController extends Controller
 
         } catch (\Throwable $th) {
             //throw $th;
-            return ['type'=>'error','message'=>'Echec d\'Enregistrement'];
+            return ['type'=>'error','message'=>'Echec d\'Enregistrement','errorMessage'=>$th];
         }
     }
 

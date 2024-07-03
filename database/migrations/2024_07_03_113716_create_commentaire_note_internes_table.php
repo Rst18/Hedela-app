@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('commentaire_note_technique_internes', function (Blueprint $table) {
+        Schema::create('commentaire_note_internes', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(NoteTechniqueInterne::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();

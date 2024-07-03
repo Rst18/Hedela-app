@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class CommentaireNoteTechniqueInterne extends Model
+class CommentaireNoteInterne extends Model
 {
     use HasFactory;
     protected $fillable = ['user_id','note_technique_interne_id','commentaire','commentaireParent'];

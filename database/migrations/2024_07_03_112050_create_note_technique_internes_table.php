@@ -23,7 +23,7 @@ return new class extends Migration
             $table->mediumText('signataire')->nullable();
             $table->mediumText('copiea')->nullable();
             $table->integer('type_lettre')->default(1);
-            $table->integer('annexes')->default(0);
+            $table->integer('annexe')->default(0);
             $table->longText('lettre')->nullable();       
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();  
             $table->integer('status')->default(1);

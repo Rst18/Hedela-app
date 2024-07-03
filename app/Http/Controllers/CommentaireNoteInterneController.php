@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\CommentaireNoteTechniqueInterne;
-use App\Http\Requests\StoreCommentaireNoteTechniqueInterneRequest;
-use App\Http\Requests\UpdateCommentaireNoteTechniqueInterneRequest;
+use App\Http\Requests\StoreCommentaireNoteInterneRequest;
+use App\Http\Requests\UpdateCommentaireNoteInterneRequest;
 
-class CommentaireNoteTechniqueInterneController extends Controller
+class CommentaireNoteInterneController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,11 +27,11 @@ class CommentaireNoteTechniqueInterneController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCommentaireNoteTechniqueInterneRequest $request)
+    public function store(StoreCommentaireNoteInterneRequest $request)
     {
         try {
 
-            $commentaire = CommentaireNoteTechniqueInterne::create($request->validated());
+            $commentaire = CommentaireNoteInterne::create($request->validated());
 
             return ['type'=>'success','message'=>'Enregistrement reussi','new'=>$commentaire];
 
@@ -44,7 +44,7 @@ class CommentaireNoteTechniqueInterneController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CommentaireNoteTechniqueInterne $commentaireNoteTechniqueInterne)
+    public function show(CommentaireNoteInterne $commentaireNoteInterne)
     {
         //
     }
@@ -52,7 +52,7 @@ class CommentaireNoteTechniqueInterneController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CommentaireNoteTechniqueInterne $commentaireNoteTechniqueInterne)
+    public function edit(CommentaireNoteInterne $commentaireNoteInterne)
     {
         //
     }
@@ -60,11 +60,11 @@ class CommentaireNoteTechniqueInterneController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCommentaireNoteTechniqueInterneRequest $request, CommentaireNoteTechniqueInterne $commentaireNoteTechniqueInterne)
+    public function update(UpdateCommentaireNoteTechniqueInterneRequest $request, CommentaireNoteInterne $commentaireNoteInterne)
     {
         try {
 
-            $commentaireNoteTechniqueInterne->update($request->validated());
+            $commentaireNoteInterne->update($request->validated());
 
             return ['type'=>'success','message'=>'Modification reussie'];
 
@@ -77,11 +77,11 @@ class CommentaireNoteTechniqueInterneController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CommentaireNoteTechniqueInterne $commentaireNoteTechniqueInterne)
+    public function destroy(CommentaireNoteInterne $commentaireNoteInterne)
     {
         try {
 
-            $commentaireNoteTechniqueInterne->delete();
+            $commentaireNoteInterne->delete();
             
             return ['type'=>'success','message'=>'Suppression reussie'];
 
