@@ -119,7 +119,7 @@
                         </div>
                     </div>
                     <div class="mt-4">
-                        <AjoutCommentaire url="commentaire-note-technique/add" @new="setNewComment" :model_id="note.id"/>
+                        <AjoutCommentaire url="commentaire-note-interne/add" @new="setNewComment" :model_id="note.id"/>
                     </div>
                 </div>
             </div>
@@ -138,7 +138,7 @@
     import moment from 'moment'
     import Check from '@/Components/Check.vue'
     import useAxios from '@/ComponentsServices/axios.js'
-    import NoteTechniqueForm from '@/Components/NoteTechnique/NoteTechniqueForm.vue'
+    import NoteTechniqueForm from '@/Components/NoteTechniqueInterne/NoteTechniqueInterneForm.vue'
 
         const profil = ref('https://ui-avatars.com/api/?name=')
         const props = defineProps({

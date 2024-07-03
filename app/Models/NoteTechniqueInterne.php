@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\CommentaireNoteInterne;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -32,7 +33,7 @@ class NoteTechniqueInterne extends Model
      */
     public function commentaires(): HasMany
     {
-        return $this->hasMany(CommentaireNoteTechniqueInterne::class);
+        return $this->hasMany(CommentaireNoteInterne::class);
     }
 
     /**

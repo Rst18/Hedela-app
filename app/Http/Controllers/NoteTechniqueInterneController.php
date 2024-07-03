@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use App\Models\NoteTechniqueInterne;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreNoteTechniqueInterneRequest;
 use App\Http\Requests\UpdateNoteTechniqueInterneRequest;
 
@@ -137,5 +138,27 @@ class NoteTechniqueInterneController extends Controller
             
             return ['type'=>'error','message'=>'Echec de suppression','errorMessage'=>$th];
         }
+    }
+
+    public function noteTechniqueForSecretaria (){
+        
+        return NoteTechniqueInterne::where('status',2)->with('courrier')->paginate(10);
+    }
+    public function noteTechniqueForSecretaria_page(){
+        
+        return Inertia::render('Secretariat/Index');
+    }
+
+    public function my_technical_notes_page(){
+
+        return Inertia::render('NoteTechniqueInterne/MesNotes');
+    }
+    public function my_technical_notes(){
+
+        return NoteTechniqueInterne::where('user_id',Auth::user()->id)
+                                ->with('annexes')
+                                ->with('commentaires')
+                                
+        ->paginate(10);
     }
 }

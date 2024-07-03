@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CommentaireNoteInterne;
 use App\Models\CommentaireNoteTechniqueInterne;
 use App\Http\Requests\StoreCommentaireNoteInterneRequest;
 use App\Http\Requests\UpdateCommentaireNoteInterneRequest;

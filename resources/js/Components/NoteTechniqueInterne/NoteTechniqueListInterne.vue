@@ -6,8 +6,8 @@
     <div v-else>
        <div class="mt-3 w-full p-3 font-semibold bg-gray-100 grid grid-cols-12 gap-1">
            <div class="col-span-1">#</div>
-           <div class="col-span-2">Courrier</div>
-           <div class="col-span-2">Sender</div>
+           <div class="col-span-2">Faits</div>
+           <div class="col-span-2">Actions</div>
            <div class="col-span-5">Conculsion</div>
            <div class="col-span-1">Date</div>
            <div class="col-span-1">Status</div>
@@ -16,8 +16,8 @@
        <div v-if="noteTechniqueData">
            <div v-for="(note,index) in noteTechniqueData" :key="note.id" @click="setNote(note)" class="w-full mb-1 p-3 grid grid-cols-12 gap-1 hover:bg-slate-200 hover:cursor-pointer bg-gray-50 text-sm" >
                <div class="col-span-1 " >{{ index + 1 }}</div>
-               <div class="col-span-2">{{note.courrier.number}}</div>
-               <div class="col-span-2">{{note.courrier.sender}}</div>
+               <div class="col-span-2">{{note.faits}}</div>
+               <div class="col-span-2">{{note.actions}}</div>
                <div class="col-span-5">{{note.conclusion.slice(0,100)}}...</div>
                <div class="col-span-1">{{ moment(note.created_at).format('ll') }}</div>
                <div class="col-span-1 flex justify-center items-center"  :class="getColorNote(note.status)[0].color"><Check v-if="note.status == 2" class="h-4 w-4 text-white border rounded-full bg-green-600 "/>
@@ -75,7 +75,7 @@ import Animation from '@/Components/Animation.vue';
    
 
     onMounted(() => {
-        fetchNote('../note-technique/list')
+        fetchNote('../note-technique-interne/list')
     })
 
 </script>

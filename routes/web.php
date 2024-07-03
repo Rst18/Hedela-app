@@ -124,9 +124,13 @@ Route::controller(App\Http\Controllers\NoteTechniqueInterneController::class)->m
     Route::post('note-technique-interne/valider/{noteTechnique}','valider');
     Route::post('note-technique-interne/inValider/{noteTechnique}','inValider');
     Route::get('note-technique-interne/list','my_technical_notes');
-    Route::get('note-technique-interne/myList','my_technical_notes_page')->name('note_technique.mes_Notes');
+    Route::get('note-technique-interne/myList','my_technical_notes_page')->name('note_technique_interne.mes_Notes');
     Route::get('note-technique-interne/secretariat','noteTechniqueForSecretaria');
-    Route::get('note-technique-interne/sec','noteTechniqueForSecretaria_page')->name('note_technique.secretariat');
+    Route::get('note-technique-interne/sec','noteTechniqueForSecretaria_page')->name('note_technique_interne.secretariat');
+});
+Route::controller(App\Http\Controllers\CommentaireNoteInterneController::class)->middleware('auth')->group(function(){
+
+    Route::post('commentaire-note-interne/add','store');
 });
 Route::controller(App\Http\Controllers\CommentaireNoteTechniqueController::class)->middleware('auth')->group(function(){
 
