@@ -24,6 +24,8 @@ class NoteTechniqueInterne extends Model
         'annexe',
         'lettre',
         'user_id',
+        'visible'
+
     ];
 
       /**

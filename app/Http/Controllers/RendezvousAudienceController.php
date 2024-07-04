@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Models\Audience;
 use Illuminate\Http\Request;
 use App\Models\RendezvousAudience;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Notifications\TaskNotification;
 use App\Mail\RendezvousMailNotification;
@@ -179,7 +180,22 @@ class RendezvousAudienceController extends Controller
         ->with('accompagnateurs')
         ->with(['rendezvous'=>function($query){
             $query ->whereDate('created_at',now());
-        }])->join('users','audiences.user_requested','users.id')
+        }])
+        ->join('users','audiences.user_requested','users.id')
+        ->where('user_requested',Auth::user()->id)
+        ->paginate(10);        
+    }
+    public function rendezvous_protocole(){
+
+
+        return Audience::select('audiences.*','users.name as autorite')
+        ->whereHas('rendezvous')
+        ->with('accompagnateurs')
+        ->with(['rendezvous'=>function($query){
+            $query->whereDate('date_heure',now());
+        }]
+        )
+        ->join('users','audiences.user_requested','users.id')
         ->paginate(10);        
     }
     public function mes_rendezvous_page_protocole(){

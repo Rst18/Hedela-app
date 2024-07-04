@@ -422,6 +422,7 @@ class CourrierController extends Controller
 
         // ->paginate(20);
     }
+    
     public function search_page(){
         return Inertia::render('Recherche/Index');
     }

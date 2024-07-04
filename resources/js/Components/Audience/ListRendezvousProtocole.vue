@@ -82,7 +82,6 @@ import Animation from '@/Components/Animation.vue';
 
     const fetchAudience = (url)=>{
         axios_get(url).then(({data:pagination})=>{
-            console.log(pagination);
            audienceData.value = pagination.data           
             links.value = pagination.links
             waitingData.value = false
