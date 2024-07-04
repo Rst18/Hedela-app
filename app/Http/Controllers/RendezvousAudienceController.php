@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Rendezvous;
+use Carbon\Carbon;
 use App\Models\Task;
 use App\Models\User;
 use Inertia\Inertia;
@@ -125,25 +127,34 @@ class RendezvousAudienceController extends Controller
         try {
 
 
-
             $user->rendezvouss()->attach($request->rendezvous);
 
-
-
-            
+            $rendezvous = RendezvousAudience::find($request->rendezvous);
 
             //notification 
+
             $user->notify(new RendezvousNotification("Vous avez été ajouter comme couverture à un rendez-vous.",'Information'));
 
             //creer une tache couverture
 
-            $task = Task::where('nom','Couverture')->first();
+            $task = Task::create([
+
+                'nom'=>'Couverture reunion ',
+                'description'=>'Couverture reunion : Vous avez été ajouter comme couverture à un rendez-vous ',
+                'statut'=>1,
+                'priorite'=>2,
+                'date_debut'=>$rendezvous->date_heure,
+                'date_fin'=>$rendezvous->date_heure,
+                'date_fermeture'=>Carbon::now()->addDays(2),
+                'user_id'=>Auth::user()->id,
+            ]);
 
             if ($task != null) {
 
                 if (!$task->users()->wherePivot('user_id', $user->id)->exists()) {
 
                     $user->tasks()->attach($task->id);
+                    $task->keepInformed()->attach(Auth::user()->id);
                 }
 
                 $user->notify(new TaskNotification("Vous avez été affecter à une tache de couverture à un rendez-vous.",'Information'));
