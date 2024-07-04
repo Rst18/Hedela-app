@@ -285,6 +285,7 @@ class CourrierController extends Controller
                 $qry->with('annexes');
                 $qry->select('users.name as user_name','note_techniques.*');
                 $qry->join('users','users.id','note_techniques.user_id');
+                $qry->where('user_id',Auth::user()->id);
             }])
             
         ->join('services','services.id','service_id')
