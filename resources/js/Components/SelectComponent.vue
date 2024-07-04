@@ -14,10 +14,11 @@ import {ref} from 'vue'
     const props = defineProps({
         options:Object,
         label:String,
-        class:String
+        class:String,
+        defaultValue:Number
     })
 
-    const selected = ref()
+    const selected = ref(props.defaultValue)
 
     const emitSelectedOption = ()=>{
         emit('selectedOption',selected.value)

@@ -53,6 +53,7 @@ Route::controller(App\Http\Controllers\DocumentController::class)->middleware('a
 
 Route::controller(App\Http\Controllers\ServiceController::class)->middleware('auth')->group(function(){
     Route::get('service/list','list_service');
+    Route::get('service/list-all','index');
     Route::get('service/create','create')->name('service.create');
     Route::get('service/{service}/get-doc','get_doc_service');
     Route::get('service/{service}/delete','destroy');
@@ -65,6 +66,7 @@ Route::controller(App\Http\Controllers\TypeCourrierController::class)->middlewar
     Route::get('typecourrier/create','create')->name('typecourrier.create');
     Route::post('typecourrier/add','store');
     Route::get('typecourrier/list','typecourrier_list');
+    Route::get('typecourrier/list-all','index');
     Route::post('typecourrier/{typecourrier}/update','update');
 });
 Route::controller(App\Http\Controllers\CourrierController::class)->middleware('auth')->group(function(){

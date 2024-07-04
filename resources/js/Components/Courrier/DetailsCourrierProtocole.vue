@@ -2,6 +2,7 @@
     <div class="relative">
         <div class="grid grid-cols-12 py-1 px-6">
             <button   @click="close" class="border w-fit p-1 col-span-2 px-2 bg-slate-100 text-xs text-slate-800 rounded-full ">Liste des courriers</button>
+            <button   @click="update" class="border w-fit p-1 col-span-2 px-2 bg-slate-100 text-xs text-slate-800 rounded-full ">Modifier</button>
            
         </div>
 
@@ -74,13 +75,15 @@ import UploadAnnexes from '@/Components/UploadAnnexes.vue'
     })
 
     const {axios_get} = useAxios()
-    const emit = defineEmits(['closeMe'])
+    const emit = defineEmits(['closeMe','courrier'])
     const courrierData = ref(props.courrier)
     const showComponent = ref(1)
     const annexes_missed = ref()
     const total_annexes = ref()
     const addAnnexes = ref(false)
- 
+    
+    const update = ()=>emit('courrier',props.courrier)
+
 
     onMounted(() => {
 
