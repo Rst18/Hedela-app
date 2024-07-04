@@ -122,11 +122,14 @@
     <div v-if="addAnnexes" class="p-6">
         <span class="text-gray-700 font-semibold text-xl py-2 px-2  text-center">Ajouter les Annexes </span>
         <div class="p-8 ">
-            <UploadAnnexes v-for="number in form.annexes" url="../annexe-note-interne/add" :model_id="newNote.id" :name="'Annexe '+number" />
+            <UploadAnnexes v-for="number in form.annexes" url="../annexe-note-interne/add" :model_id="newNote ? newNote.id :note.id" :name="'Annexe '+number" />
         </div>
     </div>
     <div class="mt-4">
-        <Fwb-button class="bg-gray-800 hover:bg-gray-600" @click="submitForm">
+        <Fwb-button  v-if="addAnnexes" class="bg-gray-800 hover:bg-gray-600" @click="finish">
+            Terminer
+        </Fwb-button>
+        <Fwb-button v-else class="bg-gray-800 hover:bg-gray-600" @click="submitForm">
             Enregistrer
         </Fwb-button>
     </div>
@@ -150,7 +153,7 @@ import Swal from 'sweetalert2';
         action:String
     })
 
-    const emit = defineEmits(['added','updated'])
+    const emit = defineEmits(['added','updated','closeMe'])
     const {axios_post_simple} = useAxios()
     const errors = ref([])
     const success = ref(false)
@@ -200,19 +203,24 @@ import Swal from 'sweetalert2';
                 if (error.response.status === 422) {
                     errors.value = error.response.data.errors
                 }
-                console.log(error.response);
             })
             
         }else if(props.action ==='update'){
-            // let id =
-            axios_post_simple('../note-technique-interne/update/'+props.note.id,form.value).then(({data})=>{
+            axios_post_simple(`../note-technique-interne/update/${props.note.id}`,form.value).then(({data})=>{
                 console.log(data);
-                if (data.type ==='success') {
-                    success.value = true
-                    emit('updated')
+
+                if (data.type === "success") {
+
+                    Swal.fire(data.type,data.message,data.type).then(()=>{
+
+                        addAnnexes.value = true
+                    })
+
                 }
             }).catch((error)=>{
-                console.log(error.response);
+                if (error.response.status === 422) {
+                    errors.value = error.response.data.errors
+                }
             })
         }
     }
@@ -237,4 +245,8 @@ import Swal from 'sweetalert2';
             name:'Reponse simple'
         },
     ]
+
+    const finish = ()=>{
+        emit('closeMe')
+    }
 </script>
