@@ -1,7 +1,7 @@
 
 
 <template>
-    <Head title="NOte technique"/>
+    <Head title="Secretariat"/>
 
     <SideBarLayout>
         <template #header>
@@ -11,7 +11,7 @@
         <div class="py-2">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <ListNoteSecretariat @selectedNote="getSeletedNote" v-if="!showDetailsNote"/>
-                <DetailsLettre :note="currentNote" v-if="showDetailsNote"/>
+                <DetailsLettre @close="showDetailsNote = false" :note="currentNote" v-if="showDetailsNote"/>
             </div>
         </div>
     </SideBarLayout>

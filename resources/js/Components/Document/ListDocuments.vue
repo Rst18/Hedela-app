@@ -1,17 +1,31 @@
 <template>
-    <div >
+     <div class="flex justify-center items-center" v-if="waitingData">
+        <Animation  />
+    </div>
+   
+    <div v-else >
        <div class="mt-3 w-full p-3 font-semibold bg-gray-100 grid grid-cols-12">
            <div class="col-span-1">#</div>
            <div class="col-span-7">Document</div>
            <div class="col-span-2">Date  </div>
+           <div class="col-span-2">Options  </div>
        </div>
-       <div v-if="documents[0]">
-           <div v-for="r of documents" :key="r.name" class="w-full p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer">
+       <div v-if="documents">
+           <div v-for="d of documents" :key="d.name" class="w-full p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer text-sm">
                <div class="col-span-1">#</div>
-               <div class="col-span-7">{{r.name }}</div>
+               <div class="col-span-7">{{d.name }}</div>
   
-               <div class="col-span-2">{{ moment(r.created_at).format('ll') }}</div>
+               <div class="col-span-2">{{ moment(d.created_at).format('ll') }}</div>
+               <div class="col-span-2 grid grid-cols-2">
+                    <span @click="updateDocument(d)" class="text-blue-700 text-xs">Modifier</span>
+                    <span @click="deleteDoc(d)" class="text-red-700 text-xs">Supprimer</span>
+               </div>
            </div>
+           <div class="flex flex-row w-full px-4 md:w-9/12 justify-center items-center mx-auto">
+                <div v-for="link in links">
+                    <button class="text-grey-darker text-xs md:text-sm px-1  md:px-2 py-1 m-1 border" @click.prevent="fetchDocument(link.url)" v-html="link.label"></button>
+                </div>
+            </div>
        </div>
        <div v-else class="w-full mt-5 p-4 grid place-items-center text-gray-600">
           <span>
@@ -28,11 +42,44 @@ import useAxios from '@/ComponentsServices/axios.js'
 import { onMounted, ref } from 'vue';
 import moment from 'moment';
 
+import Animation from '@/Components/Animation.vue';
 
     const { axios_get } = useAxios();
+    const waitingData = ref(false)
+    const documents = ref()
+    const emit = defineEmits(['update'])
 
-    const props = defineProps({
-        documents : Array,
+    const links = ref()
+
+    const updateDocument = (document)=>{
+        emit('update',document)
+    }
+
+
+    const fetchDocument = (url)=>{
+        waitingData.value = true
+        axios_get(url).then(({data:pagination})=>{
+            documents.value = pagination.data           
+            links.value = pagination.links
+            waitingData.value = false
+        }).catch((error)=>{
+            console.log(error.response)
+        })
+    }
+
+    const deleteDoc = (document)=>{
+
+        axios_get(`../document/destroy/${document.id}`).then(({data})=>{
+
+            if (data.type==='success') {
+
+                documents.value = documents.value.filter((d)=>d != document)
+            }
+        })
+    }
+
+    onMounted(() => {
+        fetchDocument('../document/list')
     })
 
 </script>

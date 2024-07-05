@@ -72,7 +72,31 @@ class AnnexeCourrierController extends Controller
      */
     public function update(UpdateAnnexeCourrierRequest $request, AnnexeCourrier $annexeCourrier)
     {
-        //
+        try {
+
+
+            $data = $request->validated();
+
+            if ($annexeCourrier->path !='') {
+
+                Storage::delete('public/'.$annexeCourrier->path);
+               
+                $fileName = time() . '.' . $request->path->getClientOriginalExtension();
+                $courrier = Courrier::find($request->courrier_id)->number;
+                $filePath = $request->path->storeAs('documents/'.$courrier.'/Annexes/', $fileName);
+    
+                $data['path'] =  $filePath;
+            }
+
+            $annexeCourrier->update($data);
+
+            return ['type'=>'success','message'=>'Modification reussie'];
+
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            return ['type'=>'error','message'=>'Echec de modification','errorMessage'=>$th];
+        }
     }
 
     /**

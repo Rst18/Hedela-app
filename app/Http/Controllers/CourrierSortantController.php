@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
+use App\Models\Courrier;
+use App\Models\NoteTechnique;
 use App\Models\CourrierSortant;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreCourrierSortantRequest;
 use App\Http\Requests\UpdateCourrierSortantRequest;
 
@@ -41,15 +44,25 @@ class CourrierSortantController extends Controller
     public function store(StoreCourrierSortantRequest $request)
     {
         try {
-
+            
+            $data = $request->validated();
             $fileName = time() . '.' . $request->letter_file->getClientOriginalExtension();
             $filePath = $request->letter_file->storeAs('documents/CourrierSortant/'.$request->number, $fileName); // Store the file
             
-            $data = $request->validated();
 
             $data['letter_file'] = $filePath;
 
            $courrier =  CourrierSortant::create($data);
+
+           if ($request->note_id !='') {
+
+                NoteTechnique::find($request->note_id)->update(['status'=>4]);
+           }
+           
+           if ($request->courrier_id !='') {
+
+                Courrier::find($request->courrier_id)->update(['status'=>4]);
+           }
 
           // $courrier->services()->attach($request->service_id);
            // LANCER UN EVENEMENT 
@@ -87,28 +100,40 @@ class CourrierSortantController extends Controller
      */
     public function update(UpdateCourrierSortantRequest $request, CourrierSortant $courrierSortant)
     {
+       
         try {
-
-            $fileName = time() . '.' . $request->letter_file->getClientOriginalExtension();
-            $filePath = $request->letter_file->storeAs('documents/CourrierSortant/'.$courrierSortant->number, $fileName); // Store the file
             
             $data = $request->validated();
 
-            $data['letter_file'] = $filePath;
+            if ($request->letter_file != '') {
 
-             $courrierSortant->update($data);
+                Storage::delete('public/'.$courrierSortant->letter_file);
+               
+                $fileName = time() . '.' . $request->letter_file->getClientOriginalExtension();
+                $filePath = $request->letter_file->storeAs('documents/CourrierSortant/'.$courrierSortant->number, $fileName); // Store the file
+                $data['letter_file'] = $filePath;
+            }
 
-          // $courrier->services()->attach($request->service_id);
-           // LANCER UN EVENEMENT 
-          // broadcast (new CreateCourrierEvent('One courrier added from '.$request->sender));
+            if ($request->accuse_reception_file != '') {
 
-          
+                Storage::delete('public/'.$courrierSortant->accuse_reception_file);
+
+                $fileName_accuse_reception_file = time() . '.' . $request->accuse_reception_file->getClientOriginalExtension();
+                $filePath_accuse_reception_file = $request->accuse_reception_file->storeAs('documents/CourrierSortant/'.$courrierSortant->number, $fileName_accuse_reception_file); // Store the file
+                $data['accuse_reception_file'] = $filePath_accuse_reception_file;
+            }
+
+           
+
+           
+
+            $courrierSortant->update($data);
 
            return ['type'=>'success','message'=>'Enregistrement reussie'];
 
 
         } catch (\Throwable $th) {
-            //throw $th;
+
             return ['type'=>'error','message'=>'Echec d\'enregistrement','errorMessage'=>$th];
         }
     }

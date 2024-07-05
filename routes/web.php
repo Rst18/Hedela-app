@@ -24,6 +24,8 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/create', [ProfileController::class, 'create_user'])->name('profile.create_user');
+    Route::post('/profile/create', [ProfileController::class, 'create_user_account'])->name('profile.create');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
@@ -33,6 +35,7 @@ Route::controller(App\Http\Controllers\RoleController::class)->middleware('auth'
     Route::get('role/create','create')->name('role.create');
     Route::get('role-with-users','index')->name('list_role');
     Route::get('role/list','list_roles');
+    Route::get('role/list-simple','list');
     Route::get('role/{role}/delete/','destroy');
     Route::post('role/add','store');
     Route::post('role/{role}/update','update');
@@ -42,12 +45,15 @@ Route::controller(App\Http\Controllers\RoleController::class)->middleware('auth'
 });
 Route::controller(App\Http\Controllers\DocumentController::class)->middleware('auth')->group(function(){
     Route::get('document/create','create')->name('document.create');
+    Route::get('document/list','index');
+    Route::get('document/destroy/{document}','destroy');
     Route::post('document/add','store');
     Route::post('document/{document}/update','update');
 });
 
 Route::controller(App\Http\Controllers\ServiceController::class)->middleware('auth')->group(function(){
     Route::get('service/list','list_service');
+    Route::get('service/list-all','index');
     Route::get('service/create','create')->name('service.create');
     Route::get('service/{service}/get-doc','get_doc_service');
     Route::get('service/{service}/delete','destroy');
@@ -60,18 +66,21 @@ Route::controller(App\Http\Controllers\TypeCourrierController::class)->middlewar
     Route::get('typecourrier/create','create')->name('typecourrier.create');
     Route::post('typecourrier/add','store');
     Route::get('typecourrier/list','typecourrier_list');
+    Route::get('typecourrier/list-all','index');
     Route::post('typecourrier/{typecourrier}/update','update');
 });
 Route::controller(App\Http\Controllers\CourrierController::class)->middleware('auth')->group(function(){
     Route::get('download/{id}','downloadFile');
     Route::get('courrier/create','create')->name('courrier.create');
-    Route::get('courrier-dispatch','dispatch');
+    // Route::get('courrier-dispatch','dispatch');
     Route::get('courrier/list','index')->name('courrier.list');
     Route::get('courrier/list-dipatch','list_courrier_to_dispatch');
     Route::get('courrier/list-validation','courrier_where_has_note');
     Route::get('courrier/validation','courrier_where_has_note_page')->name('courrier.listValidation');
     Route::get('courrier/list-protocole','list_courrier_protocol')->name('courrier.listProtocole');
     Route::get('courrier/dispatch','dispatch')->name('courrier.dispatch');
+    Route::get('courrier/dispatches-page','courrier_dispatches_page')->name('courrier.dispatches');
+    Route::get('courrier/dispatches','courrier_dispatches');
     Route::post('courrier/add','store');
     Route::post('courrier/{courrier}/update','update');
     Route::post('courrier/set-courrier-user/{user}','addCourrier');
@@ -81,6 +90,10 @@ Route::controller(App\Http\Controllers\CourrierController::class)->middleware('a
     Route::post('courrier/cloture/{courrier}','clotureCourrier');
     Route::get('courrier/new-number','new_number');
     Route::get('courrier/statistique','statistique_courrier');
+    Route::get('courrier/statistique','statistique_courrier');
+    Route::post('courrier/response/{courrier}','response_courrier');
+    Route::post('courrier/search','search');
+    Route::get('courrier/search-page','search_page');
     Route::get('testmail','sendMail');
 });
 Route::controller(App\Http\Controllers\CourrierSortantController::class)->middleware('auth')->group(function(){
@@ -105,6 +118,22 @@ Route::controller(App\Http\Controllers\NoteTechniqueController::class)->middlewa
     Route::get('note-technique/secretariat','noteTechniqueForSecretaria');
     Route::get('note-technique/sec','noteTechniqueForSecretaria_page')->name('note_technique.secretariat');
 });
+Route::controller(App\Http\Controllers\NoteTechniqueInterneController::class)->middleware('auth')->group(function(){
+
+    Route::post('note-technique-interne/add','store');
+    Route::get('note-technique-interne/create','create')->name('note_technique_interne.create');
+    Route::post('note-technique-interne/update/{noteTechnique}','update');
+    Route::post('note-technique-interne/valider/{noteTechnique}','valider');
+    Route::post('note-technique-interne/inValider/{noteTechnique}','inValider');
+    Route::get('note-technique-interne/list','my_technical_notes');
+    Route::get('note-technique-interne/myList','my_technical_notes_page')->name('note_technique_interne.page');
+    Route::get('note-technique-interne/secretariat','noteTechniqueForSecretaria');
+    Route::get('note-technique-interne/sec','noteTechniqueForSecretaria_page')->name('note_technique_interne.secretariat');
+});
+Route::controller(App\Http\Controllers\CommentaireNoteInterneController::class)->middleware('auth')->group(function(){
+
+    Route::post('commentaire-note-interne/add','store');
+});
 Route::controller(App\Http\Controllers\CommentaireNoteTechniqueController::class)->middleware('auth')->group(function(){
 
     Route::post('commentaire-note-technique/add','store');
@@ -116,6 +145,10 @@ Route::controller(App\Http\Controllers\AnnexeCourrierController::class)->middlew
 Route::controller(App\Http\Controllers\AnnexeNoteTechniqueController::class)->middleware('auth')->group(function(){
 
     Route::post('annexe-note/add','store');
+});
+Route::controller(App\Http\Controllers\AnnexeNoteTechniqueInterneController::class)->middleware('auth')->group(function(){
+
+    Route::post('annexe-note-interne/add','store');
 });
 Route::controller(App\Http\Controllers\AudienceController::class)->middleware('auth')->group(function(){
 
@@ -141,15 +174,18 @@ Route::controller(App\Http\Controllers\RendezvousAudienceController::class)->mid
     Route::get('rendezvous/create-protocole','create_for_the_boss')->name('rendezvous.rendezvous_du_boss');
     Route::post('rendezvous/update/{rendezvousAudience}','update');
     Route::get('rendezvous/list','mes_rendezvous');
+    Route::get('rendezvous/list-protocol','rendezvous_protocole');
     Route::get('rendezvous/list-protocole','mes_rendezvous_page_protocole')->name('rendezvous.rendez_vous_aujourdhui');
     Route::post('rendezvous/set-rendezvous-user/{user}','addRendezvous');
     Route::post('rendezvous/remove-rendezvous-user/{user}','removeRendezvous');
+    Route::get('rendezvous/mes-reunions','mes_reunion');
 });
 Route::controller(App\Http\Controllers\TaskController::class)->middleware('auth')->group(function(){
     Route::get('task','task_dashbord')->name('task');
     Route::get('task/dashbord','dashbord');
     Route::get('task/create','create')->name('task.create');
-    Route::get('task-list','task_list')->name('task.list');
+    Route::get('task/list-all','task_list')->name('task.all');
+    Route::get('task-list','task_list_created_by')->name('task.list');
     Route::get('task-attrib-group','task_attrib_role')->name('task.attrib_group');
     Route::post('task-save','store');
     Route::post('task-update/{task}','update');

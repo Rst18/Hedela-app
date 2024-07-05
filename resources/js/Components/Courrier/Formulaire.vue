@@ -8,7 +8,7 @@
                     label="Numero Courrier"
                     disabled
                 />
-                <div class="text-red-500" v-if="errors.number">
+                <div class="text-red-500 text-xs py-1" v-if="errors.number">
                     {{ errors.number[0]}}
                 </div>
             </div>
@@ -18,7 +18,7 @@
                     placeholder="Min.Developpement"
                     label="Expediteur"
                 />
-                <div class="text-red-500" v-if="errors.sender">
+                <div class="text-red-500 text-xs py-1" v-if="errors.sender">
                     {{ errors.sender[0]}}
                 </div>
             </div>
@@ -28,7 +28,7 @@
                     placeholder="Information"
                     label="Objet (Motif)"
                 />
-                <div class="text-red-500" v-if="errors.objet">
+                <div class="text-red-500 text-xs py-1" v-if="errors.objet">
                     {{ errors.objet[0]}}
                 </div>
             </div>
@@ -38,7 +38,7 @@
                     placeholder="Min.Developpement@devrur.ac.cd"
                     label="Email"
                 />
-                <div class="text-red-500" v-if="errors.email">
+                <div class="text-red-500 text-xs py-1" v-if="errors.email">
                     {{ errors.email[0]}}
                 </div>
             </div>
@@ -48,7 +48,7 @@
                     placeholder="243-975-476-177"
                     label="Phone"
                 />
-                <div class="text-red-500" v-if="errors.phone">
+                <div class="text-red-500 text-xs py-1" v-if="errors.phone">
                     {{ errors.phone[0]}}
                 </div>
             </div>
@@ -58,29 +58,29 @@
                     placeholder="Min-24-001"
                     label="Numero de la lettre"
                 />
-                <div class="text-red-500" v-if="errors.letter_number">
+                <div class="text-red-500 text-xs py-1" v-if="errors.letter_number">
                     {{ errors.letter_number[0]}}
                 </div>
             </div>
             <div>
                 <fwb-file-input v-model="form.letter_file" label="Ajouter la lettre" />
-                <div class="text-red-500" v-if="errors.letter_file">
+                <div class="text-red-500 text-xs py-1" v-if="errors.letter_file">
                     {{ errors.letter_file[0]}}
                 </div>
             </div>
             <div>
-            <SelectComponent label="service" :options="services"  @selectedOption="getService">
+            <SelectComponent label="service" :default-value="courrier.service_id" :options="services ? services:services_v"  @selectedOption="getService">
                     Choisir un service
             </SelectComponent>
-                <div class="text-red-500" v-if="errors.service_id">
+                <div class="text-red-500 text-xs py-1" v-if="errors.service_id">
                     {{ errors.service_id[0]}}
                 </div>
             </div>
             <div>
-            <SelectComponent label="typecourrier" :options="typeCourriers" @selectedOption="getTypeCourrier">
+            <SelectComponent label="typecourrier" :default-value="courrier.type_courrier_id"  :options="typeCourriers ? typeCourriers : typeCourriers_v" @selectedOption="getTypeCourrier">
                     Choisir le type de courrier
             </SelectComponent>
-                <div class="text-red-500" v-if="errors.type_courrier_id">
+                <div class="text-red-500 text-xs py-1" v-if="errors.type_courrier_id">
                     {{ errors.type_courrier_id[0]}}
                 </div>
             </div>
@@ -90,7 +90,7 @@
                     label="Nombre des annexes"
                     disabled
                 />
-                <div class="text-red-500" v-if="errors.annexes">
+                <div class="text-red-500 text-xs py-1" v-if="errors.annexes">
                     {{ errors.annexes[0]}}
                 </div>
             </div>
@@ -98,6 +98,10 @@
             <div class="mt-4">
                 <Fwb-button class="bg-gray-800 hover:bg-slate-400" @click="submitForm">
                     Enregistrer
+                </Fwb-button>
+
+                <Fwb-button @click="hide" v-if="action ==='update' "class="bg-red-800 hover:bg-slate-400 ml-4">
+                    Fermer
                 </Fwb-button>
             </div>
         </div>
@@ -139,7 +143,10 @@ import Swal from 'sweetalert2';
             action:String,
         }
     )
-    const emit = defineEmits(['newAdded'])
+
+    const services_v = ref()
+    const typeCourriers_v = ref()
+    const emit = defineEmits(['newAdded','updated','hideMe'])
     const { axios_post_simple,axios_post,axios_get } = useAxios();
 
     const form = ref({
@@ -149,7 +156,7 @@ import Swal from 'sweetalert2';
         email:props.courrier.email,
         phone:props.courrier.phone,
         letter_number:props.courrier.letter_number,
-        annexes:props.courrier.annexes,
+        annexe:props.courrier.annexe,
         letter_file:null,
         service_id:props.courrier.service_id,
         type_courrier_id:props.courrier.type_courrier_id,
@@ -161,7 +168,7 @@ import Swal from 'sweetalert2';
     const currentService = ref();
 
     const submitForm = ()=>{
-
+        errors.value = ''
         if (props.action === 'add') {
 
             axios_post('../courrier/add',form.value).then(({data})=>{
@@ -177,21 +184,32 @@ import Swal from 'sweetalert2';
                     
                 }
             }).catch((error)=>{
-                console.log(error.response)
                 if (error.response.status === 422) {
 
-                    errors.value = error.response.data.erros
-                    console.log(error.response.status)
+                    errors.value = error.response.data.errors
                     
                 }
             })
 
-        }else if(props.action === '../update'){
-            let id = +props.courrier.id
-            axios_post_simple('../courrier/'+id+'/update',form.value).then(({data})=>{
-                emit('newAdded',data.new)
+        }else if(props.action === 'update'){
+
+            axios_post_simple(`../courrier/${props.courrier.id}/update`,form.value).then(({data})=>{
+                
+                if (data.type ==='success') {
+                    Swal.fire(data.type,data.message,data.type).then(()=>{
+
+                        emit('updated')
+                    })
+
+                    
+                }else Swal.fire(data.type,data.message,data.type)
+
             }).catch((error)=>{
-                console.log(error.response)
+                if (error.response.status === 422) {
+
+                    errors.value = error.response.data.errors
+
+                    }
             })
         }
         else{
@@ -200,7 +218,7 @@ import Swal from 'sweetalert2';
     }
 
     const getService = (e)=>{
-        currentService.value = props.services.filter((service)=>service.id === e)
+        currentService.value = props.services ?props.services : services_v.value.filter((service)=>service.id === e)
         form.value.annexes = currentService.value[0].documents.length
         form.value.service_id = e
     }
@@ -225,14 +243,20 @@ import Swal from 'sweetalert2';
         } 
     }  
 
+    const hide = ()=>emit('hideMe')
+
     onMounted(() => {
 
-      axios_get('../courrier/new-number').then(({data})=>{
-
         if (props.action === 'add') {
-
-            form.value.number = data
+            axios_get('../courrier/new-number').then(({data})=>  form.value.number = data )  
+        }else if (props.action ==='update') {
+            axios_get('../service/list-all').then(({data})=>  {
+                services_v.value = data
+                form.value.annexes = services_v.value.filter((s)=>s.id === props.courrier.service_id)[0].documents.length
+                // console.log(services_v.value.filter((s)=>s.id === props.courrier.service_id));
+            } )  
+            axios_get('../typecourrier/list-all').then(({data})=>  typeCourriers_v.value = data )  
         }
-      })  
+
     })
 </script>

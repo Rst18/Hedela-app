@@ -1,19 +1,19 @@
 <template>
     <div >
-       <div class="mt-3 w-full p-3 font-semibold bg-gray-100 grid grid-cols-12">
+       <div class="mt-3 w-full p-3 font-semibold bg-gray-100 grid grid-cols-12 text-sm gap-1">
            <div class="col-span-1">#</div>
-           <div class="col-span-1">Courrier</div>
+           <div class="col-span-2">Courrier</div>
            <div class="col-span-2">Sender</div>
-           <div class="col-span-6">Lettre</div>
+           <div class="col-span-5">Lettre</div>
            <div class="col-span-1">Date</div>
            <div class="col-span-1">Status</div>
        </div>
        <div v-if="noteTechniques">
-           <div v-for="(note,index) in noteTechniques" :key="note.id" @click="setNote(note)" class="w-full mb-1 p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer bg-gray-50 text-sm" >
+           <div v-for="(note,index) in noteTechniques" :key="note.id" @click="setNote(note)" class="w-full gap-1 mb-1 p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer bg-gray-50 text-sm" >
                <div class="col-span-1 " >{{ index + 1 }}</div>
-               <div class="col-span-1">{{note.courrier.number}}</div>
+               <div class="col-span-2">{{note.courrier.number}}</div>
                <div class="col-span-2">{{note.courrier.sender}}</div>
-               <div class="col-span-6" :class="!note.lettre ? 'text-red-500':''" v-html="note.lettre ? note.lettre.slice(0,40) +' ...':'Aucune lettre proposee sur cette note technique' "></div>
+               <div class="col-span-5" :class="!note.lettre ? 'text-red-500':''" v-html="note.lettre ? note.lettre.slice(0,40) +' ...':'Aucune lettre proposee sur cette note technique' "></div>
                <div class="col-span-1">{{ moment(note.created_at).format('ll') }}</div>
                <div class="col-span-1 flex justify-center items-center"  :class="getColorNote(note.status)[0].color"><Check v-if="note.courrier.statut == 4" class="h-4 w-4 text-white border rounded-full bg-green-600 "/></div>
            
@@ -55,13 +55,11 @@ import UseCourrier from '@/ComponentsServices/Courrier.js'
 
     const setNote = (note)=>{
         emit('selectedNote',note)
-        // console.log(courrier);
     }
 
     const fetchNote = (url)=>{
         axios_get('../../'+url).then(({data})=>{
-            noteTechniques.value = data.data           
-            console.log(data.data);
+            noteTechniques.value = data.data  
             links.value = data.links
         }).catch((error)=>{
            console.log(error)

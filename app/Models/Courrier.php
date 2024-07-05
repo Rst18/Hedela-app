@@ -24,7 +24,7 @@ class Courrier extends Model
         'phone',
         'objet',
         'letter_number',
-        'annexes',
+        'annexe',
         'letter_file',
         'service_id',
         'type_courrier_id',

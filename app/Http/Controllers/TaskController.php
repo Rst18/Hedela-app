@@ -237,9 +237,6 @@ class TaskController extends Controller
 
     public function task_list()
     {
-
-      
-       
         $tasks = Task::with(['timesheets'=>function($q){
                // $q->join('users','users.id','timesheets.user_id');
             //->with('comments')
@@ -249,6 +246,23 @@ class TaskController extends Controller
             ->with(['comments'=>function($query){
                     $query->join('users','users.id','task_comments.user_id');
                 }])
+            ->get();
+           // return $tasks;
+       
+        return Inertia::render('Task/Tasks',compact('tasks'));
+    }
+    public function task_list_created_by()
+    {
+        $tasks = Task::with(['timesheets'=>function($q){
+               // $q->join('users','users.id','timesheets.user_id');
+            //->with('comments')
+                }])
+            ->with('users')
+            ->with('keepInformed')
+            ->with(['comments'=>function($query){
+                    $query->join('users','users.id','task_comments.user_id');
+                }])
+                ->where('user_id',Auth::user()->id)
             ->get();
            // return $tasks;
        

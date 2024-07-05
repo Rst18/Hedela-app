@@ -28,15 +28,15 @@
         const form = ref({
             courrier_id:props.model_id,
             note_technique_id:props.model_id,
+            note_technique_interne_id:props.model_id,
             commentaire:''
         })
         const save = ()=>{
 
             axios_post_simple('../'+props.url,form.value).then(({data})=>{
-                console.log(data);
                 
                 if (data.type === 'success') {
-
+                    form.value.commentaire = ''
                     emit('new',data.new)
                     
                 }

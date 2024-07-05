@@ -84,6 +84,7 @@
                     </span>
                     <p>
                         {{ currentNote.annexe }}
+                        
                     </p>
                     <div>
                         <a v-for="annexe in currentNote.annexes" :href="'../download/'+ annexe.path.replaceAll('/','++')" target="_blank" class="font-bold text-sm text-blue-300 ml-4">{{ annexe.name }}</a> 
@@ -126,7 +127,7 @@
 
         </div>
         <div v-if="modif">
-            <NoteTechniqueForm action="update" @updated="close" :note/>
+            <NoteTechniqueForm @closeMe="close" action="update" @updated="close" :note/>
         </div>
 
     </div>
@@ -136,7 +137,6 @@
     import {ref,onMounted} from 'vue'
     import AjoutCommentaire from '@/Components/Courrier/AjoutCommentaire.vue';
     import moment from 'moment'
-    import Check from '@/Components/Check.vue'
     import useAxios from '@/ComponentsServices/axios.js'
     import NoteTechniqueForm from '@/Components/NoteTechnique/NoteTechniqueForm.vue'
 
@@ -167,6 +167,8 @@
 
         onMounted(() => {
             currentNote.value = props.note
+
+            console.log(currentNote.value);
         });
 
 

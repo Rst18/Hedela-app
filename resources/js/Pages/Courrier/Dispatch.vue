@@ -5,7 +5,7 @@
 
     <SideBarLayout>
         <template #header>
-            <h2 class="font-semibold text-xl  text-gray-800 leading-tight">Dispatch Courriers</h2>
+            <h2 class="font-semibold text-xl  text-gray-800 leading-tight">Courriers à Dispatcher</h2>
         </template>
 
         <div class="py-2 max-w-7xl mx-auto sm:px-6 lg:px-8">

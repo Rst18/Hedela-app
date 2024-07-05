@@ -8,9 +8,14 @@
             <h2 class="font-semibold text-xl  text-gray-800 leading-tight">Liste Courriers Protocole</h2>
         </template>
 
-        <div class="py-2 max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div v-if="!update" class="py-2 max-w-7xl mx-auto sm:px-6 lg:px-8">
+
           <ListCourriers v-if="!showDetail" @selectedCourrier="getSelectedCourrier"/>
-           <DetailsCourrierProtocole v-else :courrier="courrierData" @closeMe="showDetail = !showDetail" />
+           <DetailsCourrierProtocole v-else :courrier="courrierData" @courrier="getCurrentCourrier" @closeMe="showDetail = !showDetail" />
+           
+        </div>
+        <div v-else class="py-2 max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <Formulaire action="update" @updated="updatedCourrier" @hideMe="update = false" :courrier/>
         </div>
 
     </SideBarLayout>
@@ -28,11 +33,20 @@ import DetailsCourrierProtocole from '@/Components/Courrier/DetailsCourrierProto
         services:Object,
     })
     const courrierData = ref()
-    const courrier = ref({ })
+    const courrier = ref({})
     const showDetail = ref(false)
+    const update = ref(false)
 
+    const getCurrentCourrier = (e)=>{
+        
+        courrier.value = e
+        update.value = true
+    }
+    const updatedCourrier = ()=>{
+        update.value = false
+        showDetail.value = false
+    }
     const getSelectedCourrier =(e)=>{
-        console.log(e);
         courrierData.value = e
         showDetail.value = true
     }

@@ -380,8 +380,7 @@
                     <span class="sr-only">Open user menu</span>
                     <img
                         class="w-8 h-8 rounded-full"
-                         :src="profil +$page.props.auth.user.name"
-                      
+                        :src="profil+$page.props.auth.user.name"
                         alt="user photo"
                     />
                 </button>
@@ -442,7 +441,6 @@
     import {ref} from 'vue'
     import NavLink from '@/Components/NavLink.vue';
     import Notification from '@/Components/Notification/Notification.vue'
-
 
     const profil = ref('https://ui-avatars.com/api/?name=')
 </script>

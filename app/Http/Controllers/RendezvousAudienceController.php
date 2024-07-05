@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Rendezvous;
+use Carbon\Carbon;
 use App\Models\Task;
 use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Audience;
 use Illuminate\Http\Request;
 use App\Models\RendezvousAudience;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Notifications\TaskNotification;
 use App\Mail\RendezvousMailNotification;
@@ -124,25 +127,34 @@ class RendezvousAudienceController extends Controller
         try {
 
 
-
             $user->rendezvouss()->attach($request->rendezvous);
 
-
-
-            
+            $rendezvous = RendezvousAudience::find($request->rendezvous);
 
             //notification 
+
             $user->notify(new RendezvousNotification("Vous avez été ajouter comme couverture à un rendez-vous.",'Information'));
 
             //creer une tache couverture
 
-            $task = Task::where('nom','Couverture')->first();
+            $task = Task::create([
+
+                'nom'=>'Couverture reunion  ',
+                'description'=>"Couverture reunion : Vous avez été ajouter comme couverture à un rendez-vous. Lieu : $rendezvous->lieu, Heure et date: $rendezvous->date_heure, veillez consulter votre liste des reunions pour plus des details ",
+                'statut'=>1,
+                'priorite'=>2,
+                'date_debut'=>$rendezvous->date_heure,
+                'date_fin'=>$rendezvous->date_heure,
+                'date_fermeture'=>Carbon::now()->addDays(2),
+                'user_id'=>Auth::user()->id,
+            ]);
 
             if ($task != null) {
 
                 if (!$task->users()->wherePivot('user_id', $user->id)->exists()) {
 
                     $user->tasks()->attach($task->id);
+                    $task->keepInformed()->attach(Auth::user()->id);
                 }
 
                 $user->notify(new TaskNotification("Vous avez été affecter à une tache de couverture à un rendez-vous.",'Information'));
@@ -172,14 +184,28 @@ class RendezvousAudienceController extends Controller
             return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
         }
     }
-
     public function mes_rendezvous(){
 
         return Audience::select('audiences.*','users.name as autorite')->whereHas('rendezvous')
         ->with('accompagnateurs')
         ->with(['rendezvous'=>function($query){
             $query ->whereDate('created_at',now());
-        }])->join('users','audiences.user_requested','users.id')
+        }])
+        ->join('users','audiences.user_requested','users.id')
+        ->where('user_requested',Auth::user()->id)
+        ->paginate(10);        
+    }
+    public function rendezvous_protocole(){
+
+
+        return Audience::select('audiences.*','users.name as autorite')
+        ->whereHas('rendezvous')
+        ->with('accompagnateurs')
+        ->with(['rendezvous'=>function($query){
+            $query->whereDate('date_heure',now());
+        }]
+        )
+        ->join('users','audiences.user_requested','users.id')
         ->paginate(10);        
     }
     public function mes_rendezvous_page_protocole(){
@@ -191,4 +217,18 @@ class RendezvousAudienceController extends Controller
         return Inertia::render('Audience/ListAudienceRendezvousBoss');
         
     }
+
+    /**
+     * 
+     * lsite rendezvous 
+     */
+
+     public function mes_reunion(){
+        return User::where('id',Auth::user()->id)->with(['rendezvouss'=> function($q){
+            $q->with(['audience'=>function($query){
+                $query->with('accompagnateurs');
+            }]);
+        }])->paginate(20);
+       
+     }
 }

@@ -10,7 +10,7 @@ class CourrierSortant extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['number','requested','letter_file','user_id'];
+    protected $fillable = ['number','requested','letter_file','user_id','accuse_reception_file','courrier_id'];
 
     static function genereNumCourrier (){
         

@@ -7,19 +7,23 @@
        <div class="mt-3 w-full p-3 font-semibold bg-gray-100 grid grid-cols-12">
            <div class="col-span-1">#</div>
            <div class="col-span-2">Numero</div>
-           <div class="col-span-3">Expeditaire</div>
+           <div class="col-span-2">Expeditaire</div>
            <div class="col-span-2">Date  </div>
-           <div class="col-span-3">Options</div>
+           <div class="col-span-3 text-center">Lettre & Ac. Reception  </div>
+           <div class="col-span-2">Options</div>
        </div>
        <div v-if="courrierData">
-           <div v-for="(courrier,index) in courrierData" :key="courrier.id" class="w-full mb-1 p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer text-sm" >
+           <div v-for="(courrier,index) in courrierData" :key="courrier.id" class="w-full  mb-1 p-3 grid grid-cols-12 gap-1 hover:bg-slate-200 hover:cursor-pointer text-sm" >
                <div class="col-span-1 " >{{ index + 1 }}</div>
                <div class="col-span-2">{{courrier.number}}</div>
-               <div class="col-span-3">{{courrier.requested}}</div>
+               <div class="col-span-2">{{courrier.requested}}</div>
                <div class="col-span-2">{{ moment(courrier.created_at).format('ll') }}</div>
-               <div class="col-span-3 grid grid-cols-2 gap-1">
-                <span>  <a  :href="'../download/'+ courrier.letter_file.replaceAll('/','++')" target="_blank" class="font-bold text-xs text-blue-700 ml-4">Accusée de rcpt</a></span>
-                <span class="hover:underline cursor-pointer" @click="getCourrier(courrier)">Modifier</span>
+               <div class="col-span-3 grid  grid-cols-2  px-2">
+                    <span>  <a  :href="'../download/'+ courrier.letter_file.replaceAll('/','++')" target="_blank" class="font-bold text-xs hover:underline text-blue-700 ml-4">Lettre</a></span>
+                    <span >  <a   :href="'../download/'+ courrier.accuse_reception_file.replaceAll('/','++')" target="_blank" class="font-bold  hover:underline text-xs text-blue-700 ml-4">Accusée de rcpt</a></span>
+                </div>
+                <div>
+                   <span class="hover:border cursor-pointer text-xs  rounded-xl px-2 py-1 bg-gray-300 text-gray-700 " @click="getCourrier(courrier)">Modifier</span>
                </div>
            </div>
 
