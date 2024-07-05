@@ -178,6 +178,7 @@ Route::controller(App\Http\Controllers\RendezvousAudienceController::class)->mid
     Route::get('rendezvous/list-protocole','mes_rendezvous_page_protocole')->name('rendezvous.rendez_vous_aujourdhui');
     Route::post('rendezvous/set-rendezvous-user/{user}','addRendezvous');
     Route::post('rendezvous/remove-rendezvous-user/{user}','removeRendezvous');
+    Route::get('rendezvous/mes-reunions','mes_reunion');
 });
 Route::controller(App\Http\Controllers\TaskController::class)->middleware('auth')->group(function(){
     Route::get('task','task_dashbord')->name('task');

@@ -139,8 +139,8 @@ class RendezvousAudienceController extends Controller
 
             $task = Task::create([
 
-                'nom'=>'Couverture reunion ',
-                'description'=>'Couverture reunion : Vous avez été ajouter comme couverture à un rendez-vous ',
+                'nom'=>'Couverture reunion  ',
+                'description'=>"Couverture reunion : Vous avez été ajouter comme couverture à un rendez-vous. Lieu : $rendezvous->lieu, Heure et date: $rendezvous->date_heure, veillez consulter votre liste des reunions pour plus des details ",
                 'statut'=>1,
                 'priorite'=>2,
                 'date_debut'=>$rendezvous->date_heure,
@@ -184,7 +184,6 @@ class RendezvousAudienceController extends Controller
             return ['type'=>'error','message'=>"Echec d'enregistrement ",'errorMessage'=>$th];
         }
     }
-
     public function mes_rendezvous(){
 
         return Audience::select('audiences.*','users.name as autorite')->whereHas('rendezvous')
@@ -218,4 +217,18 @@ class RendezvousAudienceController extends Controller
         return Inertia::render('Audience/ListAudienceRendezvousBoss');
         
     }
+
+    /**
+     * 
+     * lsite rendezvous 
+     */
+
+     public function mes_reunion(){
+        return User::where('id',Auth::user()->id)->with(['rendezvouss'=> function($q){
+            $q->with(['audience'=>function($query){
+                $query->with('accompagnateurs');
+            }]);
+        }])->paginate(20);
+       
+     }
 }
