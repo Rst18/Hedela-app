@@ -28,7 +28,8 @@ class NoteTechnique extends Model
         'annexe',
         'lettre',
         'user_id',
-        'courrier_id'
+        'courrier_id',
+        'visible'
     ];
 
     /**

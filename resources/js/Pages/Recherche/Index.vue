@@ -11,9 +11,14 @@
         <div class="py-12">
             <div class="grid grid-cols-1">
                 <Recherche @getTexte="search"/>
+
+            </div>
+            <div  >
                 <ListCourriersRecherche v-if="!hideListCourrier" :courriers="result" @selectedCourrier="getCurrentCourrier"/>
-                
-                 <DetailsCourrierProtocole :courrier="currentCourrier" v-else  @closeMe="hideListCourrier = !hideListCourrier" />
+                <DetailsCourrierProtocole :courrier="currentCourrier" v-else  @closeMe="hideListCourrier = !hideListCourrier" />
+            </div>
+            <div>
+
             </div>
             
               
@@ -46,4 +51,23 @@ import DetailsCourrierProtocole from '@/Components/Courrier/DetailsCourrierProto
         currentCourrier.value = e
          hideListCourrier.value = true
     }
+
+    const type_ref = ref([
+        {
+            id:1,
+            name:'Courrier'
+        },
+        {
+            id:2,
+            name:'Audience'
+        },
+        {
+            id:3,
+            name:'Autorite'
+        },
+        {
+            id:4,
+            name:'Bureau'
+        },
+    ])
 </script>

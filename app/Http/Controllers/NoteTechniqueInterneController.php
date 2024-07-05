@@ -109,6 +109,7 @@ class NoteTechniqueInterneController extends Controller
             return ['type'=>'error','message'=>'Echec de suppression','errorMessage'=>$th];
         }
     }
+    
     public function inValider (NoteTechniqueInterne $noteTechniqueInterne){
         try {
 
@@ -120,6 +121,24 @@ class NoteTechniqueInterneController extends Controller
 
         } catch (\Throwable $th) {
             //throw $th;
+            
+            return ['type'=>'error','message'=>'Echec de suppression','errorMessage'=>$th];
+        }
+    }
+
+
+    public function Imprimable (NoteTechniqueInterne $noteTechniqueInterne){
+        try {
+
+            if ($noteTechniqueInterne->visible === 0) {
+
+                $noteTechniqueInterne->update(['visible'=>1]);
+                
+            }else $noteTechniqueInterne->update(['visible'=>0]);
+   
+            return ['type'=>'success','message'=>'Suppression reussie'];
+
+        } catch (\Throwable $th) {
             
             return ['type'=>'error','message'=>'Echec de suppression','errorMessage'=>$th];
         }

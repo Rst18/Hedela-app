@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCourrierRequest extends FormRequest
@@ -28,16 +29,24 @@ class UpdateCourrierRequest extends FormRequest
             'phone'=>'string|required',
             'objet'=>'string|required',
             'letter_number'=>'string|required',
-            'annexes'=>'integer|required',
+            'annexe'=>'integer|required',
             'service_id'=>'required|exists:services,id',
             'type_courrier_id'=>'required|exists:type_courriers,id',
-            // 'letter_file' => [
-            //     'required',
-            //     'file', // Rule for uploaded file
-            //     'max:1024', // Maximum file size in kilobytes (adjust as needed)
-            //     Rule::mimeTypes(['pdf', 'docx', 'doc']), // Allowed MIME types (adjust as needed)
-            // ],
+            'letter_file' => [
+                //'required',
+                'file', // Rule for uploaded file
+                // 'max:1024', // Maximum file size in kilobytes (adjust as needed)
+                // Rule::mimeTypes(['pdf', 'docx', 'doc']), // Allowed MIME types (adjust as needed)
+            ],
             'user_id'=>'required|exists:users,id'
         ];
+    }
+
+    public function PrepareForValidation(){
+        
+        $this->mergeIfMissing([
+            
+            'user_id'=>Auth::user()->id
+        ]);
     }
 }

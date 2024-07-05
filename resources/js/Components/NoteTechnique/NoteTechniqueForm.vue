@@ -46,13 +46,13 @@
         </div>
         <div :class="errors.annexes ?'border-red-600' :''">
             <fwb-input
-                v-model="form.annexes"
+                v-model="form.annexe"
                 placeholder="annexes"
                 label="Annexes"
                 type="number"
             />
-            <div class="text-red-500 text-xs" v-if="errors.annexes">
-                {{ errors.annexes[0]}}
+            <div class="text-red-500 text-xs" v-if="errors.annexe">
+                {{ errors.annexe[0]}}
             </div>
         </div>
         <div></div>
@@ -122,13 +122,17 @@
     <div v-if="addAnnexes" class="p-6">
         <span class="text-gray-700 font-semibold text-xl py-2 px-2  text-center">Ajouter les Annexes </span>
         <div class="p-8 ">
-            <UploadAnnexes v-for="number in form.annexes" url="../annexe-note/add" :model_id="newNote.id" :name="'Annexe '+number" />
+            <UploadAnnexes v-for="number in form.annexe" url="../annexe-note/add" :model_id="newNote ? newNote.id : note.id " :name="'Annexe '+number" />
         </div>
     </div>
     <div class="mt-4">
-        <Fwb-button class="bg-gray-800 hover:bg-gray-600" @click="submitForm">
+        <Fwb-button  v-if="addAnnexes" class="bg-gray-800 hover:bg-gray-600" @click="finish">
+            Terminer
+        </Fwb-button>
+        <Fwb-button v-else class="bg-gray-800 hover:bg-gray-600" @click="submitForm">
             Enregistrer
         </Fwb-button>
+       
     </div>
     <!-- <SuccesToast message="Note Technique Enregistré" v-if="success"/> -->
 </template>
@@ -144,6 +148,7 @@ import SelectComponent from '../SelectComponent.vue';
 import UploadAnnexes from '@/Components/UploadAnnexes.vue'
 import SuccesToast from '@/Components/SuccesToast.vue'
 
+import Swal from 'sweetalert2';
     const props = defineProps({
 
         courrier:Object,
@@ -151,12 +156,12 @@ import SuccesToast from '@/Components/SuccesToast.vue'
         action:String
     })
 
-    const emit = defineEmits(['added','updated'])
+    const emit = defineEmits(['added','updated','closeMe'])
+
     const {axios_post_simple} = useAxios()
     const errors = ref([])
     const success = ref(false)
     const ajouter_lettre = ref(false)
-
     const form = ref({
         faits:props.note.faits,
         analyse:props.note.analyse,
@@ -167,7 +172,7 @@ import SuccesToast from '@/Components/SuccesToast.vue'
         signataire:props.note.signataire,
         copiea:props.note.copiea,
         type_lettre:props.note.type_lettre,
-        annexe:2,
+        annexe:props.note.annexe,
         lettre:props.note.lettre,
         courrier_id:props.courrier ? props.courrier.id : props.note.courrier_id
     })
@@ -179,14 +184,20 @@ import SuccesToast from '@/Components/SuccesToast.vue'
         errors.value = []
         if (props.action ==='add') {
 
-            axios_post_simple('note-technique/add',form.value).then(({data})=>{
-             
+            axios_post_simple('../note-technique/add',form.value).then(({data})=>{
+                
+         
+                
                 if (data.type ==='success') {
-                    //success.value = true
-                    newNote.value = data.new
 
-                    addAnnexes.value = true
-                   // emit('added',data.new)
+                    Swal.fire(data.type,data.message,data.type).then(()=>{
+                          //success.value = true
+                        newNote.value = data.new
+
+                        addAnnexes.value = true
+                        // emit('added',data.new)
+                    })
+                  
                 }
 
             }).catch((error)=>{
@@ -194,19 +205,22 @@ import SuccesToast from '@/Components/SuccesToast.vue'
                 if (error.response.status === 422) {
                     errors.value = error.response.data.errors
                 }
-                console.log(error.response);
             })
             
         }else if(props.action ==='update'){
-            // let id =
-            axios_post_simple('../note-technique/update/'+props.note.id,form.value).then(({data})=>{
-                console.log(data);
-                if (data.type ==='success') {
-                    success.value = true
-                    emit('updated')
+            axios_post_simple(`../note-technique/update/${props.note.id}`,form.value).then(({data})=>{
+
+                if (data.type === "success") {
+
+                    Swal.fire(data.type,data.message,data.type).then(()=>{
+
+                        addAnnexes.value = true
+                    })
                 }
             }).catch((error)=>{
-                console.log(error.response);
+                if (error.response.status === 422) {
+                    errors.value = error.response.data.errors
+                }
             })
         }
     }
@@ -231,4 +245,8 @@ import SuccesToast from '@/Components/SuccesToast.vue'
             name:'Reponse simple'
         },
     ]
+
+    const finish = ()=>{
+        emit('closeMe')
+    }
 </script>

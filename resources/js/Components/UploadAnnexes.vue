@@ -40,7 +40,8 @@ import { FwbButton } from 'flowbite-vue'
         name:props.name,
         path:'',
         courrier_id:props.model_id,
-        note_technique_id:props.model_id
+        note_technique_id:props.model_id,
+        note_technique_interne_id:props.model_id
     });
 
     const {axios_post_simple} = useAxios();

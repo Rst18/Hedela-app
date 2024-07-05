@@ -30,7 +30,7 @@ class StoreCourrierRequest extends FormRequest
             'phone'=>'string|required',
             'objet'=>'string|required',
             'letter_number'=>'string|required',
-            'annexes'=>'integer|required',
+            'annexe'=>'integer|required',
             'service_id'=>'required|exists:services,id',
             'type_courrier_id'=>'required|exists:type_courriers,id',
             'letter_file' => [

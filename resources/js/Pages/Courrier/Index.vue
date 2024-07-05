@@ -26,10 +26,9 @@ import SideBarLayout from '@/Layouts/SideBarLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import Formulaire from '@/Components/Courrier/Formulaire.vue'
 import {ref,onMounted} from 'vue'
-import { FwbButton } from 'flowbite-vue'
-import ListCourriers from '@/Components/Courrier/ListCourriers.vue'
-import DetailsCourrier from '@/Components/Courrier/DetailsCourrier.vue'
+
     const props = defineProps({
+        
         typeCourriers:Object,
         services:Object,
     })

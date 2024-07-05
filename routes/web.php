@@ -53,6 +53,7 @@ Route::controller(App\Http\Controllers\DocumentController::class)->middleware('a
 
 Route::controller(App\Http\Controllers\ServiceController::class)->middleware('auth')->group(function(){
     Route::get('service/list','list_service');
+    Route::get('service/list-all','index');
     Route::get('service/create','create')->name('service.create');
     Route::get('service/{service}/get-doc','get_doc_service');
     Route::get('service/{service}/delete','destroy');
@@ -65,6 +66,7 @@ Route::controller(App\Http\Controllers\TypeCourrierController::class)->middlewar
     Route::get('typecourrier/create','create')->name('typecourrier.create');
     Route::post('typecourrier/add','store');
     Route::get('typecourrier/list','typecourrier_list');
+    Route::get('typecourrier/list-all','index');
     Route::post('typecourrier/{typecourrier}/update','update');
 });
 Route::controller(App\Http\Controllers\CourrierController::class)->middleware('auth')->group(function(){
@@ -119,12 +121,12 @@ Route::controller(App\Http\Controllers\NoteTechniqueController::class)->middlewa
 Route::controller(App\Http\Controllers\NoteTechniqueInterneController::class)->middleware('auth')->group(function(){
 
     Route::post('note-technique-interne/add','store');
-    Route::get('note-technique-interne/create','create');
+    Route::get('note-technique-interne/create','create')->name('note_technique_interne.create');
     Route::post('note-technique-interne/update/{noteTechnique}','update');
     Route::post('note-technique-interne/valider/{noteTechnique}','valider');
     Route::post('note-technique-interne/inValider/{noteTechnique}','inValider');
     Route::get('note-technique-interne/list','my_technical_notes');
-    Route::get('note-technique-interne/myList','my_technical_notes_page')->name('note_technique_interne.mes_Notes');
+    Route::get('note-technique-interne/myList','my_technical_notes_page')->name('note_technique_interne.page');
     Route::get('note-technique-interne/secretariat','noteTechniqueForSecretaria');
     Route::get('note-technique-interne/sec','noteTechniqueForSecretaria_page')->name('note_technique_interne.secretariat');
 });
@@ -172,9 +174,11 @@ Route::controller(App\Http\Controllers\RendezvousAudienceController::class)->mid
     Route::get('rendezvous/create-protocole','create_for_the_boss')->name('rendezvous.rendezvous_du_boss');
     Route::post('rendezvous/update/{rendezvousAudience}','update');
     Route::get('rendezvous/list','mes_rendezvous');
+    Route::get('rendezvous/list-protocol','rendezvous_protocole');
     Route::get('rendezvous/list-protocole','mes_rendezvous_page_protocole')->name('rendezvous.rendez_vous_aujourdhui');
     Route::post('rendezvous/set-rendezvous-user/{user}','addRendezvous');
     Route::post('rendezvous/remove-rendezvous-user/{user}','removeRendezvous');
+    Route::get('rendezvous/mes-reunions','mes_reunion');
 });
 Route::controller(App\Http\Controllers\TaskController::class)->middleware('auth')->group(function(){
     Route::get('task','task_dashbord')->name('task');

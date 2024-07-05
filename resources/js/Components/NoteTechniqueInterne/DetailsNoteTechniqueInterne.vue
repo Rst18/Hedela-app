@@ -126,7 +126,7 @@
 
         </div>
         <div v-if="modif">
-            <NoteTechniqueForm action="update" @updated="close" :note/>
+            <NoteTechniqueForm action="update" @closeMe="close" @updated="close" :note/>
         </div>
 
     </div>

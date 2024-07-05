@@ -153,6 +153,22 @@ class CourrierController extends Controller
     {
         try {
 
+            
+           
+            $data = $request->validated();
+
+            if ($request->letter_file != '') {
+
+                Storage::delete('public/'.$courrier->letter_file);
+               
+                $fileName = time() . '.' . $request->letter_file->getClientOriginalExtension();
+                $filePath = $request->letter_file->storeAs('documents/'.$request->number, $fileName); // Store the file
+                
+                $data = $request->validated();
+    
+                $data['letter_file'] = $filePath;
+            }
+
             $courrier->update($request->validated());
 
             return ['type'=>'success','message'=>'Modification reussie'];
@@ -269,6 +285,7 @@ class CourrierController extends Controller
                 $qry->with('annexes');
                 $qry->select('users.name as user_name','note_techniques.*');
                 $qry->join('users','users.id','note_techniques.user_id');
+                $qry->where('user_id',Auth::user()->id);
             }])
             
         ->join('services','services.id','service_id')
@@ -422,6 +439,7 @@ class CourrierController extends Controller
 
         // ->paginate(20);
     }
+    
     public function search_page(){
         return Inertia::render('Recherche/Index');
     }

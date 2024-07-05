@@ -115,6 +115,22 @@ class NoteTechniqueController extends Controller
             return ['type'=>'error','message'=>'Echec de suppression','errorMessage'=>$th];
         }
     }
+    public function Imprimable (NoteTechnique $noteTechnique){
+        try {
+
+            if ($noteTechnique->visible === 0) {
+
+                $noteTechnique->update(['visible'=>1]);
+                
+            }else $noteTechnique->update(['visible'=>0]);
+   
+            return ['type'=>'success','message'=>'Suppression reussie'];
+
+        } catch (\Throwable $th) {
+            
+            return ['type'=>'error','message'=>'Echec de suppression','errorMessage'=>$th];
+        }
+    }
     public function inValider (NoteTechnique $noteTechnique){
         try {
 

@@ -31,13 +31,14 @@ class AnnexeNoteTechniqueInterneController extends Controller
      */
     public function store(StoreAnnexeNoteTechniqueInterneRequest $request)
     {
+       // return $request;
         try {
 
             $data = $request->validated();
 
 
             $fileName = time() . '.' . $request->path->getClientOriginalExtension();
-            $id = NoteTechniqueInterne::find($request->note_technique_internr_id)->id;
+            $id = NoteTechniqueInterne::find($request->note_technique_interne_id)->id;
             $filePath = $request->path->storeAs('documents/NoteTechniqueInternes'.$id.'/Annexes/', $fileName);
 
             $data['path'] =  $filePath;

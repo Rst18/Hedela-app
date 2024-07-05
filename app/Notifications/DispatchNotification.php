@@ -46,7 +46,7 @@ class DispatchNotification extends Notification implements ShouldBroadcastNow
 
         return (new MailMessage)
                     ->line( $this->typeNotification)
-                    ->line($this->user_name ."Vous a affecter à un courrier ( $this->number_courrier ), $message")
+                    ->line($this->user_name ."Vous a affecter à un courrier ( $this->number_courrier ), $this->message")
                     ->action('Voir mes courriers', url('/courrier-user'))
                     ->line("Merci !");
     }
