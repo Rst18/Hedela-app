@@ -13,6 +13,8 @@ class Reunion extends Model
 
     protected $fillable = ['code','description','lien_zoom','lien_youtube','date_debut','date_fin','status','user_id'];
 
+    // protected $primaryKey = 'id';
+
     /**
      * Get all of the ordresDuJour for the Reunion
      *

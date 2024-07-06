@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Reunion;
+use App\Models\OrdreJour;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -12,11 +12,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ordre_jours', function (Blueprint $table) {
+        Schema::create('annexe_ordre_jours', function (Blueprint $table) {
             $table->id();
-            $table->mediumText('name');
-            $table->mediumText('description')->nullable();
-            $table->foreignIdFor(Reunion::class)->constrained()->cascadeOnDelete();
+            $table->string('name', 100);
+            $table->string('filePath', 100);
+            $table->foreignIdFor(OrdreJour::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ordre_jours');
+        Schema::dropIfExists('annexe_ordre_jours');
     }
 };

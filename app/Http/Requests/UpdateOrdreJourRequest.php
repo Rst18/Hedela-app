@@ -23,6 +23,7 @@ class UpdateOrdreJourRequest extends FormRequest
     {
         return [
             'name'=>'required|string|max:255',
+            'description'=>'string',
             'reunion_id'=>'required|exists:reunions,id'
         ];
     }

@@ -13,8 +13,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reunions', function (Blueprint $table) {
-            $table->id();
-            $table->string('code', 100);
+            $table->string('id',100)->primary();
+            // $table->string('code', 100);
             $table->mediumText('description')->nullable();
             $table->mediumText('lien_zoom')->nullable();
             $table->mediumText('lien_youtube')->nullable();

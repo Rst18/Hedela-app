@@ -76,11 +76,17 @@ class AnnexeTimesheetController extends Controller
 
             $data = $request->validated();
 
+            if ($request->path !='') {
 
-            $fileName = time() . '.' . $request->path->getClientOriginalExtension();
-            $filePath = $request->path->storeAs('timesheets/'.$request->timesheet_id.'/Annexes/', $fileName);
+                Storage::delete('public/'.$annexeTimesheet->path);
+               
+                $fileName = time() . '.' . $request->path->getClientOriginalExtension();
 
-            $data['path'] =  $filePath;
+                $filePath = $request->path->storeAs('timesheets/'.$request->timesheet_id.'/Annexes/', $fileName);
+    
+                $data['path'] =  $filePath;
+            }
+
 
             $annexeTimesheet->update($data);
 
@@ -100,6 +106,8 @@ class AnnexeTimesheetController extends Controller
     {
         try {
 
+            Storage::delete('public/'.$annexeTimesheet->path);
+            
             $annexeTimesheet->delete();
             return ['type'=>'success','message'=>'Suppression reussie'];
 

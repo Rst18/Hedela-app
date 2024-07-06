@@ -23,7 +23,7 @@ class StoreReunionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code'=>'required|string|max:255|min:10',
+            'id'=>'required|string|unique:reunions,id',
             'description'=>'required|string',
             'lien_zoom'=>'string',
             'lien_youtube'=>'string',
