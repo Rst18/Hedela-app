@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Reunion;
 use App\Http\Requests\StoreReunionRequest;
 use App\Http\Requests\UpdateReunionRequest;
@@ -108,5 +109,57 @@ class ReunionController extends Controller
 
             return ['type'=>'error','message'=>'Echec de suppression','errorMessage'=>$th];
         }
+    }
+
+    public function addOrateurRenion(Request $request){
+      
+        try {
+
+            $user = User::find($request->user);
+
+            $reunion = Reunion::find($request->reunion);
+
+            if ($reunion != null) {
+              
+                if ($user != null) {
+    
+                     
+                     $reunion->orateurs()->attach($user->id);
+
+                     //notification a l'orateur
+    
+                    return response()->json(data:[],status:200);
+
+                }  
+
+                return response()->json(data:['Aucun Utilisateur trouvé !'], status:404);
+            }
+
+            return response()->json(data:['Aucune reunion trouvée !'], status:404);
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json(data:['errorMessage'=>$th],status:500);
+        }
+      
+    }
+    public function removeUserTask(Request $request){
+
+        try {
+
+            $user = User::find($request->user);
+
+            if ($user != null) {
+
+                $user->tasks()->detach($request->task);
+
+                return response()->json(data:[],status:200);
+            }
+            return response()->json(data:['Aucun group trouvé !'],status:404);
+
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+      
     }
 }

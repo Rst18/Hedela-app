@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\OrdreJour;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -23,6 +24,14 @@ class Reunion extends Model
     public function ordresDuJour(): HasMany
     {
         return $this->hasMany(OrdreJour::class);
+    }
+
+
+      
+    // Reunion model
+    public function orateurs()
+    {
+        return $this->belongsToMany(User::class, 'reuion_orateur');
     }
 
    
