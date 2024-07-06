@@ -1,27 +1,32 @@
 <template>
-  <div class="antialiased b dark:bg-gray-900  h-screen grid grid-1">
+  <div class="antialiased bg-gray-50 dark:bg-gray-900">
  
     <NavBar/>
+ 
+   
+ 
      <!-- Sidebar -->
-   <div class="flex  overflow-hidden">
-     <div class="w-64 h-full">
+   <div class="flex">
+     <div class="w-64 hidden md:block">
        <SideBar/>
      </div>
-     <div class="w-full md:w-[calc(100%-260px)] h-[calc(100%-2px)] overflow-auto ">
-       <main class="py-12 ">
+     <div class="w-full md:w-[calc(100%-260px)]">
+       <main class="py-12  ">
          <div>
-            <header class="bg-white z-40 sticky top-0 shadow" v-if="$slots.header">
-               <div class="mx-auto py-4 mt-4 sm:px-6 lg:px-8">
+            <header class="bg-white sticky top-0 shadow" v-if="$slots.header">
+               <div class="mx-auto py-4 mt-3 px-4 sm:px-6 lg:px-8">
                    <slot name="header" />
                </div>
            </header>
          </div>
-         <div class=" px-4">
+         <div class="overflow-x-scroll h-screen px-4 md:px-0">
             <slot/>
          </div>
         
        </main>
-     </div>  
+     </div>
+ 
+    
    </div>
   
    </div>

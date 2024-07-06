@@ -438,11 +438,10 @@
 </template>
 
 <script setup>
+    import {ref} from 'vue'
+    import NavLink from '@/Components/NavLink.vue';
+    import Notification from '@/Components/Notification/Notification.vue'
 
-import NavLink from '@/Components/NavLink.vue';
-import Notification from '@/Components/Notification/Notification.vue'
-import {ref} from 'vue'
-
-const profil = ref('https://ui-avatars.com/api/?name=')
+    const profil = ref('https://ui-avatars.com/api/?name=')
 </script>
 

@@ -119,7 +119,6 @@ import UploadAnnexes from '@/Components/UploadAnnexes.vue'
     const {axios_get} = useAxios()
     
     const emit = defineEmits(['closeMe'])
-    const profil = ref('https://ui-avatars.com/api/?name=')
     const courrierData = ref(props.courrier)
     const currentNote = ref({})
     const showComponent = ref(1)

@@ -77,7 +77,7 @@ class AnnexeCourrierController extends Controller
 
             $data = $request->validated();
 
-            if ($annexeCourrier->path !='') {
+            if ($request->path !='') {
 
                 Storage::delete('public/'.$annexeCourrier->path);
                
