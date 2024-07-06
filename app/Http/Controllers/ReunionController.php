@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Inertia\Inertia;
 use App\Models\Reunion;
 use App\Http\Requests\StoreReunionRequest;
 use App\Http\Requests\UpdateReunionRequest;
@@ -161,5 +162,13 @@ class ReunionController extends Controller
             //throw $th;
         }
       
+    }
+
+    /**
+     * liste des orateurs
+     */
+
+    public function list_orateur(){
+        return User::paginate(500);
     }
 }
