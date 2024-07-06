@@ -1,11 +1,11 @@
 <template>
-  <div class="w-full overflow-hidden pt-4 z-50">
+  <div class="w-full overflow-hidden pt-4">
       <aside
-    class="h-screen pt-14  w-full transition-transform -translate-x-full bg-white  border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+    class="h-screen pt-14 w-full transition-transform -translate-x-full bg-white  border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
     aria-label="Sidenav"
     id="drawer-navigation"
   >
-    <div class="overflow-y-auto py-5 px-3 h-full bg-white  dark:bg-gray-800 ">
+    <div class="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800 ">
       <form action="#" method="GET" class="md:hidden mb-2">
         <label for="sidebar-search" class="sr-only">Search</label>
         <div class="relative">
@@ -57,9 +57,30 @@
   </div>
 </template>
 <script setup>
-
+  import { ref,onMounted } from 'vue';
+  import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+  import Dropdown from '@/Components/Dropdown.vue';
+  import DropdownLink from '@/Components/DropdownLink.vue';
+  import NavLink from '@/Components/NavLink.vue';
+  import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
+  import { Link } from '@inertiajs/vue3';
   import SideBarItemDropDown from './SideBarItem.vue';
+  import useAxios from '@/ComponentsServices/axios.js'
+  const showingNavigationDropdown = ref(false);
 
+  const {axios_get} = useAxios()
+  //const menus = ref()
 
+  //console.log(menu.pages)
+  const get_my_menu = ()=>{
+    axios_get('menu/user').then(({data})=>{
+      menus.value = data
+    })
+  } 
+
+  onMounted(() => {
+   // get_my_menu()
+  });
+    
 
 </script>
