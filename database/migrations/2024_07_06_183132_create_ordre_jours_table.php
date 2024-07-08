@@ -16,6 +16,8 @@ return new class extends Migration
             $table->id();
             $table->mediumText('name');
             $table->mediumText('description')->nullable();
+          
+            
             $table->foreignIdFor(Reunion::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

@@ -247,13 +247,14 @@ Route::controller(App\Http\Controllers\MenuController::class)->middleware('auth'
     Route::post('menu/remove-menu-role/{role}','removeMenuToRole');
    
 });
-Route::controller(App\Http\Controllers\ReunionController::class)->middleware('auth')->group(function(){
-    Route::get('reunion/create','create');
-    Route::post('reunion/add','store');
+// Route::controller(App\Http\Controllers\ReunionController::class)->middleware('auth')->group(function(){
+//     Route::get('reunion/create','create');
+//     Route::post('reunion/add','store');
    
-});
+// });
 Route::controller(App\Http\Controllers\ReunionController::class)->middleware('auth')->group(function(){
     Route::get('reunion/create','create');
+    Route::get('reunion/newID','getNewID');
     Route::get('reunion/list-orateur','list_orateur');
     Route::post('reunion/add','store');
    

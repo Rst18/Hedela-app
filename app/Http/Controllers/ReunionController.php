@@ -5,11 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Reunion;
+use App\Models\OrdreJour;
+use App\Models\AnnexeOrdreJour;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreReunionRequest;
 use App\Http\Requests\UpdateReunionRequest;
 
 class ReunionController extends Controller
 {
+
+    
+    public function getNewID(){
+
+       return Reunion::genereNumReunionID();
+    }
     /**
      * Display a listing of the resource.
      */
@@ -36,25 +45,63 @@ class ReunionController extends Controller
      */
     public function store(StoreReunionRequest $request)
     {
+      
         try {
-            // Enregistrement de la reunion
-            $reunion =  Reunion::create($request->validated);
+            
+            DB::beginTransaction();
 
-            //Enregistrement des points a l'ordre du jour
+                // Enregistrement de la reunion
+                $reunion =  Reunion::create($request->validated());
 
-            for ($i=0; $i < count($ordre_jour) ; $i++) { 
+                // add orateurs 
 
+                $reunion->orateurs()->attach($request->orateurs);
 
-                //Enregistrement des annexes pour chaque orodres du jours
+                //Enregistrement des points a l'ordre du jour
 
+                for ($i=0; $i < count($request->ordreJour) ; $i++) { 
 
+                    $ordre = OrdreJour::create([
+                        
+                        'name'=>$request->ordreJour[$i]['name'],
+                        'description'=>$request->ordreJour[$i]['description'],
+                        'reunion_id'=>$reunion->id
+                    
+                    ]);
+
+                    if (count($request->ordreJour[$i]['annexes']) > 0 ) {
+
+                    
+                        for ($a=0; $a < count($request->ordreJour[$i]['annexes']) ; $a++) { 
+
+                        
+                            $fileName = time() . '.' . $request->ordreJour[$i]['annexes'][$a]->getClientOriginalExtension();
+        
+                            $filePath = $request->ordreJour[$i]['annexes'][$a]->storeAs('Documents/Reunion/'.$reunion->id.'/ordreJour', $fileName);                      
+                            
+                            //Enregistrement des annexes pour chaque orodres du jours
+                            
+                            AnnexeOrdreJour::create([
+
+                                'name'=> $ordre->name,
+                                'filePath'=>$filePath,
+                                'ordre_jour_id'=>$ordre->id
+                            ]);
+                        }
+
+                    }
                 
-            }
+                }
+
+            DB::commit();
 
             return ['type'=>'success','message'=>'Enregistrement reussi','new'=>$reunion];
 
         } catch (\Throwable $th) {
             //throw $th;
+
+            DB::rollBack();
+
             return ['type'=>'error','message'=>'Echec d\'Enregistrement','errorMessage'=>$th];
         }
     }

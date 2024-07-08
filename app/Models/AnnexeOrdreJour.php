@@ -11,7 +11,7 @@ class AnnexeOrdreJour extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name','filePath'];
+    protected $fillable = ['name','filePath','ordre_jour_id'];
 
     /**
      * Get the ordreJour that owns the AnnexeOrdreJour

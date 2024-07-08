@@ -29,7 +29,8 @@ class StoreReunionRequest extends FormRequest
             'lien_youtube'=>'string',
             'date_debut'=>'required|date',
             'date_fin'=>'required|date',
-            'status'=>'boolean'
+            'status'=>'boolean',
+            'user_id'=>'required|exists:users,id'
         ];
     }
 

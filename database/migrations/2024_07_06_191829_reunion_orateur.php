@@ -14,6 +14,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reuion_orateur', function (Blueprint $table) {
+            // $table->string('post_id')->primary();
+            // $table->string('tag_id')->primary();
+            // $table->timestamps();
+
+            // // Optional: Unique index for many-to-many relationship
+            // $table->unique(['post_id', 'tag_id']);
+
+
             $table->foreignIdFor(Reunion::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->primary(['reunion_id','user_id']);

@@ -3,7 +3,7 @@
        <Animation  />
    </div>
   
-   <div v-else >
+   <div v-else class="mb-6">
         <div>
             <input type="search" name="" placeholder="Rechercher" id="">
         </div>
@@ -16,7 +16,7 @@
           <div v-for="u of users" :key="u.id" class="w-full p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer">
               <div class="col-span-1">#</div>
               <div class="col-span-7">{{u.name }}</div>
-              <div class="col-span-2"><Check class="h-4 w-4 border bg-green-600 text-gray-50 font-bold"/></div>
+              <div @click="addOrateur(u)" class="col-span-2"><Check :class="orateurs.includes(u.id) ?'bg-green-600 h-6 w-6':'bg-gray-600 h-4 w-4'" class=" border rounded-full p-1 bg-green-600 text-gray-50 font-bold"/></div>
           </div>
           <div class="flex flex-row w-full px-4 md:w-9/12 justify-center items-center mx-auto">
                <div v-for="link in links">
@@ -32,23 +32,35 @@
          </span>
          <p class="text-center mt-4">Pas de données a afficher pour le moment!  </p>
      </div>
+     <div>
+        <Fwb-button @click="add" class="bg-gray-800 hover:bg-slate-700">
+            Ajouter les orateurs
+        </Fwb-button>
+     </div>
   </div>
 </template>
 <script setup>
-   import useAxios from '@/ComponentsServices/axios.js'
-   import Animation from '@/Components/Animation.vue';
-   import { onMounted, ref } from 'vue';
-   import moment from 'moment';
-   import Check from '@/Components/Check.vue'
-   const { axios_get } = useAxios();
 
+    import useAxios from '@/ComponentsServices/axios.js'
+    import Animation from '@/Components/Animation.vue';
+    import { onMounted, ref } from 'vue';
+    import Check from '@/Components/Check.vue'
+    import { FwbButton} from 'flowbite-vue'
+    const { axios_get } = useAxios();
 
-   const users = ref()
+    const emit = defineEmits(['listOrateur'])
+    const users = ref()
 
+    const orateurs = ref([])
+    const waitingData = ref(false)
+    const links = ref()
 
-   const waitingData = ref(false)
-   const links = ref()
-   const fetchBatiment = (url)=>{
+    const addOrateur = (orateur)=>  orateurs.value.includes(orateur) ? orateurs.value = orateurs.value.filter((o)=> o != orateur.id) : orateurs.value.push(orateur.id)
+    
+    const add = ()=>  emit('listOrateur',orateurs.value)
+    
+
+    const fetchBatiment = (url)=>{
        waitingData.value = true
        axios_get(url).then(({data:pagination})=>{
            users.value = pagination.data           
@@ -57,9 +69,10 @@
        }).catch((error)=>{
            console.log(error.response)
        })
-   }
-       onMounted(() => {
-           fetchBatiment('../reunion/list-orateur')
-       })
+    }
+
+    onMounted(() => {
+        fetchBatiment('../reunion/list-orateur')
+    })
 
 </script>
