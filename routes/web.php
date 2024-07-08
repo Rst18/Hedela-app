@@ -247,16 +247,21 @@ Route::controller(App\Http\Controllers\MenuController::class)->middleware('auth'
     Route::post('menu/remove-menu-role/{role}','removeMenuToRole');
    
 });
-// Route::controller(App\Http\Controllers\ReunionController::class)->middleware('auth')->group(function(){
-//     Route::get('reunion/create','create');
-//     Route::post('reunion/add','store');
-   
-// });
+
 Route::controller(App\Http\Controllers\ReunionController::class)->middleware('auth')->group(function(){
+    Route::get('reunion/list','index');
+    Route::get('reunion/list-page','list_page');
     Route::get('reunion/create','create');
     Route::get('reunion/newID','getNewID');
     Route::get('reunion/list-orateur','list_orateur');
+    Route::post('reunion/aide-memoire','list_aide_memoire_user');
     Route::post('reunion/add','store');
+    Route::post('reunion/aide-memoire/send','storeAideMemoire');
+   
+});
+Route::controller(App\Http\Controllers\AideMemoireController::class)->middleware('auth')->group(function(){
+   
+    Route::post('aide-memoire/add','store');
    
 });
 

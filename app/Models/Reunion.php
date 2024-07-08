@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\OrdreJour;
+use App\Models\AideMemoire;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -49,7 +50,7 @@ class Reunion extends Model
    
 
     /**
-     * The roles that belong to the Reunion
+     * The orateurs that belong to the Reunion
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -57,7 +58,26 @@ class Reunion extends Model
     {
         return $this->belongsToMany(User::class, 'reuion_orateur');
     }
+
+    /**
+     * The aide_memoires that belong to the Reunion
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function aide_memoires(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'aide_memoire_reunion');
+    }
    
+    /**
+     * Get all of the aides_memoire for the Reunion
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function aides_memoire(): HasMany
+    {
+        return $this->hasMany(AideMemoire::class);
+    }
 
    
 }

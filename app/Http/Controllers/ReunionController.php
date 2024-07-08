@@ -6,8 +6,10 @@ use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Reunion;
 use App\Models\OrdreJour;
+use Illuminate\Http\Request;
 use App\Models\AnnexeOrdreJour;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreReunionRequest;
 use App\Http\Requests\UpdateReunionRequest;
 
@@ -28,6 +30,7 @@ class ReunionController extends Controller
                                 $query->with('annexes');
                         }])
                         ->with('orateurs')
+                        ->with('ordresDuJour')
                             ->orderBy('created_at','DESC')
                             ->paginate(20);
     }
@@ -103,7 +106,7 @@ class ReunionController extends Controller
             DB::rollBack();
 
             return ['type'=>'error','message'=>'Echec d\'Enregistrement','errorMessage'=>$th];
-        }
+       }
     }
 
     /**
@@ -217,5 +220,39 @@ class ReunionController extends Controller
 
     public function list_orateur(){
         return User::paginate(500);
+    }
+
+    public function list_page(){
+        return Inertia::render('Reunion/ListReunion');
+    }
+
+    public function storeAideMemoire(Request $request){
+
+        
+
+        $reunion = Reunion::find($request->reunion_id);
+
+        if($reunion != null){
+
+            $reunion->aide_memoires()->attach(Auth::user()->id,['message'=>$request->message]);
+
+            return response()->json(data:['data'=>$request->message],status:200);
+        }
+
+        return response()->json(data:['Aucune reunion trouvée !'],status:404);
+    }
+
+    public function list_aide_memoire_user(Request $request){
+
+        $reunion = Reunion::where('id',$request->reunion_id);
+
+        if ($reunion != null) {
+
+            return $reunion->with(['aides_memoire'=>function($q){
+    
+                $q->where('user_id',Auth::user()->id);
+    
+            }])->get();
+        }
     }
 }

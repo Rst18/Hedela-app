@@ -184,6 +184,7 @@ import OrdreJour from './OrdreJour.vue'
                         form.value = {}
                         activeTab.value = 1
                         emit('added',data.new)
+                        getNewID()
                     })
 
                 }
