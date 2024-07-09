@@ -8,7 +8,7 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Gestion des Menus</h2>
         </template>
 
-        <div class="py-12">
+        <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <fwb-tabs v-model="activeTab" variant="underline" class="p-5">
                     <fwb-tab name="first" title="Creation Menu">

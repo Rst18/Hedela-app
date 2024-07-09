@@ -7,7 +7,7 @@
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Liste des reunions</h2>
         </template>
-        <div class="py-12">
+        <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <ListReunion @currentReunion="getSelectedReunion" v-show="!showReunion"/>
                 <DetailsReunion v-if="showReunion" :reunion/>

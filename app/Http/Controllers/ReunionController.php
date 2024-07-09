@@ -26,11 +26,11 @@ class ReunionController extends Controller
      */
     public function index()
     {
+      
         return Reunion::with(['ordresDuJour'=>function($query){
-                                $query->with('annexes');
+                            $query->with('annexes');
                         }])
                         ->with('orateurs')
-                        ->with('ordresDuJour')
                             ->orderBy('created_at','DESC')
                             ->paginate(20);
     }
@@ -48,6 +48,7 @@ class ReunionController extends Controller
      */
     public function store(StoreReunionRequest $request)
     {
+        //return $request;
       
         try {
             
@@ -58,7 +59,7 @@ class ReunionController extends Controller
 
                 // add orateurs 
 
-                $reunion->orateurs()->attach($request->orateurs);
+                $reunion->orateurs()->sync($request->orateurs);
 
                 //Enregistrement des points a l'ordre du jour
 
@@ -74,10 +75,8 @@ class ReunionController extends Controller
 
                     if (count($request->ordreJour[$i]['annexes']) > 0 ) {
 
-                    
                         for ($a=0; $a < count($request->ordreJour[$i]['annexes']) ; $a++) { 
 
-                        
                             $fileName = time() . '.' . $request->ordreJour[$i]['annexes'][$a]->getClientOriginalExtension();
         
                             $filePath = $request->ordreJour[$i]['annexes'][$a]->storeAs('Documents/Reunion/'.$reunion->id.'/ordreJour', $fileName);                      

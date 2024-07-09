@@ -16,10 +16,10 @@
           <div v-for="r of reunions" :key="r.id" @click="getCurrentReunion(r)" class="w-full p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer">
               <div class="col-span-1">#</div>
               <div class="col-span-2">{{r.id }}</div>
-              <div class="col-span-5">{{r.description }}</div>
+              <div class="col-span-5">{{r.description.slice(0,200)+' ...' }}</div>
  
               <div class="col-span-1">{{ moment( r.date_debut).format('ll')}}</div>
-              <div class="col-span-1">{{ r.ordresDuJour ? r.ordresDuJour.length : 0}}</div>
+              <div class="col-span-1">{{ r.ordres_du_jour ? r.ordres_du_jour.length : 0}}</div>
               <div class="col-span-1">{{ r.orateurs?r.orateurs.length : 0}}</div>
           </div>
           <div class="flex flex-row w-full px-4 md:w-9/12 justify-center items-center mx-auto">

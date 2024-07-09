@@ -1,11 +1,11 @@
 <template>
-  <div class="w-full overflow-hidden pt-4 z-50">
+  <div class="w-full  pt-4 z-50 h scroll overflow-auto">
       <aside
     class="h-screen pt-14  w-full transition-transform -translate-x-full bg-white  border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
     aria-label="Sidenav"
     id="drawer-navigation"
   >
-    <div class="overflow-y-auto py-5 px-3 h-full bg-white  dark:bg-gray-800 ">
+    <div class="overflow-y-auto py-5 px-3">
       <form action="#" method="GET" class="md:hidden mb-2">
         <label for="sidebar-search" class="sr-only">Search</label>
         <div class="relative">
@@ -63,3 +63,38 @@
 
 
 </script>
+
+<style  scoped>
+
+.h{
+    height: calc(100% - 0px);
+}
+.h1{
+    height: 10%;
+}
+.h9{
+    height: 90%;
+}
+._h{
+    height: calc(100vh - 0px);
+}
+.scroll::-webkit-scrollbar-track
+{
+    background-color: rgb(248, 250, 252);
+}
+
+.scroll::-webkit-scrollbar
+{
+    width: 5px;
+    background-color: #F5F5F5;
+}
+
+.scroll::-webkit-scrollbar-thumb
+{
+    background-color: #c9c8c8;
+}
+.scroll::-webkit-scrollbar-thumb:hover
+{
+    background-color: #b3b2b2;
+}
+</style>
