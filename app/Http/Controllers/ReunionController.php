@@ -32,8 +32,9 @@ class ReunionController extends Controller
                             $query->with('annexes');
                         }])
                         ->with('orateurs')
-                            ->orderBy('created_at','DESC')
-                            ->paginate(20);
+                        ->with('demande_parole')
+                        ->orderBy('created_at','DESC')
+                        ->paginate(20);
     }
 
     /**
@@ -103,9 +104,7 @@ class ReunionController extends Controller
 
         } catch (\Throwable $th) {
             //throw $th;
-
             DB::rollBack();
-
             return ['type'=>'error','message'=>'Echec d\'Enregistrement','errorMessage'=>$th];
        }
     }

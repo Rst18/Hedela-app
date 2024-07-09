@@ -53,6 +53,16 @@
                 </div>
 
             </div>
+            <div>
+                <span class=" py-2 text-gray-700 font-semisolid">Liste des intervenants ({{ reunion.demande_parole.length }})</span>
+            
+                <div class="grid grid-cols-1 gap-2 text-sm py-2">
+                    <span v-for="o in reunion.demande_parole" class="col-span-1">
+                        {{ o.name }}
+                    </span>
+                </div>
+
+            </div>
             <div class="border-t grid grid-cols-1">
                 <span class="text-gray-700  font-semibold">Interractions</span>
                 <div class=" grid grid-cols-1 gap-2 text-sm">

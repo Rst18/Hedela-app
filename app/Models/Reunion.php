@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Role;
 use App\Models\User;
 use App\Models\OrdreJour;
 use App\Models\AideMemoire;
@@ -77,6 +78,38 @@ class Reunion extends Model
     public function aides_memoire(): HasMany
     {
         return $this->hasMany(AideMemoire::class);
+    }
+
+     /**
+     * The aide_memoire_reunion_role that belong to the Reunion
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function aide_memoire_reunion_role(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, 'aide_memoire_reunion_role');
+    }
+
+
+     /**
+     * The participant_reunion_role that belong to the Reunion
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function participant_reunion_role(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, 'participant_reunion_role');
+    }
+
+
+     /**
+     * The preside_reunion_role that belong to the Reunion
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function preside_reunion_role(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, 'preside_reunion_role');
     }
 
    
