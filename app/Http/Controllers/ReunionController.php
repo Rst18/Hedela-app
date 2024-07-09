@@ -227,17 +227,15 @@ class ReunionController extends Controller
         return Inertia::render('Reunion/ListReunion');
     }
 
-    public function storeAideMemoire(Request $request){
-
-        
+    public function storeDemande_parole(Request $request){
 
         $reunion = Reunion::find($request->reunion_id);
 
         if($reunion != null){
 
-            $reunion->aide_memoires()->attach(Auth::user()->id,['message'=>$request->message]);
+            $reunion->demande_parole()->attach(Auth::user()->id);
 
-            return response()->json(data:['data'=>$request->message],status:200);
+            return response()->json(data:[],status:200);
         }
 
         return response()->json(data:['Aucune reunion trouvée !'],status:404);

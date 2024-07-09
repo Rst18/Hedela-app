@@ -64,9 +64,9 @@ class Reunion extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function aide_memoires(): BelongsToMany
+    public function demande_parole(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'aide_memoire_reunion');
+        return $this->belongsToMany(User::class, 'demande_parole_reunion');
     }
    
     /**

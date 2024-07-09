@@ -3,7 +3,7 @@
       <NavLink :href="!dropDown && route(path)" :active="!dropDown && route().current(path)" class="flex flex-col w-full p-2 text-sm font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
         <button
         type="button"
-        class="flex items-center w-full text-base font-medium text-gray-900 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+        class="flex items-center w-full text-base font-medium text-gray-700 rounded-lg transition duration-75 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
         :aria-controls="`dropdown-${name.trim().toLowerCase()}`"
         :data-collapse-toggle="`dropdown-${name.trim().toLowerCase()}`"
         >

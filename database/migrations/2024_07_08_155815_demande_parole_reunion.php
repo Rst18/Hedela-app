@@ -12,14 +12,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('aide_memoire_reunion', function (Blueprint $table) {
+        Schema::create('demande_parole_reunion', function (Blueprint $table) {
 
             $table->string('reunion_id', 100);
             $table->foreign('reunion_id')->references('id')->on('reunions')->onDelete('cascade');
 
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
 
-            $table->mediumText('message');
+           $table->boolean('confirmed')->default(false);
 
 
             $table->primary(['reunion_id','user_id']);
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('aide_memoire_reunion');
+        Schema::dropIfExists('demande_parole_reunion');
     }
 };

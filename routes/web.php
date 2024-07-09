@@ -256,7 +256,7 @@ Route::controller(App\Http\Controllers\ReunionController::class)->middleware('au
     Route::get('reunion/list-orateur','list_orateur');
     Route::post('reunion/aide-memoire','list_aide_memoire_user');
     Route::post('reunion/add','store');
-    Route::post('reunion/aide-memoire/send','storeAideMemoire');
+    Route::post('reunion/demande-parole/send','storeDemande_parole');
    
 });
 Route::controller(App\Http\Controllers\AideMemoireController::class)->middleware('auth')->group(function(){

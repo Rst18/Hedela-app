@@ -10,7 +10,7 @@
         <div class="py-4">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <ListReunion @currentReunion="getSelectedReunion" v-show="!showReunion"/>
-                <DetailsReunion v-if="showReunion" :reunion/>
+                <DetailsReunion @close-me="showReunion = false" v-if="showReunion" :reunion/>
             </div>
         </div>
     </SideBarLayout>
