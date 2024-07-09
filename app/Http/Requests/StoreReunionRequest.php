@@ -30,7 +30,8 @@ class StoreReunionRequest extends FormRequest
             'date_debut'=>'required|date',
             'date_fin'=>'required|date',
             'status'=>'boolean',
-            'user_id'=>'required|exists:users,id'
+            'user_id'=>'required|exists:users,id',
+            'type_reunion_id'=>'required|exists:type_reunions,id'
         ];
     }
 

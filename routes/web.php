@@ -264,6 +264,14 @@ Route::controller(App\Http\Controllers\AideMemoireController::class)->middleware
     Route::post('aide-memoire/add','store');
    
 });
+Route::controller(App\Http\Controllers\TypeReunionController::class)->middleware('auth')->group(function(){
+   
+    Route::get('type-reunion/list','index');
+    Route::get('type-reunion/create','create');
+    Route::post('type-reunion/add','store');
+    Route::post('type-reunion/{typeReunion}/update','update');
+   
+});
 
 
 

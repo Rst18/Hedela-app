@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Models\TypeReunion;
 use App\Http\Requests\StoreTypeReunionRequest;
 use App\Http\Requests\UpdateTypeReunionRequest;
@@ -13,7 +14,7 @@ class TypeReunionController extends Controller
      */
     public function index()
     {
-        return TypeReunion::with('reunions')->get();
+        return TypeReunion::with('reunions')->paginate(20);
     }
 
     /**
@@ -21,7 +22,7 @@ class TypeReunionController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('TypeReunion/Index');
     }
 
     /**
@@ -31,7 +32,7 @@ class TypeReunionController extends Controller
     {
         try {
 
-            $new = TypeRenion::create($request->validated());
+            $new = TypeReunion::create($request->validated());
 
             return ['type'=>'success','message'=>'Enregistrement reussi','new'=>$new];
 

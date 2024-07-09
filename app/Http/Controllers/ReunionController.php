@@ -6,6 +6,7 @@ use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Reunion;
 use App\Models\OrdreJour;
+use App\Models\TypeReunion;
 use Illuminate\Http\Request;
 use App\Models\AnnexeOrdreJour;
 use Illuminate\Support\Facades\DB;
@@ -40,7 +41,8 @@ class ReunionController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Reunion/CreateReunion');
+        $types = TypeReunion::all();
+        return Inertia::render('Reunion/CreateReunion',compact('types'));
     }
 
     /**

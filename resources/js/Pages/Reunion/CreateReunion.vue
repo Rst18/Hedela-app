@@ -9,7 +9,7 @@
         </template>
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-               <FormCreate :reunion="{}" action="add"/>
+               <FormCreate :reunion="{}" action="add" :types/>
             </div>
         </div>
     </SideBarLayout>
@@ -22,6 +22,7 @@ import FormCreate from '@/Components/Reunion/FormCreate.vue';
 
         const props = defineProps({
             users:Object,
+            types:Object
           
         })
 

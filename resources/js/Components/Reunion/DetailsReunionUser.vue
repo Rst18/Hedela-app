@@ -23,14 +23,14 @@
                     </div>
                 </div>
                 <div class="border-t py-2">
-                    <span class="font-semibold text-gray-500  py-4">Ordres du jour</span>
+                    <span class="font-semibold text-gray-700 text-2xl  py-6">Points à l'ordre du jour</span>
 
-                    <div v-for="(o,index) in reunion.ordres_du_jour" :key="o.id">
+                    <div v-for="(o,index) in reunion.ordres_du_jour" :key="o.id" class="mb-2 ml-2">
                         <span class="py-1 font-semibold">{{ index + 1 }} : {{ o.name }}</span>
                         <p>{{ o.description }}</p>
 
                         <div class="grid grid-cols-1 ml-6">
-                            <span class="text-gray-500 py-2">Annexes ({{ o.annexes ?  o.annexes.length : 0  }})</span>
+                            <span class="text-gray-500 py-1">Annexes ({{ o.annexes ?  o.annexes.length : 0  }})</span>
                             <a v-for="annexe in o.annexes" :key="annexe.id" href="" class="underline">{{ annexe.name }}</a>
                         </div>
 

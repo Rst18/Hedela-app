@@ -26,6 +26,14 @@
                 </div>
             </div>
             <div>
+           <SelectComponent @selectedOption="getSeletedOption" :options="types">
+                Choisir le type de reunion
+            </SelectComponent>
+                <div class="text-red-500 text-xs py-2" v-if="errors.user_requested">
+                    {{ errors.user_requested[0]}}
+                </div>
+            </div>
+            <div>
                 <fwb-input
                     v-model="form.lien_zoom"
                     placeholder=""
@@ -131,10 +139,12 @@ import InputDateTime from '@/Components/InputDateTime.vue'
 import Swal from 'sweetalert2';  
 import ListOrateur from './ListOrateur.vue'
 import OrdreJour from './OrdreJour.vue'
+import SelectComponent from '@/Components/SelectComponent.vue'
 
     const props = defineProps({
         users:Object,
         reunion:Object,
+        types:Object,
         action:String
     })
 
@@ -150,6 +160,7 @@ import OrdreJour from './OrdreJour.vue'
         date_fin:props.reunion.date_fin,
         lien_zoom:props.reunion.lien_zoom,
         lien_youtube:props.reunion.lien_youtube,
+        type_reunion_id:props.reunion.type_reunion_id,
         
     })
     const errors = ref([])
@@ -164,6 +175,7 @@ import OrdreJour from './OrdreJour.vue'
         orateurs.value = e
         activeTab.value = 4
     }
+    const getSeletedOption = (e) => form.value.type_reunion_id = e
 
 
     const submitForm = ()=>{
