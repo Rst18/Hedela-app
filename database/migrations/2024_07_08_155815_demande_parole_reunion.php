@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\User;
-use App\Models\Reunion;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -13,17 +12,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reuion_orateur', function (Blueprint $table) {
-            // $table->string('post_id')->primary();
-            // $table->string('tag_id')->primary();
-            // $table->timestamps();
+        Schema::create('demande_parole_reunion', function (Blueprint $table) {
 
-            // // Optional: Unique index for many-to-many relationship
-            // $table->unique(['post_id', 'tag_id']);
+            $table->string('reunion_id', 100);
+            $table->foreign('reunion_id')->references('id')->on('reunions')->onDelete('cascade');
 
-
-            $table->foreignIdFor(Reunion::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+
+           $table->boolean('confirmed')->default(false);
+
+
             $table->primary(['reunion_id','user_id']);
             $table->timestamps();
         });
@@ -34,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reuion_orateur');
+        Schema::dropIfExists('demande_parole_reunion');
     }
 };

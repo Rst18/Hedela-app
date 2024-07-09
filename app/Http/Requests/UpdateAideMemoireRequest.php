@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreReunionRequest extends FormRequest
+class UpdateAideMemoireRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,15 +23,9 @@ class StoreReunionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id'=>'required|string|unique:reunions,id',
-            'description'=>'required|string',
-            'lien_zoom'=>'string',
-            'lien_youtube'=>'string',
-            'date_debut'=>'required|date',
-            'date_fin'=>'required|date',
-            'status'=>'boolean',
+            'reunion_id'=>'required|exists:reunions,id',
             'user_id'=>'required|exists:users,id',
-            'type_reunion_id'=>'required|exists:type_reunions,id'
+            'message'=>'required|string|max:255'
         ];
     }
 

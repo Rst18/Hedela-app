@@ -3,23 +3,38 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Inertia\Inertia;
 use App\Models\Reunion;
+use App\Models\OrdreJour;
+use App\Models\TypeReunion;
+use Illuminate\Http\Request;
+use App\Models\AnnexeOrdreJour;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreReunionRequest;
 use App\Http\Requests\UpdateReunionRequest;
 
 class ReunionController extends Controller
 {
+
+    
+    public function getNewID(){
+
+       return Reunion::genereNumReunionID();
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+      
         return Reunion::with(['ordresDuJour'=>function($query){
-                                $query->with('annexes');
+                            $query->with('annexes');
                         }])
                         ->with('orateurs')
-                            ->orderBy('created_at','DESC')
-                            ->paginate(20);
+                        ->with('demande_parole')
+                        ->orderBy('created_at','DESC')
+                        ->paginate(20);
     }
 
     /**
@@ -27,7 +42,8 @@ class ReunionController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Reunion/CreateReunion');
+        $types = TypeReunion::all();
+        return Inertia::render('Reunion/CreateReunion',compact('types'));
     }
 
     /**
@@ -35,27 +51,68 @@ class ReunionController extends Controller
      */
     public function store(StoreReunionRequest $request)
     {
+        //return $request;
+      
         try {
-            // Enregistrement de la reunion
-            $reunion =  Reunion::create($request->validated);
+            
+            DB::beginTransaction();
 
-            //Enregistrement des points a l'ordre du jour
+                // Enregistrement de la reunion
+                $reunion =  Reunion::create($request->validated());
 
-            for ($i=0; $i < count($ordre_jour) ; $i++) { 
+                // add orateurs 
 
+                $reunion->orateurs()->sync($request->orateurs);
 
-                //Enregistrement des annexes pour chaque orodres du jours
+                $reunion->preside_reunion_role()->sync($request->preside);
 
+                $reunion->participant_reunion_role()->sync($request->participants);
 
+                $reunion->aide_memoire_reunion_role()->sync($request->aide_memoires);
+
+                //Enregistrement des points a l'ordre du jour
+
+                for ($i=0; $i < count($request->ordreJour) ; $i++) { 
+
+                    $ordre = OrdreJour::create([
+                        
+                        'name'=>$request->ordreJour[$i]['name'],
+                        'description'=>$request->ordreJour[$i]['description'],
+                        'reunion_id'=>$reunion->id
+                    
+                    ]);
+
+                    if (count($request->ordreJour[$i]['annexes']) > 0 ) {
+
+                        for ($a=0; $a < count($request->ordreJour[$i]['annexes']) ; $a++) { 
+
+                            $fileName = time() . '.' . $request->ordreJour[$i]['annexes'][$a]->getClientOriginalExtension();
+        
+                            $filePath = $request->ordreJour[$i]['annexes'][$a]->storeAs('Documents/Reunion/'.$reunion->id.'/ordreJour', $fileName);                      
+                            
+                            //Enregistrement des annexes pour chaque orodres du jours
+                            
+                            AnnexeOrdreJour::create([
+
+                                'name'=> $ordre->name,
+                                'filePath'=>$filePath,
+                                'ordre_jour_id'=>$ordre->id
+                            ]);
+                        }
+
+                    }
                 
-            }
+                }
+
+            DB::commit();
 
             return ['type'=>'success','message'=>'Enregistrement reussi','new'=>$reunion];
 
         } catch (\Throwable $th) {
             //throw $th;
+            DB::rollBack();
             return ['type'=>'error','message'=>'Echec d\'Enregistrement','errorMessage'=>$th];
-        }
+       }
     }
 
     /**
@@ -161,5 +218,114 @@ class ReunionController extends Controller
             //throw $th;
         }
       
+    }
+
+    /**
+     * liste des orateurs
+     */
+
+    public function list_orateur(){
+        return User::paginate(500);
+    }
+
+    public function list_page(){
+        return Inertia::render('Reunion/ListReunion');
+    }
+
+    /**
+     * 
+     * Enregistrement dela demande de parole 
+     */
+
+    public function storeDemande_parole(Request $request){
+
+        $reunion = Reunion::find($request->reunion_id);
+
+        if($reunion != null){
+
+            $reunion->demande_parole()->attach(Auth::user()->id);
+
+            return response()->json(data:[],status:200);
+        }
+
+        return response()->json(data:['Aucune reunion trouvée !'],status:404);
+    }
+
+    /**
+     * 
+     * Enregistrement des groups aide memoire
+    */
+
+    public function storeAide_memoire_role(Request $request){
+
+        $reunion = Reunion::find($request->reunion_id);
+
+        if($reunion != null){
+
+            $reunion->aide_memoire_reunion_role()->attach($request->role);
+
+            return response()->json(data:[],status:200);
+        }
+
+        return response()->json(data:['Aucune reunion trouvée !'],status:404);
+    }
+
+
+
+    /**
+     * 
+     * Enregistrement des groups participants
+    */
+
+    public function storeParticipants__reunion_role(Request $request){
+
+        $reunion = Reunion::find($request->reunion_id);
+
+        if($reunion != null){
+
+            $reunion->participant_reunion_role()->attach($request->role);
+
+            return response()->json(data:[],status:200);
+        }
+
+        return response()->json(data:['Aucune reunion trouvée !'],status:404);
+    }
+
+
+
+
+    /**
+     * 
+     * Enregistrement des groups presidents la reunion
+     * 
+    */
+
+    public function storePreside_reunion_role(Request $request){
+
+        $reunion = Reunion::find($request->reunion_id);
+
+        if($reunion != null){
+
+            $reunion->preside_reunion_role()->attach($request->role);
+
+            return response()->json(data:[],status:200);
+        }
+
+        return response()->json(data:['Aucune reunion trouvée !'],status:404);
+    }
+
+
+    public function list_aide_memoire_user(Request $request){
+
+        $reunion = Reunion::where('id',$request->reunion_id);
+
+        if ($reunion != null) {
+
+            return $reunion->with(['aides_memoire'=>function($q){
+    
+                $q->where('user_id',Auth::user()->id);
+    
+            }])->get();
+        }
     }
 }

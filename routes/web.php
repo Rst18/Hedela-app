@@ -248,6 +248,31 @@ Route::controller(App\Http\Controllers\MenuController::class)->middleware('auth'
    
 });
 
+Route::controller(App\Http\Controllers\ReunionController::class)->middleware('auth')->group(function(){
+    Route::get('reunion/list','index');
+    Route::get('reunion/list-page','list_page');
+    Route::get('reunion/create','create');
+    Route::get('reunion/newID','getNewID');
+    Route::get('reunion/list-orateur','list_orateur');
+    Route::post('reunion/aide-memoire','list_aide_memoire_user');
+    Route::post('reunion/add','store');
+    Route::post('reunion/demande-parole/send','storeDemande_parole');
+   
+});
+Route::controller(App\Http\Controllers\AideMemoireController::class)->middleware('auth')->group(function(){
+   
+    Route::post('aide-memoire/add','store');
+   
+});
+Route::controller(App\Http\Controllers\TypeReunionController::class)->middleware('auth')->group(function(){
+   
+    Route::get('type-reunion/list','index');
+    Route::get('type-reunion/create','create');
+    Route::post('type-reunion/add','store');
+    Route::post('type-reunion/{typeReunion}/update','update');
+   
+});
+
 
 
 

@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Reunion;
+use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -12,13 +12,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ordre_jours', function (Blueprint $table) {
+        Schema::create('aide_memoires', function (Blueprint $table) {
             $table->id();
-            $table->mediumText('name');
-            $table->mediumText('description')->nullable();
-          
-            
-            $table->foreignIdFor(Reunion::class)->constrained()->cascadeOnDelete();
+            $table->string('reunion_id', 100);
+            $table->foreign('reunion_id')->references('id')->on('reunions')->onDelete('cascade');
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+            $table->mediumText('message');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ordre_jours');
+        Schema::dropIfExists('aide_memoires');
     }
 };

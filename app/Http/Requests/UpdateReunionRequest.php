@@ -29,7 +29,8 @@ class UpdateReunionRequest extends FormRequest
             'lien_youtube'=>'string',
             'date_debut'=>'required|date',
             'date_fin'=>'required|date',
-            'status'=>'boolean'
+            'status'=>'boolean',
+            'type_reunion_id'=>'required|exists:type_reunions,id'
         ];
     }
 
