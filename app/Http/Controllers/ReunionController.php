@@ -64,6 +64,12 @@ class ReunionController extends Controller
 
                 $reunion->orateurs()->sync($request->orateurs);
 
+                $reunion->preside_reunion_role()->sync($request->preside);
+
+                $reunion->participant_reunion_role()->sync($request->participants);
+
+                $reunion->aide_memoire_reunion_role()->sync($request->aide_memoires);
+
                 //Enregistrement des points a l'ordre du jour
 
                 for ($i=0; $i < count($request->ordreJour) ; $i++) { 
@@ -226,6 +232,11 @@ class ReunionController extends Controller
         return Inertia::render('Reunion/ListReunion');
     }
 
+    /**
+     * 
+     * Enregistrement dela demande de parole 
+     */
+
     public function storeDemande_parole(Request $request){
 
         $reunion = Reunion::find($request->reunion_id);
@@ -239,6 +250,70 @@ class ReunionController extends Controller
 
         return response()->json(data:['Aucune reunion trouvée !'],status:404);
     }
+
+    /**
+     * 
+     * Enregistrement des groups aide memoire
+    */
+
+    public function storeAide_memoire_role(Request $request){
+
+        $reunion = Reunion::find($request->reunion_id);
+
+        if($reunion != null){
+
+            $reunion->aide_memoire_reunion_role()->attach($request->role);
+
+            return response()->json(data:[],status:200);
+        }
+
+        return response()->json(data:['Aucune reunion trouvée !'],status:404);
+    }
+
+
+
+    /**
+     * 
+     * Enregistrement des groups participants
+    */
+
+    public function storeParticipants__reunion_role(Request $request){
+
+        $reunion = Reunion::find($request->reunion_id);
+
+        if($reunion != null){
+
+            $reunion->participant_reunion_role()->attach($request->role);
+
+            return response()->json(data:[],status:200);
+        }
+
+        return response()->json(data:['Aucune reunion trouvée !'],status:404);
+    }
+
+
+
+
+    /**
+     * 
+     * Enregistrement des groups presidents la reunion
+     * 
+    */
+
+    public function storePreside_reunion_role(Request $request){
+
+        $reunion = Reunion::find($request->reunion_id);
+
+        if($reunion != null){
+
+            $reunion->preside_reunion_role()->attach($request->role);
+
+            return response()->json(data:[],status:200);
+        }
+
+        return response()->json(data:['Aucune reunion trouvée !'],status:404);
+    }
+
 
     public function list_aide_memoire_user(Request $request){
 

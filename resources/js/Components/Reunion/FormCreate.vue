@@ -109,15 +109,63 @@
 
             </div>
         </div>
+        <div v-show="activeTab == 4" class="grid grid-cols-1 shadow-md p-4 mt-2">
+            <span class="col-span- py-2 text-3xl font-semibold text-gray-600">Configuration supports</span>
+            <div>
+                <ListRoleReunion @listRoles="getListAideMemoire"/>
+            </div>
+
+            <div class="  flex justify-between">
+                <Fwb-button @click="activeTab = 3" class="bg-gray-800 hover:bg-slate-700 mt-2">
+                    Precedent
+                </Fwb-button>
+                <!-- <Fwb-button @click="activeTab = 4" class="bg-gray-800 hover:bg-slate-700 mt-2">
+                    Suivant
+                </Fwb-button> -->
+
+            </div>
+        </div>
+        <div v-show="activeTab == 5" class="grid grid-cols-1 shadow-md p-4 mt-2">
+            <span class="col-span- py-2 text-3xl font-semibold text-gray-600">Configuration Participants</span>
+            <div>
+                <ListRoleReunion @listRoles="getListParticipants"/>
+            </div>
+
+            <div class="  flex justify-between">
+                <Fwb-button @click="activeTab = 4" class="bg-gray-800 hover:bg-slate-700 mt-2">
+                    Precedent
+                </Fwb-button>
+                <!-- <Fwb-button @click="activeTab = 4" class="bg-gray-800 hover:bg-slate-700 mt-2">
+                    Suivant
+                </Fwb-button> -->
+
+            </div>
+        </div>
+        <div v-show="activeTab == 6" class="grid grid-cols-1 shadow-md p-4 mt-2">
+            <span class="col-span- py-2 text-3xl font-semibold text-gray-600">Configuration President</span>
+            <div>
+                <ListRoleReunion @listRoles="getListPresident"/>
+            </div>
+
+            <div class="  flex justify-between">
+                <Fwb-button @click="activeTab = 5" class="bg-gray-800 hover:bg-slate-700 mt-2">
+                    Precedent
+                </Fwb-button>
+                <!-- <Fwb-button @click="activeTab = 4" class="bg-gray-800 hover:bg-slate-700 mt-2">
+                    Suivant
+                </Fwb-button> -->
+
+            </div>
+        </div>
 
       
-        <div v-show="activeTab == 4" class="mt-4 grid col-span-2">
+        <div v-show="activeTab == 7" class="mt-4 grid col-span-2">
             <div>
 
             </div>
             <div>
                 
-                <Fwb-button class="bg-gray-800 hover:bg-slate-700" @click="activeTab = 3">
+                <Fwb-button class="bg-gray-800 hover:bg-slate-700" @click="activeTab = 6">
                     Precedent
                 </Fwb-button>
                 <Fwb-button class="bg-green-700 hover:bg-slate-700" @click="submitForm">
@@ -138,6 +186,7 @@ import { FwbA, FwbButton, FwbFileInput,FwbTextarea,FwbInput } from 'flowbite-vue
 import InputDateTime from '@/Components/InputDateTime.vue'
 import Swal from 'sweetalert2';  
 import ListOrateur from './ListOrateur.vue'
+import ListRoleReunion from './ListRoleReunion.vue'
 import OrdreJour from './OrdreJour.vue'
 import SelectComponent from '@/Components/SelectComponent.vue'
 
@@ -153,7 +202,13 @@ import SelectComponent from '@/Components/SelectComponent.vue'
     const {axios_post_simple,axios_get} = useAxios();
     const ordreJour = ref()
     const orateurs = ref()
+
+    const preside = ref()
+    const participants = ref()
+    const aide_memoires = ref()
+
     const form = ref({
+
         id:props.reunion.id,
         description:props.reunion.description,
         date_debut:props.reunion.date_debut,
@@ -175,6 +230,18 @@ import SelectComponent from '@/Components/SelectComponent.vue'
         orateurs.value = e
         activeTab.value = 4
     }
+    const getListAideMemoire = (e)=> {
+        aide_memoires.value = e
+        activeTab.value = 5
+    }
+    const getListParticipants = (e)=> {
+        participants.value = e
+        activeTab.value = 6
+    }
+    const getListPresident = (e)=> {
+        preside.value = e
+        activeTab.value = 7
+    }
     const getSeletedOption = (e) => form.value.type_reunion_id = e
 
 
@@ -183,6 +250,9 @@ import SelectComponent from '@/Components/SelectComponent.vue'
         errors.value = [];
         form.value.ordreJour =  ordreJour.value
         form.value.orateurs =  orateurs.value
+        form.value.preside =  preside.value
+        form.value.participants =  participants.value
+        form.value.aide_memoires =  aide_memoires.value
 
         if (props.action ==='add') {
 
