@@ -26,7 +26,7 @@
 
             <div v-if="is_Admin ===  1" class=" grid grid-cols-1 gap-2 text-sm py-4">
 
-                <RButton > Demandes Parole ({{ reunion.demande_parole.length }}) </RButton>
+                <RButton @click="demandeP" > Demandes Parole ({{ reunion.demande_parole.length }}) </RButton>
                 <RButton >Lever la main </RButton>
                 <RButton @click="showAidememoire" > Aides memoire ({{ reunion.aides_memoire.length }}) </RButton>
                
@@ -47,7 +47,8 @@
         reunion:Object,
         is_Admin:Number
     })
-    const emit = defineEmits(['showAidesMemoire'])
+    const emit = defineEmits(['showAidesMemoire','showDemandeP'])
 
     const showAidememoire = ()=>emit('showAidesMemoire')
+    const demandeP = ()=>emit('showDemandeP')
 </script>

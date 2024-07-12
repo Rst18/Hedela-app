@@ -4,13 +4,17 @@
     </div>
     <div class="grid grid-cols-12 gap-4">
         <div class="col-span-9  p-8 ">
+
             <AidesMemoireList :aides_memoire="reunion.aides_memoire" v-if="showAideM" @closeMe="showAideM = false"/>
+
+            <DemandeParole v-if="showDemandeParole"  :demandes=" reunion.demande_parole" @close-me="showDemandeParole = false"/>
+            
             <div>
                <DetailsRenionComponent :reunion/>
             </div>
         </div>
         <div class="col-span-3 grid grid-cols-1  gap-4 p-4 h-fit  rounded-xl border shadow-md">
-            <OptionsComponent @showAidesMemoire="showAideM = true" :reunion :is_Admin="1"/>
+            <OptionsComponent @showDemandeP="showDemandeParole = true" @showAidesMemoire="showAideM = true" :reunion :is_Admin="1"/>
         </div>
     </div>
 </template>
@@ -20,7 +24,7 @@
     import AidesMemoireList from './AidesMemoireList.vue';
     import DetailsRenionComponent from './DetailsRenionComponent.vue';
     import OptionsComponent from './OptionsComponent.vue';
-   
+    import DemandeParole from './DemandeParoleComponent.vue';
     import {ref} from 'vue'
     import useAxios from '@/ComponentsServices/axios';
         const props = defineProps({
@@ -33,6 +37,7 @@
             emit('closeMe')
         }
         const showAideM = ref(false)
+        const showDemandeParole = ref(false)
 
 
 </script>
