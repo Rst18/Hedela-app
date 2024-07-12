@@ -1,20 +1,20 @@
 <template>
     <div >
         <div>
-            <span class=" py-2 text-gray-700 font-semisolid">Liste des orateurs ({{ reunion.orateurs.length }})</span>
+            <span class=" py-2 text-gray-700 font-semibold">Liste des orateurs ({{ reunion.orateurs.length }})</span>
         
-            <div class="grid grid-cols-1 gap-2 text-sm py-2">
-                <span v-for="o in reunion.orateurs" class="col-span-1">
+            <div class="grid grid-cols-1 gap-2 text-xs py-2">
+                <span v-for="o in reunion.orateurs" class="col-span-1 ml-2">
                     {{ o.name }}
                 </span>
             </div>
 
         </div>
         <div>
-            <span class=" py-2 text-gray-700 font-semisolid">Liste des intervenants ({{ reunion.demande_parole.length }})</span>
+            <span class=" py-2 text-gray-700 font-semibold">Liste des intervenants ({{ reunion.demande_parole.length }})</span>
         
-            <div class="grid grid-cols-1 gap-2 text-sm py-2">
-                <span v-for="o in reunion.demande_parole" class="col-span-1">
+            <div class="grid grid-cols-1 gap-2 text-xs py-2">
+                <span v-for="o in reunion.demande_parole" class="col-span-1 ml-2">
                     {{ o.name }}
                 </span>
             </div>
