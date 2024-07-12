@@ -409,4 +409,32 @@ class ReunionController extends Controller
 
 
     }
+
+
+    /**
+     * CLoture de la reunion
+     */
+
+     public function clotureReunion(Request $request){
+        
+        try {
+
+            $reunion = Reunion::find($request->reunion);
+
+            if ($reunion != null) {
+               
+                $reunion->update(['status'=>2]);
+    
+                return ['type'=>'success','message'=>'La reunion a ete bien cloturee'];
+            }
+
+            return ['type'=>'error','message'=>'Aucune reunion trouvee'];
+
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            
+            return ['type'=>'error','message'=>'Une erreur s\'est produite lors de la cloture de la reunion','errorMessage'=>$th];
+        }
+     }
 }

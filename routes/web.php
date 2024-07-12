@@ -260,6 +260,7 @@ Route::controller(App\Http\Controllers\ReunionController::class)->middleware('au
     Route::post('reunion/demande-parole/send','storeDemande_parole');
     Route::post('reunion/accept-demande','confirmDemande');
     Route::post('reunion/refuse-demande','unConfirmDemande');
+    Route::post('reunion/clorure','clotureReunion');
    
 });
 Route::controller(App\Http\Controllers\AideMemoireController::class)->middleware('auth')->group(function(){
