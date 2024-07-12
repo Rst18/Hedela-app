@@ -1,6 +1,7 @@
 <template>
-    <div>
-        <button @click="close">Retour</button>
+    <div class="grid grid-cols-2 gap-2 py-2">
+        <RButton @click="close">Retour</RButton>
+        <RButton v-if="reunion.status !== 2" @click="cloture">Cloturer la reunion {{ reunion.status }}</RButton>
     </div>
     <div class="grid grid-cols-12 gap-4">
         <div class="col-span-9  p-8 ">
@@ -26,11 +27,14 @@
     import OptionsComponent from './OptionsComponent.vue';
     import DemandeParole from './DemandeParoleComponent.vue';
     import {ref} from 'vue'
+    import RButton from './RButton.vue';
     import useAxios from '@/ComponentsServices/axios';
+    import Swal from 'sweetalert2';  
+
         const props = defineProps({
             reunion:Object
         })
-        const {axios_post_simple} = useAxios()
+        const {axios_get,axios_post_simple} = useAxios()
         const emit = defineEmits(['closeMe'])
         const addAideMemoire = ref(false)
         const close = ()=>{
@@ -38,6 +42,24 @@
         }
         const showAideM = ref(false)
         const showDemandeParole = ref(false)
+
+        const cloture = ()=>{
+
+            axios_post_simple(`../reunion/clorure`,{reunion:props.reunion.id}).then(({data})=>{
+
+               
+
+                if (data.type === 'success') {
+
+                    Swal.fire(data.type,data.message,data.type).then(()=>{
+                        emit('closeMe')
+                    })
+                    
+                }
+                Swal.fire(data.type,data.message,data.type)
+               
+            })
+        }
 
 
 </script>

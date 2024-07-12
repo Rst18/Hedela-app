@@ -56,7 +56,7 @@ class ReunionController extends Controller
      */
     public function store(StoreReunionRequest $request)
     {
-        //return $request;
+        
       
         try {
             
@@ -82,12 +82,12 @@ class ReunionController extends Controller
                     $ordre = OrdreJour::create([
                         
                         'name'=>$request->ordreJour[$i]['name'],
-                        'description'=>$request->ordreJour[$i]['description'],
+                        'description'=>isset($request->ordreJour[$i]['description']) ? $request->ordreJour[$i]['description'] : '' ,
                         'reunion_id'=>$reunion->id
                     
                     ]);
 
-                    if (count($request->ordreJour[$i]['annexes']) > 0 ) {
+                    if ( isset($request->ordreJour[$i]['annexes']) ) {
 
                         for ($a=0; $a < count($request->ordreJour[$i]['annexes']) ; $a++) { 
 
@@ -116,8 +116,8 @@ class ReunionController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
             DB::rollBack();
-            return ['type'=>'error','message'=>'Echec d\'Enregistrement','errorMessage'=>$th];
-       }
+             return ['type'=>'error','message'=>'Echec d\'Enregistrement','errorMessage'=>$th];
+        }
     }
 
     /**
@@ -409,4 +409,32 @@ class ReunionController extends Controller
 
 
     }
+
+
+    /**
+     * CLoture de la reunion
+     */
+
+     public function clotureReunion(Request $request){
+        
+        try {
+
+            $reunion = Reunion::find($request->reunion);
+
+            if ($reunion != null) {
+               
+                $reunion->update(['status'=>2]);
+    
+                return ['type'=>'success','message'=>'La reunion a ete bien cloturee'];
+            }
+
+            return ['type'=>'error','message'=>'Aucune reunion trouvee'];
+
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            
+            return ['type'=>'error','message'=>'Une erreur s\'est produite lors de la cloture de la reunion','errorMessage'=>$th];
+        }
+     }
 }
