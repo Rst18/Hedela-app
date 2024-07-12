@@ -33,6 +33,9 @@ class ReunionController extends Controller
                         }])
                         ->with('orateurs')
                         ->with('demande_parole')
+                        ->with(['aides_memoire' =>function ($q){
+                            $q->join('users','users.id','aide_memoires.user_id');
+                        }])
                         ->orderBy('created_at','DESC')
                         ->paginate(20);
     }
@@ -230,6 +233,9 @@ class ReunionController extends Controller
 
     public function list_page(){
         return Inertia::render('Reunion/ListReunion');
+    }
+    public function list_page_admin(){
+        return Inertia::render('Reunion/ListReunionAdmin');
     }
 
     /**
