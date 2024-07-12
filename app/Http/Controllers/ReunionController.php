@@ -32,7 +32,12 @@ class ReunionController extends Controller
                             $query->with('annexes');
                         }])
                         ->with('orateurs')
-                        ->with('demande_parole')
+                        ->with(['demande_parole'=>function($q){
+                            $q->where('confirmed',0);
+                        }])
+                        ->with(['aides_memoire' =>function ($q){
+                            $q->join('users','users.id','aide_memoires.user_id');
+                        }])
                         ->orderBy('created_at','DESC')
                         ->paginate(20);
     }
@@ -231,6 +236,9 @@ class ReunionController extends Controller
     public function list_page(){
         return Inertia::render('Reunion/ListReunion');
     }
+    public function list_page_admin(){
+        return Inertia::render('Reunion/ListReunionAdmin');
+    }
 
     /**
      * 
@@ -327,5 +335,78 @@ class ReunionController extends Controller
     
             }])->get();
         }
+    }
+
+
+    /**
+     * 
+     * Confirmation de la demande de parole en reunion
+     */
+
+    public function confirmDemande(Request $request){
+        try {
+            
+            $user = User::find($request->user);
+            
+            $reunion = Reunion::find($request->reunion);
+           
+
+            if ($reunion != null) {
+
+                if ($reunion->demande_parole()->wherePivot('user_id', $user->id)->exists()) {
+
+                    $reunion->demande_parole()
+            
+                        ->updateExistingPivot($user->id, [ 'confirmed' => 1 ]);
+            
+                    return ['type'=>'success','message'=>'Confirmation reussie'];
+                }
+
+                return ['type','error','message'=>'Aucune demande n\'a ete retrouvee pour cet utilisateur'];
+
+            }
+            return ['type','error','message'=>'Aucune  utilisateur trouve !'];
+    
+           
+        } catch (\Throwable $th) {
+            //throw $th;
+            return ['type','error','message'=>'Une erreur s\'est produite lors du traitement de la damande','errorMessage'=>$th];
+        }
+
+
+    }
+    public function unConfirmDemande(Request $request){
+       
+        try {
+            
+            $user = User::find($request->user);
+            
+            $reunion = Reunion::find($request->reunion);
+           
+
+            if ($reunion != null) {
+
+                if ($reunion->demande_parole()->wherePivot('user_id', $user->id)->exists()) {
+
+                    $reunion->demande_parole()
+            
+                        ->updateExistingPivot($user->id, [ 'confirmed' => 0 ]);
+            
+                    return ['type'=>'success','message'=>'Confirmation reussie'];
+                }
+
+                return ['type','error','message'=>'Aucune demande n\'a ete retrouvee pour cet utilisateur'];
+
+            }
+            return ['type','error','message'=>'Aucune  utilisateur trouve !'];
+    
+    
+           
+        } catch (\Throwable $th) {
+            //throw $th;
+            return ['type','error','message'=>'Une erreur s\'est produite lors du traitement de la damande','errorMessage'=>$th];
+        }
+
+
     }
 }

@@ -115,5 +115,15 @@ class User extends Authenticatable
         return $this->belongsToMany(Menu::class);
     }
 
+     /**
+     * The aide_memoires that belong to the Reunion
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function demande_parole(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'demande_parole_reunion');
+    }
+
     
 }
