@@ -5,9 +5,6 @@
     <div class="grid grid-cols-12 gap-4">
         <div class="col-span-9  p-8 ">
             <AidesMemoireList :aides_memoire="reunion.aides_memoire" v-if="showAideM" @closeMe="showAideM = false"/>
-
-            
-            <AideMemoire v-if="addAideMemoire" :reunion/>
             <div>
                <DetailsRenionComponent :reunion/>
             </div>
@@ -20,11 +17,10 @@
 
 
 <script setup>
-
-    import AideMemoire from './AideMemoire.vue';
     import AidesMemoireList from './AidesMemoireList.vue';
     import DetailsRenionComponent from './DetailsRenionComponent.vue';
     import OptionsComponent from './OptionsComponent.vue';
+   
     import {ref} from 'vue'
     import useAxios from '@/ComponentsServices/axios';
         const props = defineProps({
@@ -38,11 +34,5 @@
         }
         const showAideM = ref(false)
 
-        const demanderParole = ()=>{
-
-            axios_post_simple('../reunion/demande-parole/send',{reunion_id:props.reunion.id}).then(({data})=>{
-                console.log(data);
-            })
-        }
 
 </script>

@@ -26,34 +26,23 @@
 
             <div v-if="is_Admin ===  1" class=" grid grid-cols-1 gap-2 text-sm py-4">
 
-                <button  class="border py-1 px-2 rounded-full cursor-pointer">
-                    Demandes Parole ({{ reunion.demande_parole.length }})
-                </button>
-                <button class="border py-1 px-2 rounded-full cursor-pointer">
-                    Lever la main
-                </button>
-                <button @click="showAidememoire" class=" border py-1 px-2 rounded-full  cursor-pointer">
-                    Aides memoire ({{ reunion.aides_memoire.length }})
-                </button>
-
+                <RButton > Demandes Parole ({{ reunion.demande_parole.length }}) </RButton>
+                <RButton >Lever la main </RButton>
+                <RButton @click="showAidememoire" > Aides memoire ({{ reunion.aides_memoire.length }}) </RButton>
+               
             </div>
-            <div v-else class=" grid grid-cols-1 gap-2 text-sm">
-                    <button @click="demanderParole" class="border px-2 rounded-full cursor-pointer">
-                        Demande Parole
-                    </button>
-                    <button class="border px-2 rounded-full cursor-pointer">
-                        Lever la main
-                    </button>
-                    <button @click="addAideMemoire = true" class=" border px-2 rounded-full  cursor-pointer">
-                        Envoyer Aide memoire 
-                    </button>
-                </div>
+            <div v-else class=" grid grid-cols-1 gap-2 text-sm py-4">
+                <RButton @click="demanderParole" > Demande Parole </RButton>
+                <RButton @click="" > Lever la main</RButton>
+                <RButton > Envoyer Aide memoire  </RButton>      
+            </div>
 
 
         </div>
     </div>
 </template>
 <script setup>
+ import RButton from './RButton.vue';
     const props = defineProps({
         reunion:Object,
         is_Admin:Number
