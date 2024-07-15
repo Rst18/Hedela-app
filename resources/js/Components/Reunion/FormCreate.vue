@@ -81,7 +81,7 @@
         <div v-show="activeTab == 2" class="grid grid-cols-1 shadow-md p-4 mt-2">
             <span class="col-span- py-2 text-3xl font-semibold text-gray-600">Configuration des Points a l'ordre de jour</span>
             <div class="">
-                <OrdreJour @added="getOrdreJour" :ordreJour="{}" :reunion="{}"/>
+                <OrdreJour @added="getOrdreJour" :ordreJour :reunion/>
             </div>
             <div class="flex justify-between">
                 <Fwb-button  @click="activeTab = 1" class="bg-gray-800 hover:bg-slate-700 mt-2">
@@ -96,7 +96,7 @@
         <div v-show="activeTab == 3" class="grid grid-cols-1 shadow-md p-4 mt-2">
             <span class="col-span- py-2 text-3xl font-semibold text-gray-600">Configuration des orateurs</span>
             <div>
-                <ListOrateur @listOrateur="getListOrateur"/>
+                <ListOrateur :orateurs @listOrateur="getListOrateur"/>
             </div>
 
             <div class="  flex justify-between">
@@ -112,7 +112,7 @@
         <div v-show="activeTab == 4" class="grid grid-cols-1 shadow-md p-4 mt-2">
             <span class="col-span- py-2 text-3xl font-semibold text-gray-600">Configuration supports</span>
             <div>
-                <ListRoleReunion @listRoles="getListAideMemoire"/>
+                <ListRoleReunion :roles="aide_memoires" @listRoles="getListAideMemoire"/>
             </div>
 
             <div class="  flex justify-between">
@@ -128,7 +128,7 @@
         <div v-show="activeTab == 5" class="grid grid-cols-1 shadow-md p-4 mt-2">
             <span class="col-span- py-2 text-3xl font-semibold text-gray-600">Configuration Participants</span>
             <div>
-                <ListRoleReunion @listRoles="getListParticipants"/>
+                <ListRoleReunion :roles="participants" @listRoles="getListParticipants"/>
             </div>
 
             <div class="  flex justify-between">
@@ -144,7 +144,7 @@
         <div v-show="activeTab == 6" class="grid grid-cols-1 shadow-md p-4 mt-2">
             <span class="col-span- py-2 text-3xl font-semibold text-gray-600">Configuration President</span>
             <div>
-                <ListRoleReunion @listRoles="getListPresident"/>
+                <ListRoleReunion :roles="preside" @listRoles="getListPresident"/>
             </div>
 
             <div class="  flex justify-between">
@@ -194,18 +194,19 @@ import SelectComponent from '@/Components/SelectComponent.vue'
         users:Object,
         reunion:Object,
         types:Object,
+        types:Object,
         action:String
     })
 
     const emit = defineEmits(['added','updated'])
     const activeTab = ref(1)
     const {axios_post_simple,axios_get} = useAxios();
-    const ordreJour = ref()
-    const orateurs = ref()
+    const ordreJour = ref(props.reunion.ordres_du_jour)
+    const orateurs = ref(props.reunion.orateurs)
 
-    const preside = ref()
-    const participants = ref()
-    const aide_memoires = ref()
+    const preside = ref(props.reunion.preside_reunion_role)
+    const participants = ref(props.reunion.participant_reunion_role)
+    const aide_memoires = ref(props.reunion.aide_memoire_reunion_role)
 
     const form = ref({
 
@@ -273,21 +274,23 @@ import SelectComponent from '@/Components/SelectComponent.vue'
                 Swal.fire(data.type,data.message,data.type)
 
             }).catch((error)=>{
-                console.log(error.response)
                 if(error.response.status === 422){
                     errors.value = error.response.data.errors
                 }
             })
-        }else if(props.option ==='update'){
-
-            let id = props.audience.id;
-
-            axios_post_simple('audience/update/'+id,form.value).then(({data})=>{
-                console.log(data);
+        }else if(props.action ==='update'){
+            form.value.reunion = props.reunion.id
+            axios_post_simple(`../../reunion/update`,form.value).then(({data})=>{
+               console.log(data);
                 if (data.type ==='success') {
-                    
-                    emit('added',data.new)
-                }
+
+                    Swal.fire(data.type,data.message,data.type).then(()=>{
+                      
+                        emit('updated')
+                       
+                    })
+
+                }Swal.fire(data.type,data.message,data.type)
             })
         }
     }
@@ -298,6 +301,6 @@ import SelectComponent from '@/Components/SelectComponent.vue'
 
     const getNewID = ()=> axios_get('../reunion/newID').then(({data})=>form.value.id = data) 
 
-    onMounted(() => getNewID())
+    onMounted(() => props.action === 'add' ?  getNewID() : '')
 
 </script>

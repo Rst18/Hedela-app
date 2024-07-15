@@ -14,3 +14,12 @@ Broadcast::channel('presence-channel', function ($user) {
    
   return   $user;
 });
+
+Broadcast::channel('presence-reunion-channel', function ($user) {
+  return   $user;
+});
+
+Broadcast::channel('reunion.{reunionId}', function ($user, $reunionId) {
+  return $user;
+});
+

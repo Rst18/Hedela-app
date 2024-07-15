@@ -28,13 +28,13 @@
 
                 <RButton @click="demandeP" > Demandes Parole ({{ reunion.demande_parole.length }}) </RButton>
                 <RButton >Lever la main </RButton>
-                <RButton @click="showAidememoire" > Aides memoire ({{ reunion.aides_memoire.length }}) </RButton>
+                <RButton @click="aideMemoire" > Aides memoire ({{ reunion.aides_memoire.length }}) </RButton>
                
             </div>
             <div v-else class=" grid grid-cols-1 gap-2 text-sm py-4">
-                <RButton @click="demanderParole" > Demande Parole </RButton>
+                <RButton> Demande Parole </RButton>
                 <RButton @click="" > Lever la main</RButton>
-                <RButton > Envoyer Aide memoire  </RButton>      
+                <RButton @click="aideMemoire"> Envoyer Aide memoire  </RButton>      
             </div>
 
 
@@ -49,6 +49,6 @@
     })
     const emit = defineEmits(['showAidesMemoire','showDemandeP'])
 
-    const showAidememoire = ()=>emit('showAidesMemoire')
+    const aideMemoire = ()=>emit('showAidesMemoire')
     const demandeP = ()=>emit('showDemandeP')
 </script>

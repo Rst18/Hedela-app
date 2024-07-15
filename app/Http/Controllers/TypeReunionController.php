@@ -16,6 +16,10 @@ class TypeReunionController extends Controller
     {
         return TypeReunion::with('reunions')->paginate(20);
     }
+    public function list()
+    {
+        return TypeReunion::with('reunions')->get();
+    }
 
     /**
      * Show the form for creating a new resource.

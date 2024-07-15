@@ -16,7 +16,7 @@
           <div v-for="u of roles" :key="u.id" class="w-full p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer">
               <div class="col-span-1">#</div>
               <div class="col-span-7">{{u.name }}</div>
-              <div @click="addRole(u)" class="col-span-2"><Check :class="pickedRoles.includes(u.id) ?'bg-green-600 h-6 w-6':'bg-gray-600 h-4 w-4'" class=" border rounded-full p-1 bg-green-600 text-gray-50 font-bold"/></div>
+              <div @click.stop="addRole(u)" class="col-span-2"><Check :class="pickedRoles.includes(u.id) ?'bg-green-600 h-6 w-6':'bg-gray-600 h-4 w-4'" class=" border rounded-full p-1 bg-green-600 text-gray-50 font-bold"/></div>
           </div>
           <div class="flex flex-row w-full px-4 md:w-9/12 justify-center items-center mx-auto">
                <div v-for="link in links">
@@ -34,7 +34,7 @@
      </div>
      <div>
         <Fwb-button @click="add" class="bg-gray-800 hover:bg-slate-700">
-            Ajouter
+            Terminer et passer
         </Fwb-button>
      </div>
   </div>
@@ -50,12 +50,14 @@
 
     const emit = defineEmits(['listRoles'])
     const roles = ref()
-
+    const props = defineProps({
+        roles:Object
+    })
     const pickedRoles = ref([])
     const waitingData = ref(false)
     const links = ref()
 
-    const addRole = (role)=>  pickedRoles.value.includes(role) ? pickedRoles.value = pickedRoles.value.filter((o)=> o != role.id) : pickedRoles.value.push(role.id)
+    const addRole = (role) =>  pickedRoles.value.includes(role.id) ? pickedRoles.value = pickedRoles.value.filter((o)=> o != role.id) : pickedRoles.value.push(role.id)
     
     const add = ()=>  emit('listRoles',pickedRoles.value)
     
@@ -72,6 +74,14 @@
     }
 
     onMounted(() => {
+
+        if(props.roles){
+
+            props.roles.map((r)=>{
+                pickedRoles.value.push(r.id)
+            })
+        }
+        
         fetchRole('../role/list')
     })
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AideMemoire;
+use App\Events\AideMemoireSent;
 use App\Http\Requests\StoreAideMemoireRequest;
 use App\Http\Requests\UpdateAideMemoireRequest;
 
@@ -33,6 +34,8 @@ class AideMemoireController extends Controller
 
             $new = AideMemoire::create($request->validated());
 
+            broadcast(new AideMemoireSent($new));
+            
             return ['type'=>'success','message'=>'Enregistrement reussie','new'=>$new];
 
         } catch (\Throwable $th) {

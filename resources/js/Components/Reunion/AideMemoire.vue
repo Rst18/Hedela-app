@@ -1,5 +1,6 @@
 <template>
-    <div class="max-w-sm">
+    <div class="max-w-sm border p-2 rounded-xl">
+        <span class="border rounded-2xl px-1 bg-red-700 text-white text-end cursor-pointer" @click="close">X</span>
         <div class="text-xs">
             <div v-for="m in messages" :key="m.id" class="grid grid-cols-1 mb-4">
                 <p class="text-sm">
@@ -37,13 +38,18 @@ import moment from 'moment';
     })
     const {axios_post_simple,axios_get} = useAxios()
     const messages = ref()
+    const emit = defineEmits(['hideMe'])
     const form = ref({
         reunion_id:props.reunion.id,
         message:''
     })
+
     const errors = ref([])
+
+    const close = ()=>{emit('hideMe')}
     const send = ()=>{
-        axios_post_simple('../aide-memoire/add',form.value).then(({data})=>{
+        axios_post_simple('../../aide-memoire/add',form.value).then(({data})=>{
+            console.log(data);
             if(data.type ==='success'){
 
                 messages.value.push(data.new)
@@ -52,7 +58,7 @@ import moment from 'moment';
         })
     }
     const getAideMemoire = ()=>{
-        axios_post_simple(`../reunion/aide-memoire`,{reunion_id:props.reunion.id}).then(({data})=>{
+        axios_post_simple(`../../reunion/aide-memoire`,{reunion_id:props.reunion.id}).then(({data})=>{
             messages.value = data[0].aides_memoire
             console.log(data[0].aides_memoire);
         })

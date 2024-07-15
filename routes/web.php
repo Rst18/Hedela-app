@@ -248,7 +248,7 @@ Route::controller(App\Http\Controllers\MenuController::class)->middleware('auth'
    
 });
 
-Route::controller(App\Http\Controllers\ReunionController::class)->middleware('auth')->group(function(){
+Route::controller(App\Http\Controllers\ReunionController::class)->middleware(['auth'])->group(function(){
     Route::get('reunion/list','index');
     Route::get('reunion/list-page','list_page');
     Route::get('reunion/admin','list_page_admin');
@@ -261,6 +261,8 @@ Route::controller(App\Http\Controllers\ReunionController::class)->middleware('au
     Route::post('reunion/accept-demande','confirmDemande');
     Route::post('reunion/refuse-demande','unConfirmDemande');
     Route::post('reunion/clorure','clotureReunion');
+    Route::post('reunion/update','update');
+    Route::get('reunion/{reunion}/join','show');
    
 });
 Route::controller(App\Http\Controllers\AideMemoireController::class)->middleware('auth')->group(function(){
@@ -271,6 +273,7 @@ Route::controller(App\Http\Controllers\AideMemoireController::class)->middleware
 Route::controller(App\Http\Controllers\TypeReunionController::class)->middleware('auth')->group(function(){
    
     Route::get('type-reunion/list','index');
+    Route::get('type-reunion/list-all','list');
     Route::get('type-reunion/create','create');
     Route::post('type-reunion/add','store');
     Route::post('type-reunion/{typeReunion}/update','update');
