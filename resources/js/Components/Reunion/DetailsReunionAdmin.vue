@@ -3,6 +3,8 @@
         <RButton @click="close">Retour</RButton>
         <RButton v-if="reunion.status !== 2" @click="modification = true" >Modifier la reunion </RButton>
         <RButton v-if="reunion.status !== 2" @click="cloture">Cloturer la reunion </RButton>
+        <a :href="'../reunion/'+ reunion.id.replaceAll('/','++')+'/join-admin'"><RButton v-if="reunion.status !== 2" class="bg-blue-600 text-white"  >Rejoindre la reunion</RButton></a>
+      
     </div>
     <div class="grid grid-cols-12 gap-4" v-if="!modification">
         <div  class="col-span-9  p-8 ">

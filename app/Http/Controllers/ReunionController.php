@@ -143,13 +143,34 @@ class ReunionController extends Controller
         ->with('preside_reunion_role')->first();
 
         if ($reunion) {
-           
-           
             return Inertia::render('Reunion/CurrentReunion',compact('reunion'));
           
-        }
-        return $id;
-        
+        }  
+    }
+
+      /**
+     * Display the specified resource.
+     */
+    public function show_admin($id)
+    {
+       $reunion =  Reunion::where('id',str_replace('++','/',$id))->with(['ordresDuJour'=>function($query){
+            $query->with('annexes');
+        }])
+        ->with('orateurs')
+        ->with(['demande_parole'=>function($q){
+            $q->where('confirmed',0);
+        }])
+        ->with(['aides_memoire' =>function ($q){
+            $q->join('users','users.id','aide_memoires.user_id');
+        }])
+        ->with('aide_memoire_reunion_role')
+        ->with('participant_reunion_role')
+        ->with('preside_reunion_role')->first();
+
+        if ($reunion) {
+            return Inertia::render('Reunion/CurrentReunionAdmin',compact('reunion'));
+          
+        }  
     }
 
     /**

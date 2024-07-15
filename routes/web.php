@@ -263,6 +263,7 @@ Route::controller(App\Http\Controllers\ReunionController::class)->middleware(['a
     Route::post('reunion/clorure','clotureReunion');
     Route::post('reunion/update','update');
     Route::get('reunion/{reunion}/join','show');
+    Route::get('reunion/{reunion}/join-admin','show_admin');
    
 });
 Route::controller(App\Http\Controllers\AideMemoireController::class)->middleware('auth')->group(function(){

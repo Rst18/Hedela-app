@@ -28,7 +28,7 @@
 
                 <RButton @click="demandeP" > Demandes Parole ({{ reunion.demande_parole.length }}) </RButton>
                 <RButton >Lever la main </RButton>
-                <RButton @click="aideMemoire" > Aides memoire ({{ reunion.aides_memoire.length }}) </RButton>
+                <RButton @click="aideMemoire" > Aides memoire ({{ nbrAideMemoire }}) </RButton>
                
             </div>
             <div v-else class=" grid grid-cols-1 gap-2 text-sm py-4">
@@ -42,13 +42,29 @@
     </div>
 </template>
 <script setup>
- import RButton from './RButton.vue';
-    const props = defineProps({
-        reunion:Object,
-        is_Admin:Number
-    })
+    import {ref,onMounted} from 'vue'
+    import RButton from './RButton.vue';
+        const props = defineProps({
+            reunion:Object,
+            is_Admin:Number
+        })
     const emit = defineEmits(['showAidesMemoire','showDemandeP'])
-
+    const nbrAideMemoire = ref(props.reunion.aides_memoire.length )
     const aideMemoire = ()=>emit('showAidesMemoire')
     const demandeP = ()=>emit('showDemandeP')
+
+    const aideMemoireSocket = (reunion_id)=>{
+
+        window.Echo.channel(`reunion-${reunion_id}`)
+
+            .listen('AideMemoireSent', (e) => {
+                console.log(e);
+                nbrAideMemoire.value += 1 
+                // Ajoutez le message au DOM
+            });
+    }
+
+    onMounted(() => {
+        aideMemoireSocket(props.reunion.id.replaceAll('/','-'))
+    })
 </script>
