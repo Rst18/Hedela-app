@@ -1,8 +1,8 @@
 <template>
     <div class="max-w-sm border p-2 rounded-xl">
         <span class="border rounded-2xl px-1 bg-red-700 text-white text-end cursor-pointer" @click="close">X</span>
-        <div class="text-xs">
-            <div v-for="m in messages" :key="m.id" class="grid grid-cols-1 mb-4">
+        <div class="text-xs p-4 bg-white">
+            <div v-for="m in messages" :key="m.id" class="grid grid-cols-1 mb-4 border-b">
                 <p class="text-sm">
                     {{ m.message }}
                 </p>
@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="col-span-2  flex justify-end items-end">
-            <Fwb-button @click="send" class="bg-gray-800 hover:bg-slate-700 mt-2">
+            <Fwb-button @click="send" class="bg-gray-800 hover:bg-slate-700 p-1 mt-2">
                 Envoyer
             </Fwb-button>
         </div>

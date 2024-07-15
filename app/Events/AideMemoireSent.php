@@ -35,7 +35,7 @@ class AideMemoireSent implements ShouldBroadcastNow
         return [
             
           //  new PrivateChannel('channel-name'),
-           new Channel('reunion240000000017')
+           new Channel("reunion-".str_replace('/','-',$this->message->reunion_id) )
         ];
     }
 

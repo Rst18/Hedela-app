@@ -59,29 +59,29 @@
             window.Echo.join(`reunion.${reunionId}`)
             .here((users)=>{
                 users_connected.value = users
-                
             })
             .joining((user)=>{
                 users_connected.value.push(user)
-                console.log({user}, 'joined')
             })
             .leaving((user)=>{
                 users_connected.value = users_connected.value.filter( u => u.email != user.email)
-                // console.log(user, 'leaved', users_connected.value.filter( u => u.email !== user.email))
             })
         }
 
         const aideMemoire = (reunion_id)=>{
-            window.Echo.channel(`reunion240000000017`)
-            .listen('AideMemoireSent', (e) => {
-                    console.log('object2020')
-                    console.log(e.message);
+
+            window.Echo.channel(`reunion-${reunion_id}`)
+
+                .listen('AideMemoireSent', (e) => {
+                    console.log(e);
                     // Ajoutez le message au DOM
                 });
         }
+
+
         onMounted(() => {
             presenceEvent(props.reunion.id.replaceAll('/','-'))
-            aideMemoire('240000000017')
+            aideMemoire(props.reunion.id.replaceAll('/','-'))
         })
 
 </script>

@@ -30,7 +30,7 @@ class AideMemoireController extends Controller
      */
     public function store(StoreAideMemoireRequest $request)
     {
-        try {
+        //try {
 
             $new = AideMemoire::create($request->validated());
 
@@ -38,11 +38,11 @@ class AideMemoireController extends Controller
             
             return ['type'=>'success','message'=>'Enregistrement reussie','new'=>$new];
 
-        } catch (\Throwable $th) {
-            //throw $th;
+        // } catch (\Throwable $th) {
+        //     //throw $th;
             
-            return ['type'=>'error','message'=>'Echec d\'Enregistrement','errorMessage'=>$th];
-        }
+        //     return ['type'=>'error','message'=>'Echec d\'Enregistrement','errorMessage'=>$th];
+        // }
     }
 
     /**
