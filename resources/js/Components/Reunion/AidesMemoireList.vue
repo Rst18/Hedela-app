@@ -1,13 +1,13 @@
 <template>
     <Transition name="slide-fade">
-        <div class="relative  w-fit p-4">
-            <span @click="close" class="rounded-full border px-2 absolute top-0 right-1 bg-red-700 flex items-center justify-center cursor-pointer hover:bg-red-500 text-red-800">x</span>
+        <div class="relative  p-4 ">
+            <span @click="close" class="rounded-full border px-2 absolute top-0 right-1 bg-red-700 flex items-center justify-center cursor-pointer hover:bg-red-500 text-white">X</span>
             
-            <div v-for="a in aides_memoire"  class="max-w-lg grid grid-cols-12 mb-4 mt-8">
+            <div v-for="a in aides_memoire"  class=" grid grid-cols-12 mb-4 mt-8">
                 <div class="col-span-1 flex justify-center">
                     <img  :src="profil +a.name +'+'+a.name" class="w-8 h-8 rounded-full bg-gray-50">              
                 </div>
-                <div class="col-span-11 border rounded-xl p-4 text-sm " >
+                <div class="col-span-11 border rounded-xl p-4 text-sm ml-1" >
                     <p class="text-gray-700" >  
                        {{ a.message }}
                     </p>

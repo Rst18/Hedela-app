@@ -5,11 +5,11 @@
 
     <ReunionLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Code reunion : {{ reunion.id }}</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Code Reunion : {{ reunion.id }} (Admin)</h2>
         </template>
         <div class="py-4">
-            <div class="min-h-screen mx-auto sm:px-6 lg:px-8 bg-white">
-               <ReunionJoined :reunion :is_Admin="0"/>
+            <div class="min-h-screen mx-auto sm:px-6 lg:px-4 bg-white">
+               <ReunionJoined :reunion :is_Admin="1"/>
                
             </div>
         </div>
