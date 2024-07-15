@@ -38,6 +38,9 @@ class ReunionController extends Controller
                         ->with(['aides_memoire' =>function ($q){
                             $q->join('users','users.id','aide_memoires.user_id');
                         }])
+                        ->with('aide_memoire_reunion_role')
+                        ->with('participant_reunion_role')
+                        ->with('preside_reunion_role')
                         ->orderBy('created_at','DESC')
                         ->paginate(20);
     }
@@ -139,13 +142,65 @@ class ReunionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateReunionRequest $request, Reunion $reunion)
+    public function update(UpdateReunionRequest $request, )
     {
         try {
+            
+            $reunion = Reunion::find($request->reunion);
+            
+            if ($reunion) {
+                
+                $reunion->update($request->validated());
+                
+                $reunion->orateurs()->sync(array_map('intval',$request->orateurs));
+                
+              //  return    $reunion->orateurs()->sync(array_map('intval',$request->orateurs));
 
-            $reunion->update($request->validated());
+                $reunion->preside_reunion_role()->sync($request->preside);
 
-            return ['type'=>'success','message'=>'Modification reussie'];
+                $reunion->participant_reunion_role()->sync($request->participants);
+
+                $reunion->aide_memoire_reunion_role()->sync($request->aide_memoires);
+
+                //Enregistrement des points a l'ordre du jour
+
+                // for ($i=0; $i < count($request->ordreJour) ; $i++) { 
+
+                //     $ordre = OrdreJour::create([
+                        
+                //         'name'=>$request->ordreJour[$i]['name'],
+                //         'description'=>isset($request->ordreJour[$i]['description']) ? $request->ordreJour[$i]['description'] : '' ,
+                //         'reunion_id'=>$reunion->id
+                    
+                //     ]);
+
+                //     if ( isset($request->ordreJour[$i]['annexes']) ) {
+
+                //         for ($a=0; $a < count($request->ordreJour[$i]['annexes']) ; $a++) { 
+
+                //             $fileName = time() . '.' . $request->ordreJour[$i]['annexes'][$a]->getClientOriginalExtension();
+        
+                //             $filePath = $request->ordreJour[$i]['annexes'][$a]->storeAs('Documents/Reunion/'.$reunion->id.'/ordreJour', $fileName);                      
+                            
+                //             //Enregistrement des annexes pour chaque orodres du jours
+                            
+                //             AnnexeOrdreJour::create([
+
+                //                 'name'=> $ordre->name,
+                //                 'filePath'=>$filePath,
+                //                 'ordre_jour_id'=>$ordre->id
+                //             ]);
+                //         }
+
+                //     }
+                
+                // }
+
+                return ['type'=>'success','message'=>'Modification reussie'];
+
+            }
+            return ['type'=>'error','message'=>'Cette reunion est introuvable'];
+
 
         } catch (\Throwable $th) {
             //throw $th;

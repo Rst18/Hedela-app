@@ -21,7 +21,7 @@ import {ref,onMounted} from 'vue'
 import FormCreate from '@/Components/Reunion/FormCreate.vue';
 
         const props = defineProps({
-            users:Object,
+           // users:Object,
             types:Object
           
         })

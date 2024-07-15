@@ -43,19 +43,19 @@
             </div>
         </div>
     
-        <div>
+        <div class="text-xs">
             <div class="mt-3 w-full p-3 font-semibold bg-gray-100 grid grid-cols-12 gap-1">
                 <div class="col-span-1">#</div>
-                <div class="col-span-2">Name</div>
-                <div class="col-span-4">Description</div>
-                <div class="col-span-4">annexes</div>
+                <div class="col-span-3">Name</div>
+                <div class="col-span-5">Description</div>
+                <div class="col-span-1">Nombre Annexes</div>
                 <div class="col-span-1">Options</div>
             </div>
             <div v-for="b of ordreJours" :key="b.id" class="w-full p-3 grid grid-cols-12 gap-1 hover:bg-slate-200 hover:cursor-pointer">
                 <div class="col-span-1">#</div>
-                <div class="col-span-2">{{b.name }}</div>
-                <div class="col-span-4">{{b.description }}</div>
-                <div class="col-span-4">{{b.annexes.length }}</div>
+                <div class="col-span-3">{{b.name }}</div>
+                <div class="col-span-5">{{b.description }}</div>
+                <div class="col-span-1">{{b.annexes.length }}</div>
                 <div @click="removeItem(b)" class="col-span-1">X</div>
                 
             </div>
@@ -75,25 +75,27 @@ import Swal from 'sweetalert2';
         })
 
         const emit = defineEmits(['added','updated'])
-        const ordreJours = ref([])
+        const ordreJours = ref(props.ordreJour ? props.ordreJour :[])
         const {axios_post_simple} = useAxios();
         const form = ref({
-            name:props.ordreJour.name,
-            description:props.ordreJour.description,
+            name:'',
+            description:'',
             annexes:[]
         })
         const errors = ref([])
 
         const add = ()=>{
-            
-            ordreJours.value.push(
-                {
-                    id:ordreJours.value.length + 1,
-                    name:form.value.name,
-                    description:form.value.description,
-                    annexes:form.value.annexes,
-                }
-            )
+            if (form.value.name != '') {
+                
+                ordreJours.value.push(
+                    {
+                        id:ordreJours.value.length + 1,
+                        name:form.value.name,
+                        description:form.value.description,
+                        annexes:form.value.annexes,
+                    }
+                )
+            }else alert('Veillez remplir les champs vides')
         }
         const removeItem = (obj)=>{
             ordreJours.value = ordreJours.value.filter((o)=> o != obj)

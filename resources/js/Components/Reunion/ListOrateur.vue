@@ -20,7 +20,7 @@
           </div>
           <div class="flex flex-row w-full px-4 md:w-9/12 justify-center items-center mx-auto">
                <div v-for="link in links">
-                   <button class="text-grey-darker text-xs md:text-sm px-1  md:px-2 py-1 m-1 border" @click.prevent="fetchBatiment(link.url)" v-html="link.label"></button>
+                   <button class="text-grey-darker text-xs md:text-sm px-1  md:px-2 py-1 m-1 border" @click.prevent="fetchOrateur(link.url)" v-html="link.label"></button>
                </div>
            </div>
       </div>
@@ -34,7 +34,7 @@
      </div>
      <div>
         <Fwb-button @click="add" class="bg-gray-800 hover:bg-slate-700">
-            Ajouter les orateurs
+           Terminer et passer
         </Fwb-button>
      </div>
   </div>
@@ -49,18 +49,19 @@
     const { axios_get } = useAxios();
 
     const emit = defineEmits(['listOrateur'])
+    const props = defineProps({orateurs:Object})
     const users = ref()
 
     const orateurs = ref([])
     const waitingData = ref(false)
     const links = ref()
 
-    const addOrateur = (orateur)=>  orateurs.value.includes(orateur) ? orateurs.value = orateurs.value.filter((o)=> o != orateur.id) : orateurs.value.push(orateur.id)
+    const addOrateur = (orateur)=>  orateurs.value.includes(orateur.id) ? orateurs.value = orateurs.value.filter((o)=> o != orateur.id) : orateurs.value.push(orateur.id)
     
     const add = ()=>  emit('listOrateur',orateurs.value)
     
 
-    const fetchBatiment = (url)=>{
+    const fetchOrateur = (url)=>{
        waitingData.value = true
        axios_get(url).then(({data:pagination})=>{
            users.value = pagination.data           
@@ -72,7 +73,14 @@
     }
 
     onMounted(() => {
-        fetchBatiment('../reunion/list-orateur')
+        if (props.orateurs) {
+
+            props.orateurs.map((o)=>{
+                orateurs.value.push(o.id)
+
+            })
+        }
+        fetchOrateur('../reunion/list-orateur')
     })
 
 </script>
