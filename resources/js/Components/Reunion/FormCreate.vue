@@ -142,7 +142,7 @@
             </div>
         </div>
         <div v-show="activeTab == 6" class="grid grid-cols-1 shadow-md p-4 mt-2">
-            <span class="col-span- py-2 text-3xl font-semibold text-gray-600">Configuration President</span>
+            <span class="col-span- py-2 text-3xl font-semibold text-gray-600">Configuration Président</span>
             <div>
                 <ListRoleReunion :roles="preside" @listRoles="getListPresident"/>
             </div>

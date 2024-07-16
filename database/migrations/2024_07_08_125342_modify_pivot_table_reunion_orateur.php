@@ -20,6 +20,7 @@ return new class extends Migration
         Schema::table('reuion_orateur', function (Blueprint $table) {
 
             $table->string('reunion_id',100);
+            $table->primary(['reunion_id']);
         });
     }
 

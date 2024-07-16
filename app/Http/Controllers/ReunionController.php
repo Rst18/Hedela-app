@@ -155,6 +155,8 @@ class ReunionController extends Controller
      */
     public function show_admin($id)
     {
+        $message = 'Cette reunion est introuvable !';
+
        $reunion =  Reunion::where('id',str_replace('++','/',$id))->with(['ordresDuJour'=>function($query){
             $query->with('annexes');
         }])
@@ -172,7 +174,7 @@ class ReunionController extends Controller
         if ($reunion) {
             return Inertia::render('Reunion/CurrentReunionAdmin',compact('reunion'));
           
-        }  
+        } else    return Inertia::render('ErrorPage',compact('message'));
     }
 
     /**

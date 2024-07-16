@@ -34,7 +34,7 @@
       </div>
     </div>
     <div class="col-span-2 border rounded-l-2xl px-4 py-2 h scroll overflow-auto">
-      <span class="text-md font-semibold text-gray-700">Utilisateurs Connectes </span>
+      <span class="text-sm xl:text-md font-semibold text-gray-700">Utilisateurs Connectes </span>
       <div
         v-for="u in users_connected"
         :key="u.id"
@@ -117,7 +117,7 @@ const aideMemoire = (reunion_id) => {
   //   });
 };
 const demandeParoleReponse = () => {
-  console.log("object");
+  // console.log("object");
   window.Echo.private("App.Models.User.1").notification((notification) => {
     console.log("notification");
   });
