@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\SodageItem;
+use App\Models\SondageItem;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreSondageItemRequest;
 use App\Http\Requests\UpdateSondageItemRequest;
 
@@ -84,5 +87,46 @@ class SondageItemController extends Controller
             //throw $th;
             return ['type'=>'error','message'=>'Echec de suppression','errorMessage'=>$th];
         }
+    }
+
+    public function addVoteSondage(Request $request){
+
+        try {
+
+            $sondage_item = SondageItem::find($request->sondage_item);
+
+            if ($sondage_item != null) {
+
+                $sondage_item->users()->attach(Auth::user()->id);
+
+                return response()->json(data:[],status:200);
+            }
+            return response()->json(data:['Aucun Sondage trouvé !'],status:404);
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            return $th;
+        }
+
+    }
+    public function removeVoteSondage(Request $request){
+
+        try {
+
+            $sondage_item = SondageItem::find($request->sondage_item);
+
+            if ($sondage_item != null) {
+
+                $sondage_item->users()->detach(Auth::user()->id);
+
+                return response()->json(data:[],status:200);
+            }
+            return response()->json(data:['Aucun Sondage trouvé !'],status:404);
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            return $th;
+        }
+
     }
 }
