@@ -9,6 +9,7 @@ use App\Models\OrdreJour;
 use App\Models\TypeReunion;
 use Illuminate\Http\Request;
 use App\Models\AnnexeOrdreJour;
+use App\Events\DemandeParoleSent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreReunionRequest;
@@ -350,6 +351,8 @@ class ReunionController extends Controller
 
             $reunion->demande_parole()->attach(Auth::user()->id);
 
+            broadcast(new DemandeParoleSent($reunion));
+            
             return response()->json(data:[],status:200);
         }
 

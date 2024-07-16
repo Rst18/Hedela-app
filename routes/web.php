@@ -250,8 +250,8 @@ Route::controller(App\Http\Controllers\MenuController::class)->middleware('auth'
 
 Route::controller(App\Http\Controllers\ReunionController::class)->middleware(['auth'])->group(function(){
     Route::get('reunion/list','index');
-    Route::get('reunion/list-page','list_page');
-    Route::get('reunion/admin','list_page_admin');
+    Route::get('reunion/list-page','list_page')->name('reunion.list_user');
+    Route::get('reunion/admin','list_page_admin')->name('reunion.list_admin');
     Route::get('reunion/create','create');
     Route::get('reunion/newID','getNewID');
     Route::get('reunion/list-orateur','list_orateur');
