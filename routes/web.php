@@ -285,6 +285,11 @@ Route::controller(App\Http\Controllers\SondageController::class)->middleware('au
     Route::post('sondage/add','store');
 
 });
+Route::controller(App\Http\Controllers\SondageItemController::class)->middleware('auth')->group(function(){
+
+    Route::post('sondage-item/add-vote','addVoteSondage');
+
+});
 
 
 

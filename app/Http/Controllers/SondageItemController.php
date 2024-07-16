@@ -99,6 +99,9 @@ class SondageItemController extends Controller
 
                 $sondage_item->users()->attach(Auth::user()->id);
 
+                // lancement de l'evenement
+
+                
                 return response()->json(data:[],status:200);
             }
             return response()->json(data:['Aucun Sondage trouvé !'],status:404);

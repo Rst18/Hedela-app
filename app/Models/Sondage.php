@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Sondage extends Model
 {
@@ -34,4 +35,6 @@ class Sondage extends Model
     {
         return $this->hasMany(SondageItem::class);
     }
+
+  
 }

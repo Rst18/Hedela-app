@@ -3,22 +3,27 @@
     <a href="../../reunion/list-page">
       <RButton v-if="reunion.status !== 2" class="bg-red-700 text-white"
         >Quitter la reunion</RButton
-      ></a
-    >
+      ></a>
   </div>
   <div class="relative grid grid-cols-12 gap-4">
     <div
       class="col-span-3 grid grid-cols-1 gap-4 p-4 rounded-r-2xl border shadow-md h scroll overflow-auto"
     >
+
+
       <OptionsComponent
         @showAidesMemoire="chooseAideMemoire"
         @showDemandeP="showDemandeParole = true"
         @createSondage="showCreateSondage = true"
+        @showSondageList="showSondageList = true"
         :reunion
         :is_Admin
       />
     </div>
     <div class="col-span-7 border rounded-2xl p-8 shadow-md h scroll overflow-auto">
+
+        <VoteSondage  :sondage="reunion.sondages[0]"/>
+
     <FormCreateSondage v-if="showCreateSondage" action="add" :reunion/>
 
 
@@ -60,79 +65,83 @@
 </template>
 
 <script setup>
-import AidesMemoireList from "./AidesMemoireList.vue";
-import AideMemoire from "./AideMemoire.vue";
-import { ref, onMounted } from "vue";
-import useAxios from "@/ComponentsServices/axios";
-import DetailsRenionComponent from "./DetailsRenionComponent.vue";
-import OptionsComponent from "./OptionsComponent.vue";
-import RButton from "./RButton.vue";
-import AlertNotification from "@/Components/AlertNotification.vue";
-import DemandeParole from "./DemandeParoleComponent.vue";
-import FormCreateSondage from '@/Components/Sondage/FormCreateSondage.vue'
-const props = defineProps({
-  reunion: Object,
-  is_Admin: Number,
-});
+    import AidesMemoireList from "./AidesMemoireList.vue";
+    import AideMemoire from "./AideMemoire.vue";
+    import { ref, onMounted } from "vue";
+    import useAxios from "@/ComponentsServices/axios";
+    import DetailsRenionComponent from "./DetailsRenionComponent.vue";
+    import OptionsComponent from "./OptionsComponent.vue";
+    import RButton from "./RButton.vue";
+    import AlertNotification from "@/Components/AlertNotification.vue";
+    import DemandeParole from "./DemandeParoleComponent.vue";
+    import FormCreateSondage from '@/Components/Sondage/FormCreateSondage.vue'
+    import VoteSondage from '@/Components/Sondage/VoteSondage.vue'
 
-const { axios_post_simple } = useAxios();
-const emit = defineEmits(["closeMe"]);
-const addAideMemoireAdmin = ref(false);
-const addAideMemoireUser = ref(false);
-const showNotification = ref(false);
-const showDemandeParole = ref(false);
-const showCreateSondage = ref(false);
-const users_connected = ref([]);
-const notification_message = ref();
+        const props = defineProps({
+            reunion: Object,
+            is_Admin: Number,
+        });
+        console.log(props.reunion)
 
-const close = () => {
-  emit("closeMe");
-};
+        const { axios_post_simple } = useAxios();
+        const emit = defineEmits(["closeMe"]);
+        const addAideMemoireAdmin = ref(false);
+        const addAideMemoireUser = ref(false);
+        const showNotification = ref(false);
+        const showDemandeParole = ref(false);
+        const showCreateSondage = ref(false);
+        const showSondageList = ref(false);
+        const users_connected = ref([]);
+        const notification_message = ref();
 
-const chooseAideMemoire = () =>
-  props.is_Admin === 1
-    ? (addAideMemoireAdmin.value = true)
-    : (addAideMemoireUser.value = true);
+        const close = () => {
+            emit("closeMe");
+        };
 
-const demanderParole = () => {};
+        const chooseAideMemoire = () =>
+        props.is_Admin === 1
+            ? (addAideMemoireAdmin.value = true)
+            : (addAideMemoireUser.value = true);
 
-const presenceEvent = (reunionId) => {
-  window.Echo.join(`reunion.${reunionId}`)
-    .here((users) => {
-      users_connected.value = users;
-    })
-    .joining((user) => {
-      users_connected.value.push(user);
-    })
-    .leaving((user) => {
-      users_connected.value = users_connected.value.filter((u) => u.email != user.email);
-    });
-};
+        const demanderParole = () => {};
 
-const aideMemoire = (reunion_id) => {
-  window.Echo.channel(`reunion-${reunion_id}`).listen("AideMemoireSent", (e) => {
-    notification_message.value = e.message;
-    showNotification.value = true;
-    // Ajoutez le message au DOM
-  });
+        const presenceEvent = (reunionId) => {
+        window.Echo.join(`reunion.${reunionId}`)
+            .here((users) => {
+            users_connected.value = users;
+            })
+            .joining((user) => {
+            users_connected.value.push(user);
+            })
+            .leaving((user) => {
+            users_connected.value = users_connected.value.filter((u) => u.email != user.email);
+            });
+        };
 
-  //   window.Echo.channel(`reunion-${reunion_id}`).listen("DemandeParoleSent", (e) => {
-  //     console.log(e);
-  //     // Ajoutez le message au DOM
-  //   });
-};
-const demandeParoleReponse = () => {
-  // console.log("object");
-  window.Echo.private("App.Models.User.1").notification((notification) => {
-    console.log("notification");
-  });
-};
+        const aideMemoire = (reunion_id) => {
+        window.Echo.channel(`reunion-${reunion_id}`).listen("AideMemoireSent", (e) => {
+            notification_message.value = e.message;
+            showNotification.value = true;
+            // Ajoutez le message au DOM
+        });
 
-onMounted(() => {
-  presenceEvent(props.reunion.id.replaceAll("/", "-"));
-  aideMemoire(props.reunion.id.replaceAll("/", "-"));
-  demandeParoleReponse();
-});
+        //   window.Echo.channel(`reunion-${reunion_id}`).listen("DemandeParoleSent", (e) => {
+        //     console.log(e);
+        //     // Ajoutez le message au DOM
+        //   });
+        };
+        const demandeParoleReponse = () => {
+        // console.log("object");
+        window.Echo.private("App.Models.User.1").notification((notification) => {
+            console.log("notification");
+        });
+        };
+
+        onMounted(() => {
+        presenceEvent(props.reunion.id.replaceAll("/", "-"));
+        aideMemoire(props.reunion.id.replaceAll("/", "-"));
+        demandeParoleReponse();
+        });
 </script>
 
 <style scoped>

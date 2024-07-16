@@ -38,7 +38,7 @@
         <RButton @click="send_demande_parole"> Demande Parole </RButton>
         <RButton @click=""> Lever la main</RButton>
         <RButton @click="aideMemoire"> Envoyer Aide memoire </RButton>
-        <RButton >Sondages ({{ nbrSondage  }}) </RButton>
+        <RButton @click="showSondage">Sondages ({{ nbrSondage  }}) </RButton>
       </div>
     </div>
   </div>
@@ -52,7 +52,7 @@
         is_Admin: Number,
         });
 
-        const emit = defineEmits(["showAidesMemoire", "showDemandeP","createSondage"]);
+        const emit = defineEmits(["showAidesMemoire", "showDemandeP","createSondage","showSondageList"]);
         const { axios_post_simple } = useAxios();
         const nbrAideMemoire = ref(props.reunion.aides_memoire.length);
         const nbrDemandeParole = ref(props.reunion.demande_parole.length);
@@ -69,6 +69,7 @@
         };
 
         const sondage = ()=>emit('createSondage')
+        const showSondage = ()=>emit('showSondageList')
 
 
 
