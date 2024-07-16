@@ -9,10 +9,12 @@ use App\Models\OrdreJour;
 use App\Models\TypeReunion;
 use Illuminate\Http\Request;
 use App\Models\AnnexeOrdreJour;
+use App\Events\DemandeParoleSent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreReunionRequest;
 use App\Http\Requests\UpdateReunionRequest;
+use App\Notifications\DemandeParoleNotification;
 
 class ReunionController extends Controller
 {
@@ -350,6 +352,8 @@ class ReunionController extends Controller
 
             $reunion->demande_parole()->attach(Auth::user()->id);
 
+            broadcast(new DemandeParoleSent($reunion));
+            
             return response()->json(data:[],status:200);
         }
 
@@ -455,7 +459,9 @@ class ReunionController extends Controller
                     $reunion->demande_parole()
             
                         ->updateExistingPivot($user->id, [ 'confirmed' => 1 ]);
-            
+
+                        $user->notify(new DemandeParoleNotification($reunion,'Information'));
+
                     return ['type'=>'success','message'=>'Confirmation reussie'];
                 }
 
