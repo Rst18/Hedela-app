@@ -164,7 +164,7 @@ Route::controller(App\Http\Controllers\AudienceController::class)->middleware('a
     Route::post('audience/{audience}/accept','accept');
     Route::post('audience/{audience}/refuse','refuse');
     Route::post('audience/close/{audience}','close');
-    
+
     Route::get('audience/statistique','statistique_audience');
 
 });
@@ -201,14 +201,14 @@ Route::controller(App\Http\Controllers\TaskController::class)->middleware('auth'
 });
 
 Route::controller(App\Http\Controllers\TaskCommentController::class)->middleware('auth')->group(function(){
-  
+
     Route::post('taks/comment/add','store');
     Route::post('task/update/comment/{taskComment}','update');
 });
 
 
 Route::controller(App\Http\Controllers\TimesheetController::class)->middleware('auth')->group(function(){
-  
+
     Route::post('timesheet','store');
     Route::get('task/timesheet/{tache}','getMyTimesheetsForTask');
     Route::get('task/timesheet/user/{tache}','getTimesheetsForTask');
@@ -229,7 +229,7 @@ Route::controller(App\Http\Controllers\BureauController::class)->middleware('aut
     Route::get('bureau/{bureau}/delete','destroy');
     Route::get('bureau/liste','list_bureau');
     Route::get('bureau/create','create')->name('bureau.create');
-    
+
     Route::post('bureau/set-bureau-user/{user}','addBureau');
     Route::post('bureau/remove-bureau-user/{user}','removeBureau');
 });
@@ -245,7 +245,7 @@ Route::controller(App\Http\Controllers\MenuController::class)->middleware('auth'
 
     Route::post('menu/set-menu-role/{role}','addMenuToRole');
     Route::post('menu/remove-menu-role/{role}','removeMenuToRole');
-   
+
 });
 
 Route::controller(App\Http\Controllers\ReunionController::class)->middleware(['auth'])->group(function(){
@@ -264,21 +264,31 @@ Route::controller(App\Http\Controllers\ReunionController::class)->middleware(['a
     Route::post('reunion/update','update');
     Route::get('reunion/{reunion}/join','show');
     Route::get('reunion/{reunion}/join-admin','show_admin');
-   
+
 });
 Route::controller(App\Http\Controllers\AideMemoireController::class)->middleware('auth')->group(function(){
-   
+
     Route::post('aide-memoire/add','store');
-   
+
 });
 Route::controller(App\Http\Controllers\TypeReunionController::class)->middleware('auth')->group(function(){
-   
+
     Route::get('type-reunion/list','index');
     Route::get('type-reunion/list-all','list');
     Route::get('type-reunion/create','create')->name('type_reunion.create');
     Route::post('type-reunion/add','store');
     Route::post('type-reunion/{typeReunion}/update','update');
-   
+
+});
+Route::controller(App\Http\Controllers\SondageController::class)->middleware('auth')->group(function(){
+
+    Route::post('sondage/add','store');
+
+});
+Route::controller(App\Http\Controllers\SondageItemController::class)->middleware('auth')->group(function(){
+
+    Route::post('sondage-item/add-vote','addVoteSondage');
+
 });
 
 
@@ -287,7 +297,7 @@ Route::controller(App\Http\Controllers\TypeReunionController::class)->middleware
 Route::get('/linkstorage', function () {
 	$targetFolder = base_path().'/storage/app/public';
     $linkFolder = $_SERVER['DOCUMENT_ROOT'].'/storage';
-    symlink($targetFolder, $linkFolder); 
+    symlink($targetFolder, $linkFolder);
 });
 
 Route::get('/notifications', function(){
@@ -296,12 +306,12 @@ Route::get('/notifications', function(){
 
 Route::get('testEvent',function(){
 
-    
+
 
     // $user_one = User::first();
     // $user_one->notify(new RealtimeNotification('Un courrier vient d\'etre dispatcher 😄'));
-            
-    
+
+
     //  broadcast( new Hello(1));
      broadcast( new DispatchEvent('Rostand'));
     return 'okok0';

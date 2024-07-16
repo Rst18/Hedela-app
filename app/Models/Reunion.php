@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Sondage;
 use App\Models\OrdreJour;
 use App\Models\AideMemoire;
 use Illuminate\Database\Eloquent\Model;
@@ -23,7 +24,7 @@ class Reunion extends Model
 
 
     static function genereNumReunionID (){
-        
+
         $last_id = Reunion::latest('id')->first();
 
         if ($last_id !== null) {
@@ -32,10 +33,6 @@ class Reunion extends Model
 
         }else return 'AN-R/'.substr(date("Y"),2).'0000000001';
     }
-
-
-
-
     /**
      * Get all of the ordresDuJour for the Reunion
      *
@@ -45,10 +42,6 @@ class Reunion extends Model
     {
         return $this->hasMany(OrdreJour::class);
     }
-
-
-      
-   
 
     /**
      * The orateurs that belong to the Reunion
@@ -69,7 +62,7 @@ class Reunion extends Model
     {
         return $this->belongsToMany(User::class, 'demande_parole_reunion');
     }
-   
+
     /**
      * Get all of the aides_memoire for the Reunion
      *
@@ -112,5 +105,15 @@ class Reunion extends Model
         return $this->belongsToMany(Role::class, 'preside_reunion_role');
     }
 
-   
+    /**
+     * Get all of the sondages for the Reunion
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function sondages(): HasMany
+    {
+        return $this->hasMany(Sondage::class);
+    }
+
+
 }
