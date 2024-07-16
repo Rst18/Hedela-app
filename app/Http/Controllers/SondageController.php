@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sondage;
+use App\Models\SondageItem;
 use App\Http\Requests\StoreSondageRequest;
 use App\Http\Requests\UpdateSondageRequest;
 
@@ -32,6 +33,16 @@ class SondageController extends Controller
         try {
 
             $sondage = Sondage::create($request->validated());
+
+            for ($i=0; $i < count($request->sondage_items) ; $i++) {
+
+                $sondage_item = SondageItem::create([
+
+                    'description'=>$request->sondage_items[$i]['description'],
+                    'sondage_id'=>$sondage->id
+
+                ]);
+            }
 
             return ['type'=>'success','message'=>'Enregistrement reussi','new'=>$sondage];
 

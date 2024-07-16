@@ -13,11 +13,15 @@
       <OptionsComponent
         @showAidesMemoire="chooseAideMemoire"
         @showDemandeP="showDemandeParole = true"
+        @createSondage="showCreateSondage = true"
         :reunion
         :is_Admin
       />
     </div>
     <div class="col-span-7 border rounded-2xl p-8 shadow-md h scroll overflow-auto">
+    <FormCreateSondage v-if="showCreateSondage" action="add" :reunion/>
+
+
       <AidesMemoireList
         :aides_memoire="reunion.aides_memoire"
         v-if="addAideMemoireAdmin"
@@ -65,7 +69,7 @@ import OptionsComponent from "./OptionsComponent.vue";
 import RButton from "./RButton.vue";
 import AlertNotification from "@/Components/AlertNotification.vue";
 import DemandeParole from "./DemandeParoleComponent.vue";
-
+import FormCreateSondage from '@/Components/Sondage/FormCreateSondage.vue'
 const props = defineProps({
   reunion: Object,
   is_Admin: Number,
@@ -77,6 +81,7 @@ const addAideMemoireAdmin = ref(false);
 const addAideMemoireUser = ref(false);
 const showNotification = ref(false);
 const showDemandeParole = ref(false);
+const showCreateSondage = ref(false);
 const users_connected = ref([]);
 const notification_message = ref();
 

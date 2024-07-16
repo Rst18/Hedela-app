@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Reunion;
 use App\Models\SondageItem;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -31,6 +32,6 @@ class Sondage extends Model
      */
     public function sondageItems(): HasMany
     {
-        return $this->hasMany(SondageItem::class, 'foreign_key', 'local_key');
+        return $this->hasMany(SondageItem::class);
     }
 }
