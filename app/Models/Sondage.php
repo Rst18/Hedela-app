@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Reunion;
+use App\Models\SondageItem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,5 +22,15 @@ class Sondage extends Model
     public function reunion(): BelongsTo
     {
         return $this->belongsTo(Reunion::class);
+    }
+
+    /**
+     * Get all of the sondageItems for the Sondage
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function sondageItems(): HasMany
+    {
+        return $this->hasMany(SondageItem::class, 'foreign_key', 'local_key');
     }
 }
