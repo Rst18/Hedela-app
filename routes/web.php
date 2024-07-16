@@ -250,9 +250,9 @@ Route::controller(App\Http\Controllers\MenuController::class)->middleware('auth'
 
 Route::controller(App\Http\Controllers\ReunionController::class)->middleware(['auth'])->group(function(){
     Route::get('reunion/list','index');
-    Route::get('reunion/list-page','list_page');
-    Route::get('reunion/admin','list_page_admin');
-    Route::get('reunion/create','create');
+    Route::get('reunion/list-page','list_page')->name('reunion.list_user');
+    Route::get('reunion/admin','list_page_admin')->name('reunion.list_admin');
+    Route::get('reunion/create','create')->name('reunion.create');
     Route::get('reunion/newID','getNewID');
     Route::get('reunion/list-orateur','list_orateur');
     Route::post('reunion/aide-memoire','list_aide_memoire_user');
@@ -275,7 +275,7 @@ Route::controller(App\Http\Controllers\TypeReunionController::class)->middleware
    
     Route::get('type-reunion/list','index');
     Route::get('type-reunion/list-all','list');
-    Route::get('type-reunion/create','create');
+    Route::get('type-reunion/create','create')->name('type_reunion.create');
     Route::post('type-reunion/add','store');
     Route::post('type-reunion/{typeReunion}/update','update');
    

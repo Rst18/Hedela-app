@@ -35,7 +35,7 @@
 
 
 <script setup>
-     import AidesMemoireList from './AidesMemoireList.vue';
+    import AidesMemoireList from './AidesMemoireList.vue';
     import AideMemoire from './AideMemoire.vue';
     import {ref,onMounted} from 'vue'
     import useAxios from '@/ComponentsServices/axios';
