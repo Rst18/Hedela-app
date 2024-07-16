@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreReunionRequest;
 use App\Http\Requests\UpdateReunionRequest;
+use App\Notifications\DemandeParoleNotification;
 
 class ReunionController extends Controller
 {
@@ -458,7 +459,9 @@ class ReunionController extends Controller
                     $reunion->demande_parole()
             
                         ->updateExistingPivot($user->id, [ 'confirmed' => 1 ]);
-            
+
+                        $user->notify(new DemandeParoleNotification($reunion,'Information'));
+
                     return ['type'=>'success','message'=>'Confirmation reussie'];
                 }
 

@@ -116,10 +116,17 @@ const aideMemoire = (reunion_id) => {
   //     // Ajoutez le message au DOM
   //   });
 };
+const demandeParoleReponse = () => {
+  console.log("object");
+  window.Echo.private("App.Models.User.1").notification((notification) => {
+    console.log("notification");
+  });
+};
 
 onMounted(() => {
   presenceEvent(props.reunion.id.replaceAll("/", "-"));
   aideMemoire(props.reunion.id.replaceAll("/", "-"));
+  demandeParoleReponse();
 });
 </script>
 

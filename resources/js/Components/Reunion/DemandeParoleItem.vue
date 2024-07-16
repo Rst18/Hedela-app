@@ -24,7 +24,7 @@ const props = defineProps({
 const { axios_post_simple } = useAxsios();
 
 const accept = () => {
-  axios_post_simple("../reunion/accept-demande", {
+  axios_post_simple("../../reunion/accept-demande", {
     reunion: props.demande.pivot.reunion_id,
     user: props.demande.pivot.user_id,
   }).then(({ data }) => {
@@ -32,7 +32,7 @@ const accept = () => {
   });
 };
 const refuse = () => {
-  axios_post_simple("../reunion/refuse-demande", {
+  axios_post_simple("../../reunion/refuse-demande", {
     reunion: props.demande.pivot.reunion_id,
     user: props.demande.pivot.user_id,
   }).then(({ data }) => {
