@@ -1,8 +1,8 @@
 <template>
     <div class="grid grid-cols-4 gap-2 py-2">
         <RButton @click="close" >Retour</RButton>
-        <a :href="'../reunion/'+ reunion.id.replaceAll('/','++')+'/join'"><RButton v-if="reunion.status !== 2"  >Rejoindre la reunion</RButton></a>
-        
+        <a :href="'../reunion/'+ reunion.id.replaceAll('/','++')+'/join'"><RButton v-if="reunion.status == 1"  >Rejoindre la reunion</RButton></a>
+
     </div>
     <div class="grid grid-cols-12 gap-4">
         <div class="col-span-9  p-8 ">

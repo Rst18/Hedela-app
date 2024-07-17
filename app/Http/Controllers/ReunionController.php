@@ -19,7 +19,7 @@ use App\Notifications\DemandeParoleNotification;
 class ReunionController extends Controller
 {
 
-    
+
     public function getNewID(){
 
        return Reunion::genereNumReunionID();
@@ -29,7 +29,7 @@ class ReunionController extends Controller
      */
     public function index()
     {
-      
+
         return Reunion::with(['ordresDuJour'=>function($query){
                             $query->with('annexes');
                         }])
@@ -61,16 +61,16 @@ class ReunionController extends Controller
      */
     public function store(StoreReunionRequest $request)
     {
-        
-      
+
+
         try {
-            
+
             DB::beginTransaction();
 
                 // Enregistrement de la reunion
                 $reunion =  Reunion::create($request->validated());
 
-                // add orateurs 
+                // add orateurs
 
                 $reunion->orateurs()->sync($request->orateurs);
 
@@ -82,26 +82,26 @@ class ReunionController extends Controller
 
                 //Enregistrement des points a l'ordre du jour
 
-                for ($i=0; $i < count($request->ordreJour) ; $i++) { 
+                for ($i=0; $i < count($request->ordreJour) ; $i++) {
 
                     $ordre = OrdreJour::create([
-                        
+
                         'name'=>$request->ordreJour[$i]['name'],
                         'description'=>isset($request->ordreJour[$i]['description']) ? $request->ordreJour[$i]['description'] : '' ,
                         'reunion_id'=>$reunion->id
-                    
+
                     ]);
 
                     if ( isset($request->ordreJour[$i]['annexes']) ) {
 
-                        for ($a=0; $a < count($request->ordreJour[$i]['annexes']) ; $a++) { 
+                        for ($a=0; $a < count($request->ordreJour[$i]['annexes']) ; $a++) {
 
                             $fileName = time() . '.' . $request->ordreJour[$i]['annexes'][$a]->getClientOriginalExtension();
-        
-                            $filePath = $request->ordreJour[$i]['annexes'][$a]->storeAs('Documents/Reunion/'.$reunion->id.'/ordreJour', $fileName);                      
-                            
+
+                            $filePath = $request->ordreJour[$i]['annexes'][$a]->storeAs('Documents/Reunion/'.$reunion->id.'/ordreJour', $fileName);
+
                             //Enregistrement des annexes pour chaque orodres du jours
-                            
+
                             AnnexeOrdreJour::create([
 
                                 'name'=> $ordre->name,
@@ -111,7 +111,7 @@ class ReunionController extends Controller
                         }
 
                     }
-                
+
                 }
 
             DB::commit();
@@ -146,8 +146,8 @@ class ReunionController extends Controller
 
         if ($reunion) {
             return Inertia::render('Reunion/CurrentReunion',compact('reunion'));
-          
-        }  
+
+        }
     }
 
       /**
@@ -173,7 +173,7 @@ class ReunionController extends Controller
 
         if ($reunion) {
             return Inertia::render('Reunion/CurrentReunionAdmin',compact('reunion'));
-          
+
         } else    return Inertia::render('ErrorPage',compact('message'));
     }
 
@@ -191,15 +191,15 @@ class ReunionController extends Controller
     public function update(UpdateReunionRequest $request, )
     {
         try {
-            
+
             $reunion = Reunion::find($request->reunion);
-            
+
             if ($reunion) {
-                
+
                 $reunion->update($request->validated());
-                
+
                 $reunion->orateurs()->sync(array_map('intval',$request->orateurs));
-                
+
               //  return    $reunion->orateurs()->sync(array_map('intval',$request->orateurs));
 
                 $reunion->preside_reunion_role()->sync($request->preside);
@@ -210,26 +210,26 @@ class ReunionController extends Controller
 
                 //Enregistrement des points a l'ordre du jour
 
-                // for ($i=0; $i < count($request->ordreJour) ; $i++) { 
+                // for ($i=0; $i < count($request->ordreJour) ; $i++) {
 
                 //     $ordre = OrdreJour::create([
-                        
+
                 //         'name'=>$request->ordreJour[$i]['name'],
                 //         'description'=>isset($request->ordreJour[$i]['description']) ? $request->ordreJour[$i]['description'] : '' ,
                 //         'reunion_id'=>$reunion->id
-                    
+
                 //     ]);
 
                 //     if ( isset($request->ordreJour[$i]['annexes']) ) {
 
-                //         for ($a=0; $a < count($request->ordreJour[$i]['annexes']) ; $a++) { 
+                //         for ($a=0; $a < count($request->ordreJour[$i]['annexes']) ; $a++) {
 
                 //             $fileName = time() . '.' . $request->ordreJour[$i]['annexes'][$a]->getClientOriginalExtension();
-        
-                //             $filePath = $request->ordreJour[$i]['annexes'][$a]->storeAs('Documents/Reunion/'.$reunion->id.'/ordreJour', $fileName);                      
-                            
+
+                //             $filePath = $request->ordreJour[$i]['annexes'][$a]->storeAs('Documents/Reunion/'.$reunion->id.'/ordreJour', $fileName);
+
                 //             //Enregistrement des annexes pour chaque orodres du jours
-                            
+
                 //             AnnexeOrdreJour::create([
 
                 //                 'name'=> $ordre->name,
@@ -239,7 +239,7 @@ class ReunionController extends Controller
                 //         }
 
                 //     }
-                
+
                 // }
 
                 return ['type'=>'success','message'=>'Modification reussie'];
@@ -275,7 +275,7 @@ class ReunionController extends Controller
     }
 
     public function addOrateurRenion(Request $request){
-      
+
         try {
 
             $user = User::find($request->user);
@@ -283,17 +283,17 @@ class ReunionController extends Controller
             $reunion = Reunion::find($request->reunion);
 
             if ($reunion != null) {
-              
+
                 if ($user != null) {
-    
-                     
+
+
                      $reunion->orateurs()->attach($user->id);
 
                      //notification a l'orateur
-    
+
                     return response()->json(data:[],status:200);
 
-                }  
+                }
 
                 return response()->json(data:['Aucun Utilisateur trouvé !'], status:404);
             }
@@ -304,7 +304,7 @@ class ReunionController extends Controller
             //throw $th;
             return response()->json(data:['errorMessage'=>$th],status:500);
         }
-      
+
     }
     public function removeUserTask(Request $request){
 
@@ -323,7 +323,7 @@ class ReunionController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
         }
-      
+
     }
 
     /**
@@ -342,8 +342,8 @@ class ReunionController extends Controller
     }
 
     /**
-     * 
-     * Enregistrement dela demande de parole 
+     *
+     * Enregistrement dela demande de parole
      */
 
     public function storeDemande_parole(Request $request){
@@ -355,7 +355,7 @@ class ReunionController extends Controller
             $reunion->demande_parole()->attach(Auth::user()->id);
 
             broadcast(new DemandeParoleSent($reunion));
-            
+
             return response()->json(data:[],status:200);
         }
 
@@ -363,7 +363,7 @@ class ReunionController extends Controller
     }
 
     /**
-     * 
+     *
      * Enregistrement des groups aide memoire
     */
 
@@ -384,7 +384,7 @@ class ReunionController extends Controller
 
 
     /**
-     * 
+     *
      * Enregistrement des groups participants
     */
 
@@ -406,9 +406,9 @@ class ReunionController extends Controller
 
 
     /**
-     * 
+     *
      * Enregistrement des groups presidents la reunion
-     * 
+     *
     */
 
     public function storePreside_reunion_role(Request $request){
@@ -433,33 +433,33 @@ class ReunionController extends Controller
         if ($reunion != null) {
 
             return $reunion->with(['aides_memoire'=>function($q){
-    
+
                 $q->where('user_id',Auth::user()->id);
-    
+
             }])->get();
         }
     }
 
 
     /**
-     * 
+     *
      * Confirmation de la demande de parole en reunion
      */
 
     public function confirmDemande(Request $request){
         try {
-            
+
             $user = User::find($request->user);
-            
+
             $reunion = Reunion::find($request->reunion);
-           
+
 
             if ($reunion != null) {
 
                 if ($reunion->demande_parole()->wherePivot('user_id', $user->id)->exists()) {
 
                     $reunion->demande_parole()
-            
+
                         ->updateExistingPivot($user->id, [ 'confirmed' => 1 ]);
 
                         $user->notify(new DemandeParoleNotification($reunion,'Information'));
@@ -471,8 +471,8 @@ class ReunionController extends Controller
 
             }
             return ['type','error','message'=>'Aucune  utilisateur trouve !'];
-    
-           
+
+
         } catch (\Throwable $th) {
             //throw $th;
             return ['type','error','message'=>'Une erreur s\'est produite lors du traitement de la damande','errorMessage'=>$th];
@@ -481,22 +481,22 @@ class ReunionController extends Controller
 
     }
     public function unConfirmDemande(Request $request){
-       
+
         try {
-            
+
             $user = User::find($request->user);
-            
+
             $reunion = Reunion::find($request->reunion);
-           
+
 
             if ($reunion != null) {
 
                 if ($reunion->demande_parole()->wherePivot('user_id', $user->id)->exists()) {
 
                     $reunion->demande_parole()
-            
+
                         ->updateExistingPivot($user->id, [ 'confirmed' => 0 ]);
-            
+
                     return ['type'=>'success','message'=>'Confirmation reussie'];
                 }
 
@@ -504,9 +504,9 @@ class ReunionController extends Controller
 
             }
             return ['type','error','message'=>'Aucune  utilisateur trouve !'];
-    
-    
-           
+
+
+
         } catch (\Throwable $th) {
             //throw $th;
             return ['type','error','message'=>'Une erreur s\'est produite lors du traitement de la damande','errorMessage'=>$th];
@@ -521,15 +521,15 @@ class ReunionController extends Controller
      */
 
      public function clotureReunion(Request $request){
-        
+
         try {
 
             $reunion = Reunion::find($request->reunion);
 
             if ($reunion != null) {
-               
+
                 $reunion->update(['status'=>2]);
-    
+
                 return ['type'=>'success','message'=>'La reunion a ete bien cloturee'];
             }
 
@@ -538,8 +538,30 @@ class ReunionController extends Controller
 
         } catch (\Throwable $th) {
             //throw $th;
-            
+
             return ['type'=>'error','message'=>'Une erreur s\'est produite lors de la cloture de la reunion','errorMessage'=>$th];
         }
      }
+    public function ouvrirReunion(Request $request){
+
+        try {
+
+            $reunion = Reunion::find($request->reunion);
+
+            if ($reunion != null) {
+
+                $reunion->update(['status'=>1]);
+
+                return ['type'=>'success','message'=>'Ouverture reunion success'];
+            }
+
+            return ['type'=>'error','message'=>'Aucune reunion trouvee'];
+
+
+        } catch (\Throwable $th) {
+            //throw $th;
+
+            return ['type'=>'error','message'=>'Une erreur s\'est produite lors de la cloture de la reunion','errorMessage'=>$th];
+        }
+    }
 }
