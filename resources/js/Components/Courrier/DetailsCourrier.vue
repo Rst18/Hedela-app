@@ -78,7 +78,7 @@
                                 </div>
                             </div>
                             <div class="mt-4">
-                                <AjoutCommentaire url="commentaire-courrier/add" @new="setNewComment" :model_id="courrierData.id"/>
+                                <AjoutCommentaire url="commentaire-courrier/add" @newComment="setNewComment" :model_id="courrierData.id"/>
                             </div>
                         </div>
                     </div>

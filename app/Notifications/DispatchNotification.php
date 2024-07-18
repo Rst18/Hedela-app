@@ -35,7 +35,8 @@ class DispatchNotification extends Notification implements ShouldBroadcastNow
      */
     public function via(object $notifiable): array
     {
-        return ['mail','database','broadcast'];
+        return ['database','broadcast'];
+        // return ['mail','database','broadcast'];
     }
 
     /**
