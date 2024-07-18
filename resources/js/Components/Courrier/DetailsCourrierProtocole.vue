@@ -53,7 +53,7 @@
                                 </div>
                                 <div>
                                     <a v-for="annexe in courrierData.annexes" :href="'../download/'+ annexe.path.replaceAll('/','++')" target="_blank" class="font-bold text-sm text-blue-700 ml-4"> {{ annexe.name }}</a>
-                                    <UploadAnnexes v-if="addAnnexes" v-for="doc in annexes_missed" :key="doc.id"  url="annexe-courrier/add" :model_id="courrierData.id" :name="doc.name"/>
+                                    <UploadAnnexes v-if="addAnnexes" v-for="doc in annexes_missed" :key="doc.id"  url="../annexe-courrier/add" :model_id="courrierData.id" :name="doc.name"/>
                                 </div>
                             </div>
                         </div>

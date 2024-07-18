@@ -120,7 +120,7 @@
                         </div>
                     </div>
                     <div class="mt-4">
-                        <AjoutCommentaire url="commentaire-note-technique/add" @new="setNewComment" :model_id="note.id"/>
+                        <AjoutCommentaire url="commentaire-note-technique/add" @newComment="setNewComment" :model_id="note.id"/>
                     </div>
                 </div>
             </div>
@@ -167,8 +167,6 @@
 
         onMounted(() => {
             currentNote.value = props.note
-
-            console.log(currentNote.value);
         });
 
 

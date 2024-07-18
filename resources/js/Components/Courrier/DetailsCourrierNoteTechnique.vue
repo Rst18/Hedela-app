@@ -79,7 +79,7 @@
                                 </div>
                             </div>
                             <div class="mt-4">
-                                <AjoutCommentaire url="commentaire-courrier/add" @new="setNewComment" :model_id="courrierData.id"/>
+                                <AjoutCommentaire url="commentaire-courrier/add" @newComment="setNewComment" :model_id="courrierData.id"/>
                             </div>
                         </div>
                     </div>
@@ -139,7 +139,7 @@ import UploadAnnexes from '@/Components/UploadAnnexes.vue'
     const total_annexes = ref()
     const addAnnexes = ref(false)
     const setNewComment = (e)=>{
-        courrierData.commentaires.push(e)
+        courrierData.value.commentaires.push(e)
     }
 
     const getCurrentNote = (note)=>{

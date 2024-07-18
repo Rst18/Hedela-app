@@ -57,9 +57,35 @@ class RendezvousAudienceController extends Controller
 
            //notification du mail demandant le rendez vous
              
-           Mail::to($audience->email)->send(New RendezvousMailNotification('Bonjour !, votre rendez vous a été fixer comme suit : Date : '.$request->date_heure .'  Lieu :'.$request->lieu));
+          // Mail::to($audience->email)->send(New RendezvousMailNotification('Bonjour !, votre rendez vous a été fixer comme suit : Date : '.$request->date_heure .'  Lieu :'.$request->lieu));
 
-           return ['type'=>'success','message'=>"Enregistrement reussi",'new'=>$rendezvous];
+               //creer une tache couverture
+
+            // $task = Task::create([
+
+            //     'nom'=>'Couverture reunion  ',
+            //     'description'=>"Couverture reunion : Vous avez été ajouter comme couverture à un rendez-vous. Lieu : $rendezvous->lieu, Heure et date: $rendezvous->date_heure, veillez consulter votre liste des reunions pour plus des details ",
+            //     'statut'=>1,
+            //     'priorite'=>2,
+            //     'date_debut'=>$rendezvous->date_heure,
+            //     'date_fin'=>$rendezvous->date_heure,
+            //     'date_fermeture'=>Carbon::now()->addDays(2),
+            //     'user_id'=>Auth::user()->id,
+            // ]);
+
+            // if ($task != null) {
+
+            //     if (!$task->users()->wherePivot('user_id', $user->id)->exists()) {
+
+            //         $user->tasks()->attach($task->id);
+            //         $task->keepInformed()->attach(Auth::user()->id);
+            //     }
+
+            //     $user->notify(new TaskNotification("Vous avez été affecter à une tache de couverture à un rendez-vous.",'Information'));
+
+            // }
+          
+            return ['type'=>'success','message'=>"Enregistrement reussi",'new'=>$rendezvous];
 
         } catch (\Throwable $th) {
             //throw $th;

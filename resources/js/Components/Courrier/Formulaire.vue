@@ -86,8 +86,8 @@
             </div>
             <div>
                 <fwb-input
-                    v-model="form.annexes"
-                    label="Nombre des annexes"
+                    v-model="form.annexe"
+                    label="Nombre annexes"
                     disabled
                 />
                 <div class="text-red-500 text-xs py-1" v-if="errors.annexes">
@@ -218,8 +218,8 @@ import Swal from 'sweetalert2';
     }
 
     const getService = (e)=>{
-        currentService.value = props.services ?props.services : services_v.value.filter((service)=>service.id === e)
-        form.value.annexes = currentService.value[0].documents.length
+        currentService.value = props.services ? props.services.filter((service)=>service.id === e) : services_v.value.filter((service)=>service.id === e)
+        form.value.annexe = currentService.value[0].documents.length
         form.value.service_id = e
     }
 
@@ -249,10 +249,11 @@ import Swal from 'sweetalert2';
 
         if (props.action === 'add') {
             axios_get('../courrier/new-number').then(({data})=>  form.value.number = data )  
+
         }else if (props.action ==='update') {
             axios_get('../service/list-all').then(({data})=>  {
                 services_v.value = data
-                form.value.annexes = services_v.value.filter((s)=>s.id === props.courrier.service_id)[0].documents.length
+                form.value.annexe = services_v.value.filter((s)=>s.id === props.courrier.service_id)[0].documents.length
                 // console.log(services_v.value.filter((s)=>s.id === props.courrier.service_id));
             } )  
             axios_get('../typecourrier/list-all').then(({data})=>  typeCourriers_v.value = data )  

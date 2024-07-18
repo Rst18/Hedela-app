@@ -21,7 +21,7 @@
             model_id:Number,
             url:String
         })
-        const emit = defineEmits(['new'])
+        const emit = defineEmits(['new','newComment'])
 
         const {axios_post_simple} = useAxios()
 
@@ -34,10 +34,10 @@
         const save = ()=>{
 
             axios_post_simple('../'+props.url,form.value).then(({data})=>{
-                
                 if (data.type === 'success') {
                     form.value.commentaire = ''
-                    emit('new',data.new)
+                    // console.log(data.new);
+                    emit('newComment',data.new)
                     
                 }
             }).catch((error)=>{
