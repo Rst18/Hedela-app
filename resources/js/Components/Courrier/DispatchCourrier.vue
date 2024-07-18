@@ -30,11 +30,6 @@
 
             </div>
 
-
-
-
-        
-
         </div>
     </div>
 </template>

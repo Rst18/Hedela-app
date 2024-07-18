@@ -127,6 +127,7 @@ import UploadAnnexes from '@/Components/UploadAnnexes.vue'
     const total_annexes = ref()
     const addAnnexes = ref(false)
     const setNewComment = (e)=>{
+        console.log(e,courrierData.value);
         courrierData.value.commentaires.push(e)
     }
 

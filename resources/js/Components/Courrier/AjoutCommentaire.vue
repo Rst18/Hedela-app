@@ -34,7 +34,7 @@
         const save = ()=>{
 
             axios_post_simple('../'+props.url,form.value).then(({data})=>{
-                
+                console.log(data.type);
                 if (data.type === 'success') {
                     form.value.commentaire = ''
                     emit('new',data.new)
