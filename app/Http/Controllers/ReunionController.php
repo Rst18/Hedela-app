@@ -44,6 +44,9 @@ class ReunionController extends Controller
                         ->with('aide_memoire_reunion_role')
                         ->with('participant_reunion_role')
                         ->with('preside_reunion_role')
+                        ->with(['sondages'=>function($q){
+                            $q->with('sondageItems');
+                        }])
                         ->orderBy('created_at','DESC')
                         ->paginate(20);
     }
@@ -143,6 +146,9 @@ class ReunionController extends Controller
         }])
         ->with('aide_memoire_reunion_role')
         ->with('participant_reunion_role')
+        ->with(['sondages'=>function($q){
+            $q->with('sondageItems');
+        }])
         ->with('preside_reunion_role')->first();
 
         if ($reunion) {
@@ -170,6 +176,9 @@ class ReunionController extends Controller
         }])
         ->with('aide_memoire_reunion_role')
         ->with('participant_reunion_role')
+        ->with(['sondages'=>function($q){
+            $q->with('sondageItems');
+        }])
         ->with('preside_reunion_role')->first();
 
         if ($reunion) {

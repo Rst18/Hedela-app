@@ -3,22 +3,31 @@
     <a href="../../reunion/list-page">
       <RButton v-if="reunion.status !== 2" class="bg-red-700 text-white"
         >Quitter la reunion</RButton
-      ></a
-    >
+      ></a>
   </div>
   <div class="relative grid grid-cols-12 gap-4">
     <div
       class="col-span-3 grid grid-cols-1 gap-4 p-4 rounded-r-2xl border shadow-md h scroll overflow-auto"
     >
+
+
       <OptionsComponent
         @showAidesMemoire="chooseAideMemoire"
         @showDemandeP="showDemandeParole = true"
+        @createSondage="showCreateSondage = true"
+        @showSondageList="showSondageList = true"
         :reunion
         :is_Admin
         :joined_meet="1"
       />
     </div>
     <div class="col-span-7 border rounded-2xl p-8 shadow-md h scroll overflow-auto">
+
+        <VoteSondage  :sondage="reunion.sondages[0]"/>
+
+    <FormCreateSondage v-if="showCreateSondage" action="add" :reunion/>
+
+
       <AidesMemoireList
         :aides_memoire="reunion.aides_memoire"
         :reunion
@@ -69,11 +78,12 @@ import RButton from "./RButton.vue";
 import AlertNotification from "@/Components/AlertNotification.vue";
 import DemandeParole from "./DemandeParoleComponent.vue";
 import UserProfile from "../UserProfile.vue";
-
-const props = defineProps({
-  reunion: Object,
-  is_Admin: Number,
-});
+import VoteSondage from "../Sondage/VoteSondage.vue";
+        const props = defineProps({
+            reunion: Object,
+            is_Admin: Number,
+        });
+        console.log(props.reunion)
 
 const { axios_post_simple } = useAxios();
 const emit = defineEmits(["closeMe"]);
@@ -86,37 +96,38 @@ const notification_message = ref();
 const showCurrentUser = ref(false)
 const user = ref()
 
-const close = () => {
-  emit("closeMe");
-};
+        const close = () => {
+            emit("closeMe");
+        };
 
-const chooseAideMemoire = () =>
-  props.is_Admin === 1
-    ? (addAideMemoireAdmin.value = true)
-    : (addAideMemoireUser.value = true);
+        const chooseAideMemoire = () =>
+        props.is_Admin === 1
+            ? (addAideMemoireAdmin.value = true)
+            : (addAideMemoireUser.value = true);
 
-const demanderParole = () => {};
+        const demanderParole = () => {};
 
-const presenceEvent = (reunionId) => {
-  window.Echo.join(`reunion.${reunionId}`)
-    .here((users) => {
-      users_connected.value = users;
-    })
-    .joining((user) => {
-      users_connected.value.push(user);
-    })
-    .leaving((user) => {
-      users_connected.value = users_connected.value.filter((u) => u.email != user.email);
-    });
-};
+        const presenceEvent = (reunionId) => {
+        window.Echo.join(`reunion.${reunionId}`)
+            .here((users) => {
+            users_connected.value = users;
+            })
+            .joining((user) => {
+            users_connected.value.push(user);
+            })
+            .leaving((user) => {
+            users_connected.value = users_connected.value.filter((u) => u.email != user.email);
+            });
+        };
 
-const aideMemoire = (reunion_id) => {
-  window.Echo.channel(`reunion-${reunion_id}`).listen("AideMemoireSent", (e) => {
-    notification_message.value = e.message;
-    showNotification.value = true;
-    // Ajoutez le message au DOM
-  });
+        const aideMemoire = (reunion_id) => {
+        window.Echo.channel(`reunion-${reunion_id}`).listen("AideMemoireSent", (e) => {
+            notification_message.value = e.message;
+            showNotification.value = true;
+            // Ajoutez le message au DOM
+        });
 
+<<<<<<< HEAD
     window.Echo.channel(`reunion-${reunion_id}`).listen("DonnerParoleEvent", (e) => {
       console.log(e);
       user.value = e.currentUser
@@ -130,12 +141,25 @@ const demandeParoleReponse = () => {
     console.log("notification");
   });
 };
+=======
+        //   window.Echo.channel(`reunion-${reunion_id}`).listen("DemandeParoleSent", (e) => {
+        //     console.log(e);
+        //     // Ajoutez le message au DOM
+        //   });
+        };
+        const demandeParoleReponse = () => {
+        // console.log("object");
+        window.Echo.private("App.Models.User.1").notification((notification) => {
+            console.log("notification");
+        });
+        };
+>>>>>>> 80bc567b4c489ef0137bed83e844a0ffabadf3bd
 
-onMounted(() => {
-  presenceEvent(props.reunion.id.replaceAll("/", "-"));
-  aideMemoire(props.reunion.id.replaceAll("/", "-"));
-  demandeParoleReponse();
-});
+        onMounted(() => {
+        presenceEvent(props.reunion.id.replaceAll("/", "-"));
+        aideMemoire(props.reunion.id.replaceAll("/", "-"));
+        demandeParoleReponse();
+        });
 </script>
 
 <style scoped>

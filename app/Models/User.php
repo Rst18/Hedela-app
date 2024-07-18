@@ -8,12 +8,13 @@ use App\Models\Task;
 use App\Models\Bureau;
 use App\Models\Courrier;
 use App\Models\Timesheet;
+use App\Models\SondageItem;
 use App\Models\RendezvousAudience;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Broadcasting\PrivateChannel;
 
 class User extends Authenticatable
 {
@@ -83,13 +84,13 @@ class User extends Authenticatable
         return $this->belongsToMany(RendezvousAudience::class);
     }
 
-   
+
     public function tasks(): BelongsToMany
     {
         return $this->belongsToMany(Task::class);
     }
 
-    
+
     public function timesheets(): HasMany
     {
         return $this->hasMany(Timesheet::class);
@@ -125,5 +126,15 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'demande_parole_reunion');
     }
 
-    
+    /**
+     * The sondages that belong to the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function sondages(): BelongsToMany
+    {
+        return $this->belongsToMany(SondageItem::class);
+    }
+
+
 }
