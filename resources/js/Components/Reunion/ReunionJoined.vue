@@ -32,7 +32,8 @@
         @close-me="showDemandeParole = false"
       />
       <div>
-        <DetailsRenionComponent :reunion />
+        <UserProfile :user v-if="showCurrentUser"/>
+        <DetailsRenionComponent :reunion v-else />
       </div>
     </div>
     <div class="col-span-2 border rounded-l-2xl px-4 py-2 h scroll overflow-auto">
@@ -67,6 +68,7 @@ import OptionsComponent from "./OptionsComponent.vue";
 import RButton from "./RButton.vue";
 import AlertNotification from "@/Components/AlertNotification.vue";
 import DemandeParole from "./DemandeParoleComponent.vue";
+import UserProfile from "../UserProfile.vue";
 
 const props = defineProps({
   reunion: Object,
@@ -81,6 +83,8 @@ const showNotification = ref(false);
 const showDemandeParole = ref(false);
 const users_connected = ref([]);
 const notification_message = ref();
+const showCurrentUser = ref(false)
+const user = ref()
 
 const close = () => {
   emit("closeMe");
@@ -113,10 +117,12 @@ const aideMemoire = (reunion_id) => {
     // Ajoutez le message au DOM
   });
 
-  //   window.Echo.channel(`reunion-${reunion_id}`).listen("DemandeParoleSent", (e) => {
-  //     console.log(e);
-  //     // Ajoutez le message au DOM
-  //   });
+    window.Echo.channel(`reunion-${reunion_id}`).listen("DonnerParoleEvent", (e) => {
+      console.log(e);
+      user.value = e.currentUser
+      showCurrentUser.value = true
+      // Ajoutez le message au DOM
+    });
 };
 const demandeParoleReponse = () => {
   // console.log("object");

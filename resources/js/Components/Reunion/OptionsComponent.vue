@@ -17,7 +17,7 @@
       >
 
       <div class="grid grid-cols-1 gap-2 text-xs py-2">
-        <span v-for="o in reunion.demande_parole" class="col-span-1 ml-2">
+        <span @click="accorderParole(o)" v-for="o in reunion.demande_parole" class="col-span-1 ml-2 p-1 cursor-pointer bg-gray-400 rounded-2xl px-2">
           {{ o.name }}
         </span>
       </div>
@@ -63,6 +63,12 @@ const send_demande_parole = () => {
     console.log(data);
   });
 };
+    const accorderParole = (user)=>{
+        if (props.is_Admin === 1 && props.joined_meet === 1) {
+            axios_post_simple('../../reunion/accorder-parole',{user:user,reunion:props.reunion}).then(({data})=>{})
+        }
+    }
+
 const aideMemoireSocket = (reunion_id) => {
   window.Echo.channel(`reunion-${reunion_id}`).listen("AideMemoireSent", (e) => {
    // console.log(e);

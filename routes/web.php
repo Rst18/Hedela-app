@@ -266,6 +266,7 @@ Route::controller(App\Http\Controllers\ReunionController::class)->middleware(['a
     Route::get('reunion/{reunion}/join','show');
     Route::get('reunion/{reunion}/join-admin','show_admin');
     Route::post('reunion/aide-memoires','get_aide_memoire_reunion');
+    Route::post('reunion/accorder-parole','accorder_Parole');
 
 });
 Route::controller(App\Http\Controllers\AideMemoireController::class)->middleware('auth')->group(function(){

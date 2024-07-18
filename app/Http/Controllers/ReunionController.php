@@ -10,6 +10,7 @@ use App\Models\TypeReunion;
 use Illuminate\Http\Request;
 use App\Models\AnnexeOrdreJour;
 use App\Events\DemandeParoleSent;
+use App\Events\DonnerParoleEvent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreReunionRequest;
@@ -605,11 +606,19 @@ class ReunionController extends Controller
     }
 
     public function get_aide_memoire_reunion(Request $request){
-        
+
         return Reunion::where('id',$request->reunion)->with(['aides_memoire'=>function($q){
             $q->join('users','users.id','aides_memoire.user_id');
         }])->first();
 
+    }
+
+    public function accorder_Parole(Request $request){
+
+        // $user = User::find($request->user);
+        // $reunion = Reunion::find($request->reunion);
+        broadcast(new DonnerParoleEvent($request->reunion,$request->user));
+        return $request->reunion['id'];
     }
 
 
