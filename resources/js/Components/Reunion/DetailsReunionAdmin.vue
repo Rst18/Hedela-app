@@ -10,7 +10,7 @@
     <div class="grid grid-cols-12 gap-4" v-if="!modification">
         <div  class="col-span-9  p-8 ">
 
-            <AidesMemoireList :aides_memoire="reunion.aides_memoire" v-if="showAideM" @closeMe="showAideM = false"/>
+            <AidesMemoireList :reunion :aides_memoire="reunion.aides_memoire" v-if="showAideM" @closeMe="showAideM = false"/>
 
             <DemandeParole v-if="showDemandeParole"  :demandes=" reunion.demande_parole" @close-me="showDemandeParole = false"/>
 
@@ -19,7 +19,15 @@
             </div>
         </div>
         <div class="col-span-3 grid grid-cols-1  gap-4 p-4 h-fit  rounded-xl border shadow-md">
-            <OptionsComponent @showDemandeP="showDemandeParole = true" @showAidesMemoire="showAideM = true" :reunion :is_Admin="1"/>
+
+            <OptionsComponent
+                @showDemandeP="showDemandeParole = true"
+                @showAidesMemoire="showAideM = true"
+                :reunion
+                :is_Admin="1"
+                :joined_meet="1"
+            />
+
         </div>
 
     </div>

@@ -1,7 +1,7 @@
 <template>
     <div class="grid grid-cols-4 gap-2 py-2">
         <RButton @click="close" >Retour</RButton>
-        <a :href="'../reunion/'+ reunion.id.replaceAll('/','++')+'/join'"><RButton v-if="reunion.status == 1"  >Rejoindre la reunion</RButton></a>
+        <a :href="'../reunion/'+ reunion.id.replaceAll('/','++')+'/join'"><RButton v-if="reunion.status == 1" class="bg-blue-600 text-white"   >Rejoindre la reunion</RButton></a>
 
     </div>
     <div class="grid grid-cols-12 gap-4">
@@ -11,13 +11,11 @@
                <DetailsRenionComponent :reunion/>
             </div>
         </div>
-        <!-- <div class="col-span-3 grid grid-cols-1  gap-4 p-4 h-96 fixed right-14 w-64 rounded-xl border shadow-md">
-            <OptionsComponent  :reunion :is_Admin="0"/>
-        </div> -->
+        <div class="col-span-3 grid grid-cols-1  gap-4 p-4 h-96 fixed right-14 w-64 rounded-xl border shadow-md">
+            <OptionsComponent :joined_meet="0"  :reunion :is_Admin="0"/>
+        </div>
     </div>
 </template>
-
-
 <script setup>
 
     import AideMemoire from './AideMemoire.vue';

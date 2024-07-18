@@ -15,11 +15,13 @@
         @showDemandeP="showDemandeParole = true"
         :reunion
         :is_Admin
+        :joined_meet="1"
       />
     </div>
     <div class="col-span-7 border rounded-2xl p-8 shadow-md h scroll overflow-auto">
       <AidesMemoireList
         :aides_memoire="reunion.aides_memoire"
+        :reunion
         v-if="addAideMemoireAdmin"
         @closeMe="addAideMemoireAdmin = false"
       />
@@ -34,7 +36,7 @@
       </div>
     </div>
     <div class="col-span-2 border rounded-l-2xl px-4 py-2 h scroll overflow-auto">
-      <span class="text-sm xl:text-md font-semibold text-gray-700">Utilisateurs Connectes </span>
+      <span class="text-sm xl:text-md font-semibold text-gray-700">Utilisateurs Connectés </span>
       <div
         v-for="u in users_connected"
         :key="u.id"

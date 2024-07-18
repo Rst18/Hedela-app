@@ -34,8 +34,8 @@
       </div>
       <div v-else class="grid grid-cols-1 gap-2 text-sm py-4">
         <RButton @click="send_demande_parole"> Demande Parole </RButton>
-        <RButton @click=""> Lever la main</RButton>
-        <RButton @click="aideMemoire"> Envoyer Aide memoire </RButton>
+        <RButton v-if="joined_meet == 1" @click=""> Lever la main</RButton>
+        <RButton v-if="joined_meet == 1" @click="aideMemoire"> Envoyer Aide memoire </RButton>
       </div>
     </div>
   </div>
@@ -45,8 +45,9 @@ import { ref, onMounted } from "vue";
 import RButton from "./RButton.vue";
 import useAxios from "@/ComponentsServices/axios.js";
 const props = defineProps({
-  reunion: Object,
-  is_Admin: Number,
+  reunion:Object,
+  is_Admin:Number,
+  joined_meet:Number
 });
 const emit = defineEmits(["showAidesMemoire", "showDemandeP"]);
 const { axios_post_simple } = useAxios();
@@ -64,7 +65,7 @@ const send_demande_parole = () => {
 };
 const aideMemoireSocket = (reunion_id) => {
   window.Echo.channel(`reunion-${reunion_id}`).listen("AideMemoireSent", (e) => {
-    console.log(e);
+   // console.log(e);
     nbrAideMemoire.value += 1;
     // Ajoutez le message au DOM
   });

@@ -1,5 +1,3 @@
-
-
 <template>
     <Head title="Reunions" />
 

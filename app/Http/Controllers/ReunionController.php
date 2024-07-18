@@ -285,14 +285,9 @@ class ReunionController extends Controller
             if ($reunion != null) {
 
                 if ($user != null) {
-
-
                      $reunion->orateurs()->attach($user->id);
-
                      //notification a l'orateur
-
                     return response()->json(data:[],status:200);
-
                 }
 
                 return response()->json(data:['Aucun Utilisateur trouvé !'], status:404);
@@ -306,19 +301,27 @@ class ReunionController extends Controller
         }
 
     }
-    public function removeUserTask(Request $request){
+    public function removeOrateurRenion(Request $request){
 
         try {
 
             $user = User::find($request->user);
 
-            if ($user != null) {
+            $reunion = Reunion::find($request->reunion);
 
-                $user->tasks()->detach($request->task);
+            if ($reunion != null) {
 
-                return response()->json(data:[],status:200);
+                if ($user != null) {
+                     $reunion->orateurs()->detach($user->id);
+                     //notification a l'orateur
+                    return response()->json(data:[],status:200);
+                }
+
+                return response()->json(data:['Aucun Utilisateur trouvé !'], status:404);
             }
-            return response()->json(data:['Aucun group trouvé !'],status:404);
+
+            return response()->json(data:['Aucune reunion trouvée !'], status:404);
+
 
         } catch (\Throwable $th) {
             //throw $th;
@@ -564,4 +567,50 @@ class ReunionController extends Controller
             return ['type'=>'error','message'=>'Une erreur s\'est produite lors de la cloture de la reunion','errorMessage'=>$th];
         }
     }
+
+
+    public function paroleAccordee(Request $request){
+        try {
+
+            $user = User::find($request->user);
+
+            $reunion = Reunion::find($request->reunion);
+
+
+            if ($reunion != null) {
+
+                if ($reunion->demande_parole()->wherePivot('user_id', $user->id)->exists()) {
+
+                    $reunion->demande_parole()
+
+                        ->updateExistingPivot($user->id, [ 'status' => 1 ]);
+
+                       // $user->notify(new DemandeParoleNotification($reunion,'Information'));
+
+                    return ['type'=>'success','message'=>'Confirmation reussie'];
+                }
+
+                return ['type','error','message'=>'Aucune demande n\'a ete retrouvee pour cet utilisateur'];
+
+            }
+            return ['type','error','message'=>'Aucune  utilisateur trouve !'];
+
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            return ['type','error','message'=>'Une erreur s\'est produite lors du traitement de la damande','errorMessage'=>$th];
+        }
+
+
+    }
+
+    public function get_aide_memoire_reunion(Request $request){
+        
+        return Reunion::where('id',$request->reunion)->with(['aides_memoire'=>function($q){
+            $q->join('users','users.id','aides_memoire.user_id');
+        }])->first();
+
+    }
+
+
 }
