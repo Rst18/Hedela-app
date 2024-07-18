@@ -18,6 +18,7 @@
         @showSondageList="showSondageList = true"
         :reunion
         :is_Admin
+        :joined_meet="1"
       />
     </div>
     <div class="col-span-7 border rounded-2xl p-8 shadow-md h scroll overflow-auto">
@@ -29,6 +30,7 @@
 
       <AidesMemoireList
         :aides_memoire="reunion.aides_memoire"
+        :reunion
         v-if="addAideMemoireAdmin"
         @closeMe="addAideMemoireAdmin = false"
       />
@@ -39,11 +41,12 @@
         @close-me="showDemandeParole = false"
       />
       <div>
-        <DetailsRenionComponent :reunion />
+        <UserProfile :user v-if="showCurrentUser"/>
+        <DetailsRenionComponent :reunion v-else />
       </div>
     </div>
     <div class="col-span-2 border rounded-l-2xl px-4 py-2 h scroll overflow-auto">
-      <span class="text-sm xl:text-md font-semibold text-gray-700">Utilisateurs Connectes </span>
+      <span class="text-sm xl:text-md font-semibold text-gray-700">Utilisateurs Connectés </span>
       <div
         v-for="u in users_connected"
         :key="u.id"
@@ -65,34 +68,33 @@
 </template>
 
 <script setup>
-    import AidesMemoireList from "./AidesMemoireList.vue";
-    import AideMemoire from "./AideMemoire.vue";
-    import { ref, onMounted } from "vue";
-    import useAxios from "@/ComponentsServices/axios";
-    import DetailsRenionComponent from "./DetailsRenionComponent.vue";
-    import OptionsComponent from "./OptionsComponent.vue";
-    import RButton from "./RButton.vue";
-    import AlertNotification from "@/Components/AlertNotification.vue";
-    import DemandeParole from "./DemandeParoleComponent.vue";
-    import FormCreateSondage from '@/Components/Sondage/FormCreateSondage.vue'
-    import VoteSondage from '@/Components/Sondage/VoteSondage.vue'
-
+import AidesMemoireList from "./AidesMemoireList.vue";
+import AideMemoire from "./AideMemoire.vue";
+import { ref, onMounted } from "vue";
+import useAxios from "@/ComponentsServices/axios";
+import DetailsRenionComponent from "./DetailsRenionComponent.vue";
+import OptionsComponent from "./OptionsComponent.vue";
+import RButton from "./RButton.vue";
+import AlertNotification from "@/Components/AlertNotification.vue";
+import DemandeParole from "./DemandeParoleComponent.vue";
+import UserProfile from "../UserProfile.vue";
+import VoteSondage from "../Sondage/VoteSondage.vue";
         const props = defineProps({
             reunion: Object,
             is_Admin: Number,
         });
         console.log(props.reunion)
 
-        const { axios_post_simple } = useAxios();
-        const emit = defineEmits(["closeMe"]);
-        const addAideMemoireAdmin = ref(false);
-        const addAideMemoireUser = ref(false);
-        const showNotification = ref(false);
-        const showDemandeParole = ref(false);
-        const showCreateSondage = ref(false);
-        const showSondageList = ref(false);
-        const users_connected = ref([]);
-        const notification_message = ref();
+const { axios_post_simple } = useAxios();
+const emit = defineEmits(["closeMe"]);
+const addAideMemoireAdmin = ref(false);
+const addAideMemoireUser = ref(false);
+const showNotification = ref(false);
+const showDemandeParole = ref(false);
+const users_connected = ref([]);
+const notification_message = ref();
+const showCurrentUser = ref(false)
+const user = ref()
 
         const close = () => {
             emit("closeMe");
@@ -125,17 +127,19 @@
             // Ajoutez le message au DOM
         });
 
-        //   window.Echo.channel(`reunion-${reunion_id}`).listen("DemandeParoleSent", (e) => {
-        //     console.log(e);
-        //     // Ajoutez le message au DOM
-        //   });
-        };
-        const demandeParoleReponse = () => {
-        // console.log("object");
-        window.Echo.private("App.Models.User.1").notification((notification) => {
-            console.log("notification");
-        });
-        };
+    window.Echo.channel(`reunion-${reunion_id}`).listen("DonnerParoleEvent", (e) => {
+      console.log(e);
+      user.value = e.currentUser
+      showCurrentUser.value = true
+      // Ajoutez le message au DOM
+    });
+};
+const demandeParoleReponse = () => {
+  // console.log("object");
+  window.Echo.private("App.Models.User.1").notification((notification) => {
+    console.log("notification");
+  });
+};
 
         onMounted(() => {
         presenceEvent(props.reunion.id.replaceAll("/", "-"));

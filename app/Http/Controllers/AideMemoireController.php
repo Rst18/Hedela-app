@@ -35,12 +35,12 @@ class AideMemoireController extends Controller
             $new = AideMemoire::create($request->validated());
 
             broadcast(new AideMemoireSent($new));
-            
+
             return ['type'=>'success','message'=>'Enregistrement reussie','new'=>$new];
 
         } catch (\Throwable $th) {
             //throw $th;
-            
+
             return ['type'=>'error','message'=>'Echec d\'Enregistrement','errorMessage'=>$th];
         }
     }
@@ -74,7 +74,7 @@ class AideMemoireController extends Controller
 
         } catch (\Throwable $th) {
             //throw $th;
-            
+
             return ['type'=>'error','message'=>'Echec de modification'];
         }
     }
@@ -87,12 +87,22 @@ class AideMemoireController extends Controller
         try {
 
             $aideMemoire->delete();
-            
+
             return ['type'=>'success','message'=>'Suppresssion reussie'];
 
         } catch (\Throwable $th) {
             //throw $th;
-            
+
+            return ['type'=>'error','message'=>'Echec de suppression','errorMessage'=>$th];
+        }
+    }
+
+    public function markAsRead(AideMemoire $aideMemoire){
+        try {
+            $aideMemoire->update(['status'=>1]);
+            return ['type'=>'success','message'=>'Suppresssion reussie'];
+        } catch (\Throwable $th) {
+            //throw $th;
             return ['type'=>'error','message'=>'Echec de suppression','errorMessage'=>$th];
         }
     }

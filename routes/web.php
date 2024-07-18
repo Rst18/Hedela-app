@@ -261,14 +261,18 @@ Route::controller(App\Http\Controllers\ReunionController::class)->middleware(['a
     Route::post('reunion/accept-demande','confirmDemande');
     Route::post('reunion/refuse-demande','unConfirmDemande');
     Route::post('reunion/clorure','clotureReunion');
+    Route::post('reunion/ouvrir','ouvrirReunion');
     Route::post('reunion/update','update');
     Route::get('reunion/{reunion}/join','show');
     Route::get('reunion/{reunion}/join-admin','show_admin');
+    Route::post('reunion/aide-memoires','get_aide_memoire_reunion');
+    Route::post('reunion/accorder-parole','accorder_Parole');
 
 });
 Route::controller(App\Http\Controllers\AideMemoireController::class)->middleware('auth')->group(function(){
 
     Route::post('aide-memoire/add','store');
+    Route::post('aide-memoire/{aideMemoire}/readed','markAsRead');
 
 });
 Route::controller(App\Http\Controllers\TypeReunionController::class)->middleware('auth')->group(function(){
@@ -278,16 +282,6 @@ Route::controller(App\Http\Controllers\TypeReunionController::class)->middleware
     Route::get('type-reunion/create','create')->name('type_reunion.create');
     Route::post('type-reunion/add','store');
     Route::post('type-reunion/{typeReunion}/update','update');
-
-});
-Route::controller(App\Http\Controllers\SondageController::class)->middleware('auth')->group(function(){
-
-    Route::post('sondage/add','store');
-
-});
-Route::controller(App\Http\Controllers\SondageItemController::class)->middleware('auth')->group(function(){
-
-    Route::post('sondage-item/add-vote','addVoteSondage');
 
 });
 
