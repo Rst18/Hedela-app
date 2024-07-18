@@ -127,7 +127,6 @@ const user = ref()
             // Ajoutez le message au DOM
         });
 
-<<<<<<< HEAD
     window.Echo.channel(`reunion-${reunion_id}`).listen("DonnerParoleEvent", (e) => {
       console.log(e);
       user.value = e.currentUser
@@ -141,19 +140,6 @@ const demandeParoleReponse = () => {
     console.log("notification");
   });
 };
-=======
-        //   window.Echo.channel(`reunion-${reunion_id}`).listen("DemandeParoleSent", (e) => {
-        //     console.log(e);
-        //     // Ajoutez le message au DOM
-        //   });
-        };
-        const demandeParoleReponse = () => {
-        // console.log("object");
-        window.Echo.private("App.Models.User.1").notification((notification) => {
-            console.log("notification");
-        });
-        };
->>>>>>> 80bc567b4c489ef0137bed83e844a0ffabadf3bd
 
         onMounted(() => {
         presenceEvent(props.reunion.id.replaceAll("/", "-"));
