@@ -24,13 +24,13 @@
                 <span class="font-semibold text-gray-400">Statut </span>
                 <span>{{ get_status(audienceData.status).name }}</span>
             </div>
-            <Fwb-button v-if="audienceData.sataus != 4" class="bg-green-700" @click="showComponent = 1" >
+            <Fwb-button v-if="audienceData.status != 4 && audienceData.status != 1" class="bg-green-700" @click="showComponent = 1" >
                Programmer un  Rendez vous
             </Fwb-button>
-            <Fwb-button @click="showComponent = 3" v-if="audienceData.sataus != 4" class="bg-gray-800" >
+            <Fwb-button @click="showComponent = 3" v-if="audienceData.status === 1" class="bg-gray-800" >
             Transferer
             </Fwb-button>
-            <Fwb-button @click="CloseAudience" v-if="audienceData.sataus > 2 " class="bg-gray-400" >
+            <Fwb-button @click="CloseAudience" v-if="audienceData.status == 2 " class="bg-red-600" >
                 Cloturer
             </Fwb-button>
             
