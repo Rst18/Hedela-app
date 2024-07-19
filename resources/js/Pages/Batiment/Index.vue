@@ -12,12 +12,16 @@
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div>
                     <Fwb-button class="bg-gray-800 hover:bg-gray-600" @click="createBatiment = !createBatiment">
-                        Créer un Batiment
+                       {{ createBatiment === true ? 'Liste des batiments':' Créer un Batiment' }}
                     </Fwb-button>
                 </div>
-                <div>
-                    <ListBatiment  v-if="!createBatiment" />
+                <div v-if="!updateBatiment">
+                    <ListBatiment @update="getCurrentBatiment"  v-if="!createBatiment" />
                     <BatimentForm :batiment action="add" @newAdded="createBatiment = false"  v-if="createBatiment"/>
+                   
+                </div>
+                <div v-if="updateBatiment">
+                    <BatimentForm :batiment action="update" @updated="refrechList" />
                 </div>
                
             </div>
@@ -33,8 +37,18 @@
     import { FwbTab, FwbTabs,FwbButton } from 'flowbite-vue'
 
         const createBatiment = ref(false)
+        const updateBatiment = ref(false)
         
     const batiment = ref({})
+
+    const getCurrentBatiment = (e)=>{
+        batiment.value = e
+        updateBatiment.value = true
+    }
+
+    const refrechList = ()=>{
+        updateBatiment.value = false
+    }
 
 
 </script>

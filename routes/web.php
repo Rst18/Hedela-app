@@ -219,13 +219,14 @@ Route::controller(App\Http\Controllers\BatimentController::class)->middleware('a
     Route::post('batiment/add','store');
     Route::post('batiment/{batiment}/update','update');
     Route::get('batiment/list','index');
+    Route::get('batiment/{batiment}/delete','destroy');
     Route::get('batiment/create','create')->name('batiment.create');
 });
 
 Route::controller(App\Http\Controllers\BureauController::class)->middleware('auth')->group(function(){
     Route::post('bureau/add','store');
     Route::post('bureau/{bureau}/update','store');
-    Route::get('bureau/list','index');
+    Route::get('bureau/list','index');;
     Route::get('bureau/{bureau}/delete','destroy');
     Route::get('bureau/liste','list_bureau');
     Route::get('bureau/create','create')->name('bureau.create');

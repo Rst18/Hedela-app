@@ -33,7 +33,7 @@
             <fwb-input
                 v-model="form.niveau"
                 placeholder="6"
-                label="Nombre de niveau"
+                label="Numero de niveau"
                 type="number"
             />
             <div class="text-red-500 text-xs pb-2" v-if="errors.niveau">

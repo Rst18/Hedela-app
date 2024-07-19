@@ -20,7 +20,7 @@
            <div class="col-span-2">Options</div>
        </div>
        <div v-if="bureau">
-           <div v-for="b of bureau" :key="b.id" class="w-full p-3 grid grid-cols-12 gap-1 hover:bg-slate-200 hover:cursor-pointer">
+           <div v-for="b of bureau" :key="b.id" class="w-full p-3 grid grid-cols-12 gap-1 hover:bg-slate-200 hover:cursor-pointer text-xs">
                <div class="col-span-1">#</div>
                <div class="col-span-2">{{b.batiment.name }}</div>
                <div class="col-span-1">{{b.number }}</div>

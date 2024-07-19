@@ -73,6 +73,7 @@ import moment from 'moment';
             waitingData.value = false
         }).catch((error)=>{
             console.log(error.response)
+            waitingData.value = false
         })
     }
     onMounted(() => {

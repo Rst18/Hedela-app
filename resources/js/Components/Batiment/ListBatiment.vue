@@ -4,19 +4,24 @@
     </div>
    
     <div v-else >
-       <div class="mt-3 w-full p-3 font-semibold bg-gray-100 grid grid-cols-12">
+       <div class="mt-3 w-full p-3  font-semibold bg-gray-100 grid grid-cols-12">
            <div class="col-span-1">#</div>
-           <div class="col-span-7">Batiment</div>
+           <div class="col-span-5">Batiment</div>
            <div class="col-span-2">Niveaux  </div>
            <div class="col-span-2">Date  </div>
+           <div class="col-span-2">Options  </div>
        </div>
        <div v-if="batiments">
-           <div v-for="b of batiments" :key="b.id" class="w-full p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer">
+           <div v-for="b of batiments" :key="b.id" class="w-full p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer text-xs">
                <div class="col-span-1">#</div>
-               <div class="col-span-7">{{b.name }}</div>
+               <div class="col-span-5">{{b.name }}</div>
                <div class="col-span-2">{{b.niveaux }}</div>
   
                <div class="col-span-2">{{ moment(b.created_at).format('ll') }}</div>
+               <div class="col-span-2 grid grid-cols-2 gap-1">
+                    <span @click="deleteBatiment(b)" class="text-xs font-semibold text-red-600 underline hover:font-bold hover:text-sm">Supprimer</span>
+                    <span @click="updateBatiment(b)" class="text-xs font-semibold text-blue-600 underline hover:font-bold hover:text-sm">Modifier</span>
+               </div>
            </div>
            <div class="flex flex-row w-full px-4 md:w-9/12 justify-center items-center mx-auto">
                 <div v-for="link in links">
@@ -43,14 +48,30 @@
 
 
     const batiments = ref()
-
-
     const waitingData = ref(false)
+
     const links = ref()
+    const emit = defineEmits(['update']);
+
+    const deleteBatiment = (batiment)=>{
+
+        axios_get('../batiment/'+batiment.id+'/delete').then(({data})=>{
+
+            if (data.type ==='success') {
+                
+                batiments.value = batiments.value.filter((b)=>b.id != batiment.id )
+            }
+        }).catch((error)=>console.log(error.response))
+        }
+
+    const updateBatiment = (batiment)=>{
+        emit('update',batiment)
+    }
+
     const fetchBatiment = (url)=>{
         waitingData.value = true
         axios_get(url).then(({data:pagination})=>{
-            batiments.value = pagination.data           
+            batiments.value = pagination           
             links.value = pagination.links
             waitingData.value = false
         }).catch((error)=>{
@@ -58,7 +79,7 @@
         })
     }
         onMounted(() => {
-            fetchBatiment('../batiment/list')
+            fetchBatiment('../../batiment/list')
         })
 
 </script>

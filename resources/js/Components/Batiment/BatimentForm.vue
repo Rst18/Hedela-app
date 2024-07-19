@@ -41,7 +41,7 @@ import ToggleInput from '@/Components/ToggleInput.vue'
             action:String
         }
     )
-    const emit = defineEmits(['newAdded'])
+    const emit = defineEmits(['newAdded','updated'])
     const { axios_post_simple } = useAxios();
 
     const form = ref({
@@ -62,8 +62,8 @@ import ToggleInput from '@/Components/ToggleInput.vue'
 
         }else if(props.action === 'update'){
             axios_post_simple('../batiment/'+props.batiment.id+'/update',form.value).then(({data})=>{
-                console.log(data)
-                emit('newAdded',data.new)
+                
+                emit('updated',data.new)
             }).catch((error)=>{
                 console.log(error.response)
             })

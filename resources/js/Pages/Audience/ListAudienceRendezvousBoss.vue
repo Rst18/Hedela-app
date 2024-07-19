@@ -8,7 +8,7 @@
             <h2 class="font-semibold text-xl  text-gray-800 leading-tight">Liste des audiences (Boss)</h2>
         </template>
 
-        <div class="py-14 max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="py-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
             <ListAudience path="../../audience/boss/list-accept" @new="showDetails = !showDetails"   :audience v-if="!showDetails" @selectedAudience="get_selected_audience"/>
             <DetailsAudienceProtocole @closeMe="showDetails = false"   :audience="currentAudience" v-if="showDetails" />
             

@@ -63,6 +63,7 @@
             
         }).catch((error)=>{
             console.log(error.response)
+            waitingData.value = false
         })
 
     }

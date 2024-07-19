@@ -66,6 +66,7 @@ class BatimentController extends Controller
         try {
 
             $batiment->update($request->validated());
+            
             return ['type'=>'success','message'=>'Modification reussie'];
 
         } catch (\Throwable $th) {
