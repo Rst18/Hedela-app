@@ -282,6 +282,7 @@ Route::controller(App\Http\Controllers\TypeReunionController::class)->middleware
     Route::get('type-reunion/create','create')->name('type_reunion.create');
     Route::post('type-reunion/add','store');
     Route::post('type-reunion/{typeReunion}/update','update');
+    Route::get('type-reunion/{typeReunion}/delete','destroy');
 
 });
 

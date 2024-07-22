@@ -1,7 +1,7 @@
 
 
 <template>
-    <Head title="Batiements" />
+    <Head title="Type reunion" />
 
     <SideBarLayout>
         <template #header>
@@ -15,11 +15,14 @@
                         Créer un type de reunion
                     </Fwb-button>
                 </div>
-                <div>
-                    <ListTypeReunion  v-if="!createTypeReunion" />
+                <div v-if="!updateTypeReunion">
+                    <ListTypeReunion @selectedItem="getSelectedItem"  v-if="!createTypeReunion" />
                     <FormCreate :type_reunion={} action="add" @newAdded="createTypeReunion = false"  v-if="createTypeReunion"/>
                 </div>
-               
+                <div v-else>
+                    <FormCreate :type_reunion action="update" @updated="updateTypeReunion = false" />
+                </div>
+
             </div>
         </div>
     </SideBarLayout>
@@ -33,8 +36,13 @@
     import { FwbTab, FwbTabs,FwbButton } from 'flowbite-vue'
 
         const createTypeReunion = ref(false)
-        
-    const batiment = ref({})
+        const updateTypeReunion = ref(false)
+
+        const type_reunion = ref({})
+        const getSelectedItem = (e)=>{
+            type_reunion.value = e
+            updateTypeReunion.value = true
+        }
 
 
 </script>

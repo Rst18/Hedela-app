@@ -1,22 +1,29 @@
 <template>
+
+<!-- <Suspense> -->
     <div class="flex justify-center items-center" v-if="waitingData">
        <Animation  />
    </div>
-  
+   <!-- <Animation  /> -->
    <div v-else >
       <div class="mt-3 w-full p-3 font-semibold bg-gray-100 grid grid-cols-12">
           <div class="col-span-1">#</div>
-          <div class="col-span-7">Name</div>
-          <div class="col-span-2">Description  </div>
+          <div class="col-span-3">Name</div>
+          <div class="col-span-4">Description  </div>
           <div class="col-span-2">Date  </div>
+          <div class="col-span-2">Options  </div>
       </div>
       <div v-if="type_reunions">
-          <div v-for="b of type_reunions" :key="b.id" class="w-full p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer">
+          <div v-for="b of type_reunions" :key="b.id" class="w-full text-xs p-3 grid grid-cols-12 hover:bg-slate-200 hover:cursor-pointer">
               <div class="col-span-1">#</div>
-              <div class="col-span-7">{{b.name }}</div>
-              <div class="col-span-2">{{b.description }}</div>
- 
+              <div class="col-span-3">{{b.name }}</div>
+              <div class="col-span-4">{{b.description }}</div>
+
               <div class="col-span-2">{{ moment(b.created_at).format('ll') }}</div>
+              <div class="col-span-2 grid grid-cols-2">
+                    <span @click="updateTypeReunion(b)" class="text-blue-700 text-xs">Modifier</span>
+                    <span @click="deleteTypeReunion(b)" class="text-red-700 text-xs">Supprimer</span>
+               </div>
           </div>
           <div class="flex flex-row w-full px-4 md:w-9/12 justify-center items-center mx-auto">
                <div v-for="link in links">
@@ -33,6 +40,15 @@
          <p class="text-center mt-4">Pas de données a afficher pour le moment, veuillez creer au moins un type de reunion!  </p>
      </div>
   </div>
+
+  <!-- loading state via #fallback slot -->
+  <!-- <template #fallback>
+    <div class="flex justify-center items-center">
+       <Animation  />
+   </div>
+  </template>
+</Suspense> -->
+
 </template>
 <script setup>
    import useAxios from '@/ComponentsServices/axios.js'
@@ -43,22 +59,43 @@
 
 
    const type_reunions = ref()
+    const emit = defineEmits(['selectedItem'])
+
+    const waitingData = ref(false)
+    const links = ref()
+    const fetchTypeReunion = (url)=>{
+        waitingData.value = true
+        axios_get(url).then(({data:pagination})=>{
+            type_reunions.value = pagination.data
+            links.value = pagination.links
+            waitingData.value = false
+        }).catch((error)=>{
+            console.log(error.response)
+        })
+    }
+
+    const deleteTypeReunion = (r)=>{
+        if (confirm('Voulez vous supprimer ce type de reunion ?')) {
+
+            axios_get(`../../type-reunion/${r.id}/delete`).then(({data})=>{
+
+                if (data.type === 'success') {
+
+                    type_reunions.value = type_reunions.value.filter((t)=>t.id !== r.id)
+                }
+            })
+        }
+    }
+
+    const updateTypeReunion = (ty)=>{
+        emit('selectedItem',ty)
+    }
 
 
-   const waitingData = ref(false)
-   const links = ref()
-   const fetchTypeReunion = (url)=>{
-       waitingData.value = true
-       axios_get(url).then(({data:pagination})=>{
-           type_reunions.value = pagination.data           
-           links.value = pagination.links
-           waitingData.value = false
-       }).catch((error)=>{
-           console.log(error.response)
-       })
-   }
-       onMounted(() => {
-            fetchTypeReunion('../type-reunion/list')
-       })
+
+
+    onMounted(() => {
+        fetchTypeReunion('../type-reunion/list')
+    })
 
 </script>
