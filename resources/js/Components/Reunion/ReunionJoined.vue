@@ -96,14 +96,10 @@ const notification_message = ref();
 const showCurrentUser = ref(false)
 const user = ref()
 
-        const close = () => {
-            emit("closeMe");
-        };
-
-        const chooseAideMemoire = () =>
-        props.is_Admin === 1
-            ? (addAideMemoireAdmin.value = true)
-            : (addAideMemoireUser.value = true);
+    const chooseAideMemoire = () =>
+    props.is_Admin === 1
+        ? (addAideMemoireAdmin.value = true)
+        : (addAideMemoireUser.value = true);
 
         const demanderParole = () => {};
 
@@ -149,31 +145,31 @@ const demandeParoleReponse = () => {
 </script>
 
 <style scoped>
-.h {
-  height: calc(100vh - 220px);
-}
-.h1 {
-  height: 10%;
-}
-.h9 {
-  height: 90%;
-}
-._h {
-  height: calc(100vh - 0px);
-}
-.scroll::-webkit-scrollbar-track {
-  background-color: rgb(248, 250, 252);
-}
+    .h {
+    height: calc(100vh - 220px);
+    }
+    .h1 {
+    height: 10%;
+    }
+    .h9 {
+    height: 90%;
+    }
+    ._h {
+    height: calc(100vh - 0px);
+    }
+    .scroll::-webkit-scrollbar-track {
+    background-color: rgb(248, 250, 252);
+    }
 
-.scroll::-webkit-scrollbar {
-  width: 5px;
-  background-color: #f5f5f5;
-}
+    .scroll::-webkit-scrollbar {
+    width: 5px;
+    background-color: #f5f5f5;
+    }
 
-.scroll::-webkit-scrollbar-thumb {
-  background-color: #c9c8c8;
-}
-.scroll::-webkit-scrollbar-thumb:hover {
-  background-color: #b3b2b2;
-}
+    .scroll::-webkit-scrollbar-thumb {
+    background-color: #c9c8c8;
+    }
+    .scroll::-webkit-scrollbar-thumb:hover {
+    background-color: #b3b2b2;
+    }
 </style>

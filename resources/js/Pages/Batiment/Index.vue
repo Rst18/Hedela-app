@@ -1,7 +1,7 @@
 
 
 <template>
-    <Head title="Batiements" />
+    <Head title="Batiments" />
 
     <SideBarLayout>
         <template #header>
@@ -19,7 +19,7 @@
                     <ListBatiment  v-if="!createBatiment" />
                     <BatimentForm :batiment action="add" @newAdded="createBatiment = false"  v-if="createBatiment"/>
                 </div>
-               
+
             </div>
         </div>
     </SideBarLayout>
@@ -33,7 +33,7 @@
     import { FwbTab, FwbTabs,FwbButton } from 'flowbite-vue'
 
         const createBatiment = ref(false)
-        
+
     const batiment = ref({})
 
 

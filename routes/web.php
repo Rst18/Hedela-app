@@ -3,7 +3,9 @@
 use App\Models\User;
 use Inertia\Inertia;
 use App\Events\Hello;
+use App\Models\Reunion;
 use App\Events\DispatchEvent;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
@@ -282,6 +284,7 @@ Route::controller(App\Http\Controllers\TypeReunionController::class)->middleware
     Route::get('type-reunion/create','create')->name('type_reunion.create');
     Route::post('type-reunion/add','store');
     Route::post('type-reunion/{typeReunion}/update','update');
+    Route::get('type-reunion/{typeReunion}/delete','destroy');
 
 });
 
@@ -300,15 +303,34 @@ Route::get('/notifications', function(){
 
 Route::get('testEvent',function(){
 
+    $emails = Reunion::where('status', 2)
+    ->with('orateurs') // Charger les orateurs
+    ->with(['demande_parole'=>function($q){
+        $q->where('confirmed',1);
+    }])
+    ->get() // Récupérer les réunions
+    ->flatMap(function ($reunion) {
+        return[
+            'orateurs'=>$reunion->orateurs->pluck('email'),
+            'intervenants'=>$reunion->demande_parole->pluck('email')
+        ]; // Extraire les emails des orateurs
+    })
+    ->unique(); // Pour éliminer les emails en double, si nécessaire
 
+return $emails;
+    // Convertir la collection d'emails en tableau, si besoin
+    $emailArray = $emails->toArray();
+
+    // Afficher les emails
+    return $emailArray;
 
     // $user_one = User::first();
     // $user_one->notify(new RealtimeNotification('Un courrier vient d\'etre dispatcher 😄'));
 
 
     //  broadcast( new Hello(1));
-     broadcast( new DispatchEvent('Rostand'));
-    return 'okok0';
+    //  broadcast( new DispatchEvent('Rostand'));
+    // return 'okok0';
 });
 
 require __DIR__.'/auth.php';
