@@ -27,8 +27,13 @@ class TaskCloseCommand extends Command
      */
     public function handle()
     {
-        
+
+        // recuperatios de toute les reunion qui sont programmer pour cette date et heure
+
+       // $reunion = Reunion::where()->get();
+
+
         Mail::to('kaserekamwiraros@gmail.com')->send(New RendezvousMailNotification('Bonjour !'));
-    
+        $this->info('Mail sent successfully!');
     }
 }

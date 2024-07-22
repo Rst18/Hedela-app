@@ -4,6 +4,7 @@ use App\Models\User;
 use Inertia\Inertia;
 use App\Events\Hello;
 use App\Events\DispatchEvent;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
@@ -301,15 +302,16 @@ Route::get('/notifications', function(){
 
 Route::get('testEvent',function(){
 
-
+    $now = Carbon::now(); // Utilise le fuseau horaire UTC
+    dd( $now->toDateTimeString()); 
 
     // $user_one = User::first();
     // $user_one->notify(new RealtimeNotification('Un courrier vient d\'etre dispatcher 😄'));
 
 
     //  broadcast( new Hello(1));
-     broadcast( new DispatchEvent('Rostand'));
-    return 'okok0';
+    //  broadcast( new DispatchEvent('Rostand'));
+    // return 'okok0';
 });
 
 require __DIR__.'/auth.php';
