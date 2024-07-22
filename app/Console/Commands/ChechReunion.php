@@ -31,9 +31,44 @@ class ChechReunion extends Command
         $now = Carbon::now();
         $startOfMinute = $now->copy()->startOfMinute();
         $endOfMinute = $now->copy()->endOfMinute()->addSecond(-1);
-        
-        // recuperation de toutes les reunions prevu aujourdhui a cette heure et date
 
+        $startTime = $now->copy()->subMinutes(15)->startOfMinute();
+        $endTime = $now->copy()->startOfMinute();
+
+        //recuperation de toutes les reunions qui seront ouverte dans 15 min
+        $emails = Reunion::where('status', 0)
+                            ->whereBetween('date_debut',[$startTime, $endTime])
+                                ->with('orateurs') // Charger les orateurs associés
+                                    ->get() // Récupérer les réunions
+                                        ->flatMap(function ($reunion) {
+                                            return $reunion->orateurs->pluck('email'); // Extraire les emails des orateurs
+                                        })
+                                        ->unique(); // Pour éliminer les emails en double, si nécessaire
+
+
+        // Convertir la collection d'emails en tableau, si besoin
+        $emailArray = $emails->toArray();
+
+        // Afficher les emails
+        return $emailArray;
+
+//-----------------------Envoi des mails------------------------
+        // $users = User::all();
+
+        // Mail::to($users)->send(new UserEmail($user));
+
+        // return response()->json(['success'=>'Send email successfully.']);
+
+//------------------------ FIn Envoi mail -------------------------------------
+
+
+
+
+
+
+
+
+        // recuperation de toutes les reunions prevu aujourdhui a cette heure et date
         $reunions = Reunion::where('status',0)
                     ->whereBetween('date_debut',[$startOfMinute, $endOfMinute])
                         ->get();
