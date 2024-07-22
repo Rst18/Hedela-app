@@ -33,24 +33,31 @@ class TimesheetController extends Controller
         //return $request;
         // $request->letter_file->getClientOriginalExtension();
         try {
+
+            $task = Task::find($request->task_id);
+            if ($task->statut = 1) {
+
+
+                $timesheet = Timesheet::create($request->validated());
+
+                // if ($request->annexes) {
+
+                //     for ($i=0; $i < count($request->annexes); $i++) {
+
+                //         $fileName = time() . '.' . $request->path->getClientOriginalExtension();
+                //         $filePath = $request->path->storeAs('timesheets/'.$request->timesheet_id.'/Annexes/', $fileName);
+
+                //         $data['path'] =  $filePath;
+                //         AnnexeTimesheet::create($data);
+                //     }
+                // }
+
+                //notification Keep Informed
+                return ['type'=>'success',',message'=>'Enregistrement reussi','new'=>$timesheet];
+            }
             
+            return ['type'=>'success',',message'=>'Impossible d\'enregistrer un rapport sur cette tache, verifiez qu\'elle n\'est pas fermee ou suspendue'];
 
-            $timesheet = Timesheet::create($request->validated());
-
-            // if ($request->annexes) {
-
-            //     for ($i=0; $i < count($request->annexes); $i++) { 
-                   
-            //         $fileName = time() . '.' . $request->path->getClientOriginalExtension();
-            //         $filePath = $request->path->storeAs('timesheets/'.$request->timesheet_id.'/Annexes/', $fileName);
-    
-            //         $data['path'] =  $filePath;
-            //         AnnexeTimesheet::create($data);
-            //     }
-            // }
-
-            //notification Keep Informed
-            return ['type'=>'success',',message'=>'Enregistrement reussi','new'=>$timesheet];
         } catch (\Throwable $th) {
             //throw $th;
             return ['type'=>'error','message'=>'Echec d\'enregistrement','errorMessage'=>$th];
@@ -78,7 +85,7 @@ class TimesheetController extends Controller
      */
     public function update(UpdateTimesheetRequest $request, Timesheet $timesheet)
     {
-       
+
          try {
 
             if ($timesheet->user_id == Auth::user()->id) {
@@ -120,19 +127,19 @@ class TimesheetController extends Controller
 
 
     public function getMyTimesheetsForTask($tache){
-      
+
         return  Tache::where('id',$tache)->with(['timesheets'=>function($query){
            $query->where('user_id',Auth::user()->id );
        }])->first();
-       
+
    }
 
    public function getMyTimesheetsForTask_mobile($user,$tache){
-     
+
         return  Tache::where('id',$tache)->with(['timesheets'=>function($query) use ($user){
            $query->where('user_id',$user );
        }])->first();
-       
+
    }
    public function getTimesheetsForTask($tache){
 
@@ -149,17 +156,17 @@ class TimesheetController extends Controller
        $user = User::find(Auth::user()->id);
 
        if ($user != null) {
-         
+
            return $user->with(['timesheets'=>function($query) use ($tache){
                    $query->where('id',$tache);
                }])->get();
        }
    }
    public function getTimesheetUser(User $user,Tache $tache){
-         
+
        return $user->with(['timesheets'=>function($query) use ($tache){
                $query->where('id',$tache);
            }])->get();
-       
+
    }
 }
